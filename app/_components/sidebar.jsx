@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function Sidebar({ setShows, setShowType }) {
   const filterByType = (type) => {
-    fetch(`/api/trends/${type}`, {
+    fetch(`http://localhost:3000/api/trends/${type}`, {
       method: 'post',
     })
       .then((res) => res.json())
@@ -20,20 +20,10 @@ export default function Sidebar({ setShows, setShowType }) {
 
   return (
     <>
-      <input
-        type='checkbox'
-        id='check'
-      />
+      <input type='checkbox' id='check' />
       <label htmlFor='check'>
-        <ListBulletIcon
-          className='h-10 w-10'
-          id='open'
-        />
-
-        <XMarkIcon
-          className='h-8 w-8'
-          id='cancel'
-        />
+        <ListBulletIcon className='h-10 w-10' id='open' />
+        <XMarkIcon className='h-8 w-8' id='cancel' />
       </label>
 
       <side>
@@ -42,10 +32,7 @@ export default function Sidebar({ setShows, setShowType }) {
           <li>
             <span>
               <FilmIcon className='h-6 w-6 inline pb-1 mr-1' />
-              <Link
-                href='#'
-                onClick={(e) => filterByType('movies')}
-              >
+              <Link href='#' onClick={(e) => filterByType('movies')}>
                 Movies
               </Link>
             </span>
@@ -53,10 +40,7 @@ export default function Sidebar({ setShows, setShowType }) {
           <li>
             <span>
               <PlayCircleIcon className='h-6 w-6 inline pb-1 mr-1' />
-              <Link
-                href='#'
-                onClick={(e) => filterByType('tvshows')}
-              >
+              <Link href='#' onClick={(e) => filterByType('tvshows')}>
                 TV Shows
               </Link>
             </span>

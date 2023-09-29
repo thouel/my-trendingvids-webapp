@@ -1,9 +1,9 @@
 'use client';
 
 import { Suspense, useState } from 'react';
-import SearchForm from './search-form';
-import Shows from './shows';
-import Sidebar from './sidebar';
+import SearchForm from '@/components/search-form';
+import Shows from '@/components/shows';
+import Sidebar from '@/components/sidebar';
 
 export default function Page() {
   const [shows, setShows] = useState([]);
@@ -11,21 +11,10 @@ export default function Page() {
 
   return (
     <>
-      <Sidebar
-        setShows={setShows}
-        setShowType={setShowType}
-      />
+      <Sidebar setShows={setShows} setShowType={setShowType} />
       <main className=''>
-        <SearchForm
-          setShows={setShows}
-          showType={showType}
-        />
-        <Suspense fallback={<h2>Loading bitch !</h2>}>
-          <Shows
-            shows={shows}
-            showType={showType}
-          />
-        </Suspense>
+        <SearchForm setShows={setShows} showType={showType} />
+        <Shows shows={shows} showType={showType} />
       </main>
     </>
   );
