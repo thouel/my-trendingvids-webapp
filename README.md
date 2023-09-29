@@ -1,16 +1,43 @@
 # my-trendingvids-webapp
 
-## What ?
+[![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+TODO: Put more badges here.
 
 A single page webapp to visualize the current TV shows and movies trends. Allows the user to filter the trends he sees by types, genres, popularity. He also can search by keyword.
 
-## How ?
+TODO: Fill out this long description.
 
-Use [The Movie Database](https://developer.themoviedb.org/reference) API to fetch TV shows and Movies trends.
+## Table of Contents
 
-Components architecture:
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Try ?
+## Background
 
-- Fetch repo : git clone...
-- Run it: npm run dev
+## Install
+
+```
+
+```
+
+## Usage
+
+```
+
+```
+
+## Maintainers
+
+[@https://github.com/thouel](https://github.com/thouel)
+
+## Contributing
+
+Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+
+## License
+
+MIT © 2023 Thibault Houel

@@ -1,0 +1,83 @@
+import {
+  ListBulletIcon,
+  XMarkIcon,
+  FilmIcon,
+  PlayCircleIcon,
+} from '@heroicons/react/24/outline';
+import Link from 'next/link';
+
+export default function Sidebar({ setShows, setShowType }) {
+  const filterByType = (type) => {
+    fetch(`/api/trends/${type}`, {
+      method: 'post',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setShowType(type);
+        setShows(data);
+      });
+  };
+
+  return (
+    <>
+      <input
+        type='checkbox'
+        id='check'
+      />
+      <label htmlFor='check'>
+        <ListBulletIcon
+          className='h-10 w-10'
+          id='open'
+        />
+
+        <XMarkIcon
+          className='h-8 w-8'
+          id='cancel'
+        />
+      </label>
+
+      <side>
+        <header>My Trending Shows</header>
+        <ul>
+          <li>
+            <span>
+              <FilmIcon className='h-6 w-6 inline pb-1 mr-1' />
+              <Link
+                href='#'
+                onClick={(e) => filterByType('movies')}
+              >
+                Movies
+              </Link>
+            </span>
+          </li>
+          <li>
+            <span>
+              <PlayCircleIcon className='h-6 w-6 inline pb-1 mr-1' />
+              <Link
+                href='#'
+                onClick={(e) => filterByType('tvshows')}
+              >
+                TV Shows
+              </Link>
+            </span>
+          </li>
+          <li>
+            <span>
+              <a href='#'>item 3</a>
+            </span>
+          </li>
+          <li>
+            <span>
+              <a href='#'>item 4</a>
+            </span>
+          </li>
+          <li>
+            <span>
+              <a href='#'>item 5</a>
+            </span>
+          </li>
+        </ul>
+      </side>
+    </>
+  );
+}
