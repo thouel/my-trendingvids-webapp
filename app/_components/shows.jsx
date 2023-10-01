@@ -1,8 +1,8 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
+import ShowsCarousel from './shows-carousel';
 
 /**
  * The Shows Component
@@ -61,25 +61,11 @@ export default function Shows({ shows, showType }) {
                   <ChevronRightIcon className='w-6 h-6 inline pb-1 mr-1' />
                   {g.name}
                 </span>
-                {shows
-                  .filter((s) => s.genre_ids.indexOf(g.id) > -1)
-                  .map((s) => (
-                    <div className='row-auto relative' key={s.id}>
-                      <Image
-                        src={
-                          'https://image.tmdb.org/t/p/w500' + s.backdrop_path
-                        }
-                        alt={getLabel(s)}
-                        title={getLabel(s)}
-                        width={300}
-                        height={300}
-                        className=''
-                      />
-                      <div className='text-white bg-gray-900 text-sm absolute inset-0 opacity-0 hover:opacity-100 duration-300 flex justify-center items-center z-10 p-3'>
-                        <span>{getLabel(s)}</span>
-                      </div>
-                    </div>
-                  ))}
+                <ShowsCarousel
+                  getLabel={getLabel}
+                  genreLabel={g.name}
+                  shows={shows.filter((s) => s.genre_ids.indexOf(g.id) > -1)}
+                />
               </Fragment>
             ))}
       </div>

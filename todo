@@ -1,4 +1,7 @@
 use real API
-go from grid to caroussel
 Pin to 'my list'
 Add 'streaming on platform'
+add show details
+add footer
+handle form errors
+handle 'all' error on first load

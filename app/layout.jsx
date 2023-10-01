@@ -9,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className='ml-4 mt-4 max-w-7xl'>
+      <body className='max-w-7xl'>
         {/* <Providers> */}
         {children}
         {/* </Providers> */}

@@ -7,7 +7,7 @@ import Sidebar from '@/components/sidebar';
 
 export default function Page() {
   const [shows, setShows] = useState([]);
-  const [showType, setShowType] = useState('movies');
+  const [showType, setShowType] = useState('all');
 
   return (
     <>
@@ -20,6 +20,7 @@ export default function Page() {
         <SearchForm setShows={setShows} showType={showType} />
         <Shows shows={shows} showType={showType} />
       </main>
+      <footer className='p-2 text-center'>Obit, inc.</footer>
     </>
   );
 }

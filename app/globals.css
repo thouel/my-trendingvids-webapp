@@ -39,12 +39,21 @@ label {
   color: var(--main-font-color);
 }
 
+input[type='text'] {
+  color: var(--main-bg-color);
+  background-color: rgba(var(--main-dark-color), 0.1);
+  font-size: 18pt;
+  width: 300px;
+  border-bottom: var(--main-highlight-color) solid 2px;
+  margin-right: 4px;
+}
+
 button[type='submit'] {
   background-color: var(--main-highlight-color);
+  color: var(--main-bg-color);
   border-radius: 0.25rem;
-  padding: 0px 4px;
-  margin: 2px 4px;
-  font-size: meidum;
+  padding: 2px 4px;
+  font-size: 18pt;
 }
 
 nav {
@@ -114,9 +123,11 @@ label #open {
 }
 #check ~ label #cancel {
   opacity: 0;
+  visibility: hidden;
 }
 #check:checked ~ label #cancel {
   opacity: 100;
+  visibility: visible;
 }
 
 label #cancel {
@@ -137,6 +148,7 @@ label #cancel {
 }
 
 main {
-  margin-left: 70px;
+  margin-top: 5px;
+  margin-left: 75px;
   transition: 0.5s all ease;
 }
