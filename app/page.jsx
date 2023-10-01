@@ -11,7 +11,11 @@ export default function Page() {
 
   return (
     <>
-      <Sidebar setShows={setShows} setShowType={setShowType} />
+      <Sidebar
+        setShows={setShows}
+        setShowType={setShowType}
+        showType={showType}
+      />
       <main className=''>
         <SearchForm setShows={setShows} showType={showType} />
         <Shows shows={shows} showType={showType} />

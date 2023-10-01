@@ -5,8 +5,12 @@ import {
   PlayCircleIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-export default function Sidebar({ setShows, setShowType }) {
+export default function Sidebar({ setShows, setShowType, showType }) {
+  const urlParams = useSearchParams();
+  const st = urlParams.get('st');
+
   const filterByType = (type) => {
     fetch(`http://localhost:3000/api/trends/${type}`, {
       method: 'post',
@@ -26,21 +30,21 @@ export default function Sidebar({ setShows, setShowType }) {
         <XMarkIcon className='h-8 w-8' id='cancel' />
       </label>
 
-      <side>
+      <nav>
         <header>My Trending Shows</header>
         <ul>
-          <li>
+          <li className={st === 'movies' ? 'sidebar-highlight' : ''}>
             <span>
               <FilmIcon className='h-6 w-6 inline pb-1 mr-1' />
-              <Link href='#' onClick={(e) => filterByType('movies')}>
+              <Link href='?st=movies' onClick={(e) => filterByType('movies')}>
                 Movies
               </Link>
             </span>
           </li>
-          <li>
+          <li className={st === 'tvshows' ? 'sidebar-highlight' : ''}>
             <span>
               <PlayCircleIcon className='h-6 w-6 inline pb-1 mr-1' />
-              <Link href='#' onClick={(e) => filterByType('tvshows')}>
+              <Link href='?st=tvshows' onClick={(e) => filterByType('tvshows')}>
                 TV Shows
               </Link>
             </span>
@@ -61,7 +65,7 @@ export default function Sidebar({ setShows, setShowType }) {
             </span>
           </li>
         </ul>
-      </side>
+      </nav>
     </>
   );
 }

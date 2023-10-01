@@ -17,7 +17,7 @@ async function searchShows(prevState, formData) {
   });
 
   try {
-    const data = schema.parse({
+    const form = schema.parse({
       show: formData.get('show')?.toLowerCase(),
       showType: formData.get('showType'),
     });
@@ -29,16 +29,16 @@ async function searchShows(prevState, formData) {
     // const byteData = await fs.readFile(filePath);
     // const jsonData = await JSON.parse(byteData);
     let results = null;
-    await fetch(`http://localhost:3000/api/trends/${data.showType}`, {
+    await fetch(`http://localhost:3000/api/trends/${form.showType}`, {
       method: 'post',
     })
       .then((res) => res.json())
       .then((data) => (results = data));
 
-    if (data.show) {
+    if (form.show) {
       results = results.filter((r) => {
         const label = (r.title ? r.title : r.name).toLowerCase();
-        return label.indexOf(data.show) > -1;
+        return label.indexOf(form.show) > -1;
       });
     }
     // revalidatePath('/');
@@ -77,4 +77,4 @@ const updateGenresToDisplay = (pShows, pGenres) => {
   return pGenres;
 };
 
-export { searchShows, fetchGenres, updateGenresToDisplay };
+export { searchShows, updateGenresToDisplay };

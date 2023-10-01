@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
 
 /**
@@ -18,22 +19,25 @@ export default function Shows({ shows, showType }) {
       console.log('fetch genres');
 
       setIsLoading(true);
-      if (showType === 'all') return;
 
-      setGenres(
-        await fetch(`http://localhost:3000/api/genres/${showType}`, {
-          method: 'GET',
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            const res = updateGenresToDisplay(shows, data.genres);
-            setIsLoading(false);
-            return res;
+      try {
+        setGenres(
+          await fetch(`http://localhost:3000/api/genres/${showType}`, {
+            method: 'GET',
           })
-      );
+            .then((res) => res.json())
+            .then((data) => {
+              const res = updateGenresToDisplay(shows, data.genres);
+              setIsLoading(false);
+              return res;
+            })
+        );
+      } catch (e) {
+        console.error(e);
+      }
     }
     fetchGenres();
-  }, [showType]);
+  }, [shows, showType]);
 
   const getLabel = (show) => {
     return show.title ? show.title : show.name;
@@ -48,10 +52,11 @@ export default function Shows({ shows, showType }) {
           </div>
         )}
         {!isLoading &&
+          shows.length > 0 &&
           genres
             .filter((g) => g.found === true)
             .map((g) => (
-              <>
+              <Fragment key={g.id}>
                 <span className='col-span-4 row-auto relative text-lg font-bold'>
                   <ChevronRightIcon className='w-6 h-6 inline pb-1 mr-1' />
                   {g.name}
@@ -75,7 +80,7 @@ export default function Shows({ shows, showType }) {
                       </div>
                     </div>
                   ))}
-              </>
+              </Fragment>
             ))}
       </div>
     </>
