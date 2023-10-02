@@ -1,7 +1,6 @@
-use real API
 Pin to 'my list'
+handle 'all' error on first load
+use real API
 Add 'streaming on platform'
-add show details
 add footer
 handle form errors
-handle 'all' error on first load

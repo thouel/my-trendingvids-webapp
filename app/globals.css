@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --main-highlight-color: #f15025;
+  --main-highlight-color: #f15025; /* rgb(95,31,15) */
   --main-bg-color: #fff;
   --main-bg2-color: #e6e8e6;
   --main-font-color: #ced0ce;
@@ -54,6 +54,48 @@ button[type='submit'] {
   border-radius: 0.25rem;
   padding: 2px 4px;
   font-size: 18pt;
+}
+
+.cta-button-icon {
+  color: var(--main-bg2-color);
+  font-size: 20px;
+  padding: 1px 1px;
+  border-radius: 3px;
+  transition: 0.1s all ease;
+  display: inline;
+  margin: 0px 10px;
+}
+.cta-button-icon:hover {
+  background-color: var(--main-highlight-color);
+  animation: spin 300ms linear normal;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(90deg);
+    }
+  }
+}
+.cta-button-text-with-icon {
+  color: var(--main-bg2-color);
+  font-size: 20px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  transition: 0.1s all ease;
+  display: inline;
+  margin: 0px 10px;
+}
+.cta-button-text-with-icon:hover {
+  color: var(--main-highlight-color);
+}
+
+.modal {
+  background-color: var(--main-dark-color);
+}
+.modal-title {
+  color: var(--main-highlight-color);
 }
 
 nav {

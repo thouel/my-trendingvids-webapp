@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
 import ShowsCarousel from './shows-carousel';
+import { getLabel } from '@/utils/shows';
 
 /**
  * The Shows Component
@@ -16,8 +17,6 @@ export default function Shows({ shows, showType }) {
 
   useEffect(() => {
     async function fetchGenres() {
-      console.log('fetch genres');
-
       setIsLoading(true);
 
       try {
@@ -39,10 +38,6 @@ export default function Shows({ shows, showType }) {
     fetchGenres();
   }, [shows, showType]);
 
-  const getLabel = (show) => {
-    return show.title ? show.title : show.name;
-  };
-
   return (
     <>
       <div className='grid grid-flow-row grid-cols-4 gap-1 mt-4'>
@@ -62,7 +57,6 @@ export default function Shows({ shows, showType }) {
                   {g.name}
                 </span>
                 <ShowsCarousel
-                  getLabel={getLabel}
                   genreLabel={g.name}
                   shows={shows.filter((s) => s.genre_ids.indexOf(g.id) > -1)}
                 />
