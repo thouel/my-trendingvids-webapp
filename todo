@@ -4,3 +4,4 @@ use real API
 Add 'streaming on platform'
 add footer
 handle form errors
+remake the sidebar to be full flexbox => https://codepen.io/evankarageorgos/pen/jMzLEm

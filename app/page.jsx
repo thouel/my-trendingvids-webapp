@@ -20,7 +20,6 @@ export default function Page() {
         <SearchForm setShows={setShows} showType={showType} />
         <Shows shows={shows} showType={showType} />
       </main>
-      <footer className='p-2 text-center'>Obit, inc.</footer>
     </>
   );
 }

@@ -12,6 +12,12 @@ module.exports = {
         port: '',
         pathname: '/t/p/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/u/*',
+      },
     ],
   },
 };

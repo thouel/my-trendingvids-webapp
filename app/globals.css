@@ -188,8 +188,16 @@ label #cancel {
 #check:checked ~ main {
   margin-left: 270px;
 }
+#check:checked ~ footer {
+  margin-left: 270px;
+}
 
 main {
+  margin-top: 5px;
+  margin-left: 75px;
+  transition: 0.5s all ease;
+}
+footer {
   margin-top: 5px;
   margin-left: 75px;
   transition: 0.5s all ease;
