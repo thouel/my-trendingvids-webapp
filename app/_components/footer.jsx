@@ -1,6 +1,13 @@
+'use client';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 export default function Footer() {
+  const { data: session } = useSession({
+    required: false,
+  });
+
   return (
     <footer className='ml-1 text-sm'>
       <span className=''>Obit, inc.</span>
@@ -20,7 +27,11 @@ export default function Footer() {
           <Link href={'/csr-secured-alone'}>CSR Secured Alone</Link>
         </li>
         <li>
-          <Link href={'/api/auth/signout'}>Sign Out</Link>
+          {session ? (
+            <Link href={'/api/auth/signout'}>Sign Out</Link>
+          ) : (
+            <Link href={'/api/auth/signin?callbackUrl=/'}>Sign in</Link>
+          )}
         </li>
       </ul>
     </footer>

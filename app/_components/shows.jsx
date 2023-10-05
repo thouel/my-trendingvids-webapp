@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
 import ShowsCarousel from './shows-carousel';
-import { getLabel } from '@/utils/shows';
 
 /**
  * The Shows Component
@@ -24,7 +23,12 @@ export default function Shows({ shows, showType }) {
           await fetch(`http://localhost:3000/api/genres/${showType}`, {
             method: 'GET',
           })
-            .then((res) => res.json())
+            .then((res) => {
+              if (res.ok) {
+                return res.json();
+              }
+              throw new Error(res.status, res.message);
+            })
             .then((data) => {
               const res = updateGenresToDisplay(shows, data.genres);
               setIsLoading(false);
@@ -48,6 +52,7 @@ export default function Shows({ shows, showType }) {
         )}
         {!isLoading &&
           shows.length > 0 &&
+          genres.length > 0 &&
           genres
             .filter((g) => g.found === true)
             .map((g) => (

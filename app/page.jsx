@@ -1,6 +1,7 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import Footer from '@/components/footer';
+import { useState } from 'react';
 import SearchForm from '@/components/search-form';
 import Shows from '@/components/shows';
 import Sidebar from '@/components/sidebar';
@@ -20,6 +21,7 @@ export default function Page() {
         <SearchForm setShows={setShows} showType={showType} />
         <Shows shows={shows} showType={showType} />
       </main>
+      <Footer />
     </>
   );
 }

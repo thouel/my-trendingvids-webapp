@@ -1,7 +1,9 @@
 Pin to 'my list'
+
 handle 'all' error on first load
 use real API
 Add 'streaming on platform'
 add footer
-handle form errors
+handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions/error
 remake the sidebar to be full flexbox => https://codepen.io/evankarageorgos/pen/jMzLEm
+add loading skeleton => https://nextjs.org/docs/app/api-reference/file-conventions/loading
