@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
 
 export default function Footer() {
   const { data: session } = useSession({
@@ -12,6 +11,9 @@ export default function Footer() {
     <footer className='ml-1 text-sm'>
       <span className=''>Obit, inc.</span>
       <ul>
+        <li>
+          <Link href={'/login'}>Login Modal</Link>
+        </li>
         <li>
           <Link href={'/'}>My Trending Videos</Link>
         </li>

@@ -6,7 +6,7 @@ export const metadata = {
   description: 'Made with love by obit',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, modal }) {
   return (
     <html lang='en'>
       <body className='max-w-7xl'>
@@ -14,6 +14,7 @@ export default function RootLayout({ children }) {
           {/* <Providers> */}
           {children}
           {/* </Providers> */}
+          {modal}
         </AuthProvider>
       </body>
     </html>
