@@ -1,3 +1,4 @@
+Remove from pinned shows
 Display the pinned shows
 Make the Movies / TV Shows pages linkable directly
 Remake the modal system: https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes, https://github.com/vercel-labs/nextgram/blob/main/src/components/modal/Modal.tsx

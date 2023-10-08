@@ -1,8 +1,6 @@
 import Github from 'next-auth/providers/github';
 import Credentials from 'next-auth/providers/credentials';
-import { refreshMyShows } from '@/utils/helper';
 import prisma from '@/db/db-prisma';
-// import { PrismaAdapter } from '@auth/prisma-adapter';
 import { MyPrismaAdapter } from '@/db/MyPrismaAdapter';
 
 export const options /* NextAuthOptions */ = {
@@ -67,27 +65,12 @@ export const options /* NextAuthOptions */ = {
       },
     }),
   ],
-  events: {
-    async signIn({ user, account, profile, isNewUser }) {
-      console.log('signIn event', { user, account, profile, isNewUser });
-      return true;
-    },
-  },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('signIn callback', {
-        user,
-        account,
-        profile,
-        email,
-        credentials,
-      });
-      return true;
-    },
     async jwt({ token, user, session, trigger }) {
       console.log('jwt callback', { token, user, session, trigger });
 
-      // if an update occurs from the client side
+      // if an update occurs from the client side, we need to replicate it
+      // in token, so it is persisted in session function below
       if (trigger === 'update') {
         token.pinnedShowsIDs = session.pinnedShowsIDs;
         token.pinnedShows = session.pinnedShows;
@@ -101,7 +84,6 @@ export const options /* NextAuthOptions */ = {
           id: user.id,
           pinnedShowsIDs: user.pinnedShowsIDs,
           pinnedShows: user.pinnedShows,
-          //TODO: Add pinnedShows in PrismaAdapter => overload getUser
         };
       }
       return token;
@@ -119,33 +101,6 @@ export const options /* NextAuthOptions */ = {
           pinnedShows: token.pinnedShows,
         },
       };
-
-      console.log('Begin of session()', session);
-
-      if (!session.user.id) {
-        session.user.id = token.sub;
-      }
-      if (!session.user.fromDb) {
-        await fetch('http://localhost:3000/api/user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user: session.user }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            const { user } = data;
-            session.user.fromDb = user;
-          });
-      }
-      console.log('Middle of session()', session);
-      if (!session.user.fromDb?.myShows) {
-        // Fetch pinned shows
-        refreshMyShows(session);
-      }
-
-      console.log('session', session);
-      console.log('token', token);
-      return session;
     },
   },
 };
