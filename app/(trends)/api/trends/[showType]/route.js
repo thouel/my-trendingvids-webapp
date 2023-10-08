@@ -2,19 +2,19 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { createEdgeRouter } from 'next-connect';
-import { getDatabase, closeDatabase } from '@/utils/db';
+import prisma from '@/db/db-prisma';
 
 const router = createEdgeRouter /* <NextApiRequest, NextApiResponse> */();
 
 router
-  .use(getDatabase)
   .post(async (req, ctx, next) => {
     try {
       const { showType } = ctx.params;
       const isPinned = showType.indexOf('p-') > -1;
       if (isPinned) {
-        let doc = await req.dbClient.collection('pinned').findOne();
-        console.log(doc);
+        let doc = await prisma.show.findMany();
+        // let doc = await req.dbClient.collection('pinned').findOne();
+        console.log('prisma shows:', doc);
         return NextResponse.json(doc);
       } else {
         // Get the trendings

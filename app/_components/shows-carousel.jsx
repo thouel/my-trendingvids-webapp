@@ -3,7 +3,7 @@ import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import ShowCard from './show-card';
 import { Fragment, useState } from 'react';
-import { getLabel } from '@/utils/shows';
+import { getLabel } from '@/utils/helper';
 
 export default function ShowsCarousel({ genreLabel, shows }) {
   const [modal, setModal] = useState();

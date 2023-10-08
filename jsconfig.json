@@ -4,7 +4,9 @@
     "paths": {
       "@/components/*": ["/app/_components/*"],
       "@/context/*": ["/app/_context/*"],
-      "@/utils/*": ["/app/_utils/*"]
+      "@/utils/*": ["/app/_utils/*"],
+      "@/db/*": ["/app/_utils/db/*"],
+      "@/mapper/*": ["/app/_utils/mapper/*"]
     }
   }
 }

@@ -61,7 +61,6 @@ async function fetchGenres(pShows, pShowType) {
 }
 
 const updateGenresToDisplay = (pShows, pGenres) => {
-  console.log(pShows);
   if (pGenres === undefined || pGenres.length == 0) return pGenres;
   if (pShows === undefined || pShows.length == 0) return pGenres;
 

@@ -7,10 +7,17 @@ export default function Footer() {
     required: false,
   });
 
+  const logSession = () => {
+    console.log(session);
+  };
+
   return (
     <footer className='ml-1 text-sm'>
       <span className=''>Obit, inc.</span>
       <ul>
+        <li>
+          <span onClick={() => logSession()}>Log Session</span>
+        </li>
         <li>
           <Link href={'/login'}>Login Modal</Link>
         </li>

@@ -1,16 +1,73 @@
 import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import { getLabel } from '@/utils/shows';
+import { PlusIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import {
+  getLabel,
+  isAuthenticated,
+  isShowInMyList as fn_isShowInMyList,
+} from '@/utils/helper';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 export default function ShowCard({ show, onCloseCallback }) {
+  const {
+    data: session,
+    status,
+    update,
+  } = useSession({
+    required: false,
+  });
+
+  const [isShowInMyList, setIsShowInMyList] = useState(
+    fn_isShowInMyList(show, session)
+  );
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const closeModal = () => {
     setOpen(false);
     onCloseCallback();
+  };
+
+  const addToMyList = async (show) => {
+    if (!isAuthenticated(session)) {
+      console.log('Needs to authenticate');
+      return;
+    }
+    var postResult;
+    await fetch('/api/show', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ show: show, user: session.user }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        postResult = data;
+        if (postResult.error) {
+          // set Error Message(
+          setErrorMessage(postResult.error.message);
+          return;
+        }
+        // Update the list in session
+        session.user.pinnedShowsIDs.push(postResult.show.id);
+        session.user.pinnedShows.push(postResult.show);
+        update({
+          pinnedShowsIDs: session.user.pinnedShowsIDs,
+          pinnedShows: session.user.pinnedShows,
+        });
+
+        setIsShowInMyList(true);
+      });
+  };
+
+  const removeFromMyList = async (show) => {
+    console.log('removeFromMyList', { show });
+    if (!isAuthenticated(session)) {
+      console.log('Needs to authenticate');
+      return;
+    }
+    return;
   };
 
   return (
@@ -64,9 +121,23 @@ export default function ShowCard({ show, onCloseCallback }) {
                         className='text-2xl font-semibold modal-title'
                       >
                         {getLabel(show)}
-                        <button type='button' className='cta-button-icon'>
-                          <PlusIcon className='h-6 w-6' />
-                        </button>
+                        {isShowInMyList ? (
+                          <button
+                            type='button'
+                            className='cta-button-text-with-icon'
+                            onClick={() => removeFromMyList(show)}
+                          >
+                            <CheckCircleIcon className='h-6 w-6' />
+                          </button>
+                        ) : (
+                          <button
+                            type='button'
+                            className='cta-button-icon'
+                            onClick={() => addToMyList(show)}
+                          >
+                            <PlusIcon className='h-6 w-6' />
+                          </button>
+                        )}
                       </Dialog.Title>
                       <Dialog.Description as='p' className='mt-2 text-sm'>
                         {show.overview}
