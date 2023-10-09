@@ -1,44 +1,40 @@
 'use client';
-import { experimental_useFormState as useFormState } from 'react-dom';
-import { experimental_useFormStatus as useFormStatus } from 'react-dom';
-import { useEffect } from 'react';
-import { searchShows } from '@/utils/actions';
+import { useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-const initialState = {
-  message: null,
-  data: null,
-};
+export default function SearchForm() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [queryString, setQueryString] = useState(searchParams.get('q'));
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+  const createQueryString = () => {
+    const params = new URLSearchParams(searchParams);
+    params.set('q', queryString);
+    return params.toString();
+  };
 
-  return (
-    <button type='submit' aria-disabled={pending}>
-      <MagnifyingGlassIcon className='w-8 h-8 inline align-text-bottom ml-1 mr-1' />
-    </button>
-  );
-}
-
-export default function SearchForm({ setShows, showType }) {
-  const [state, formAction] = useFormState(searchShows, initialState);
-
-  useEffect(() => {
-    if (state.data) {
-      setShows(state.data);
-    }
-  }, [state]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push(pathname.toString() + '?' + createQueryString());
+  };
 
   return (
     <div className='flex justify-end mt-4'>
-      <form action={formAction}>
-        <input type='hidden' name='showType' value={showType} />
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          id='show'
+          name='show'
+          placeholder='Search a show'
+          value={queryString}
+          onChange={(e) => setQueryString(e.target.value)}
+        />
 
-        <input type='text' id='show' name='show' placeholder='Search a show' />
-        <SubmitButton />
-        <p aria-live='polite' className='sr-only' role='status'>
-          {state?.message}
-        </p>
+        <button type='submit' id='searchBtn'>
+          <MagnifyingGlassIcon className='w-8 h-8 inline align-text-bottom ml-1 mr-1' />
+        </button>
       </form>
     </div>
   );

@@ -28,12 +28,15 @@ async function searchShows(prevState, formData) {
     // );
     // const byteData = await fs.readFile(filePath);
     // const jsonData = await JSON.parse(byteData);
-    let results = null;
-    await fetch(`http://localhost:3000/api/trends/${form.showType}`, {
-      method: 'post',
-    })
+
+    var results = await fetch(
+      `http://localhost:3000/api/trends/${form.showType}`,
+      {
+        method: 'POST',
+      }
+    )
       .then((res) => res.json())
-      .then((data) => (results = data));
+      .then((data) => data);
 
     if (form.show) {
       results = results.filter((r) => {

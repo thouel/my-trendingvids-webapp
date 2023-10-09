@@ -1,6 +1,5 @@
 Remove from pinned shows
 Display the pinned shows
-Make the Movies / TV Shows pages linkable directly
 Remake the modal system: https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes, https://github.com/vercel-labs/nextgram/blob/main/src/components/modal/Modal.tsx
 handle 'all' error on first load: error page
 Add 'streaming on platform'
@@ -10,3 +9,5 @@ Remake the sidebar to be full flexbox => https://codepen.io/evankarageorgos/pen/
 add loading skeleton => https://nextjs.org/docs/app/api-reference/file-conventions/loading
 Add a toaster system to display error messages
 use real API
+Replace all http://localhost:3000 by a constant/property
+Rework as PrismaAdapter utils/db/shows and utils/db/users
