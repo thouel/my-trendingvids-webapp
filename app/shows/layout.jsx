@@ -1,7 +1,7 @@
 'use client';
 
-import Sidebar from '@/components/sidebar';
-import SearchForm from '@/components/search-form';
+import Sidebar from '@/components/Sidebar';
+import SearchForm from '@/components/SearchForm';
 
 export default function ShowsLayout({ children }) {
   return (

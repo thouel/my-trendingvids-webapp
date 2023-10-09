@@ -2,7 +2,7 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import ShowCard from './show-card';
+import ShowCard from './ShowCard';
 import { Fragment, useState } from 'react';
 import { getLabel } from '@/utils/helper';
 

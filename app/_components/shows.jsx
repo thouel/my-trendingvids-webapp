@@ -2,7 +2,7 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
-import ShowsCarousel from './shows-carousel';
+import ShowsCarousel from './ShowsCarousel';
 
 const getShowsByType = async (showType, q) => {
   var shows = [];

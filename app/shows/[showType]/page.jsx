@@ -1,4 +1,4 @@
-import Shows from '@/components/shows';
+import Shows from '@/components/Shows';
 import { Suspense } from 'react';
 import LoadingPage from './loading';
 
