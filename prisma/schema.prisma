@@ -9,9 +9,10 @@ datasource db {
 
 model Show {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  externalId BigInt @unique
+  name String @unique
   adult Boolean
   backdropPath String
-  name String @unique
   originalLanguage String
   originalName String
   overview String

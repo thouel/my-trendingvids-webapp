@@ -56,6 +56,69 @@ const getMyShows = async (userId) => {
   return res;
 };
 
+const removeShowFromMyListByExternalId = async (externalId, userId) => {
+  var errorMsg;
+  var errorCode;
+  var show;
+  var user;
+
+  try {
+    // We assume that both user and show already exists.
+
+    // In order to update an array of String, we need to fetch
+    // the document, update the array in javascript then update
+    // the document in mongo
+
+    /* Suppress link between show and user (in show) */
+
+    // get the show
+    show = await prisma.show.findUniqueOrThrow({
+      where: { externalId: externalId },
+    });
+
+    // search for the index of user in the array
+    var idx = show.userIDs.indexOf(userId);
+    // remove the user linked to the show
+    show.userIDs.splice(idx, 1);
+
+    // update the show in db
+    show = await prisma.show.update({
+      where: { id: show.id },
+      data: {
+        userIDs: show.userIDs,
+      },
+    });
+
+    /* Suppress link between user and show (in user) */
+
+    // get the user
+    user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+
+    // search for the index of show in the array
+    idx = user.pinnedShowsIDs.indexOf(show.id);
+    // remove the show linked to the user
+    user.pinnedShowsIDs.splice(idx, 1);
+
+    // update the user in db
+    user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        pinnedShowsIDs: user.pinnedShowsIDs,
+      },
+    });
+  } catch (e) {
+    errorCode = e.code;
+    errorMsg = e.message;
+  }
+
+  // build the result
+  var res = { show: show, user: user };
+  if (errorCode || errorMsg) {
+    res.error = { code: errorCode, message: errorMsg };
+  }
+  return res;
+};
+
 const saveOrUpdateOne = async (show, user) => {
   // console.log('saveOrUpdateOne[show]', show);
   // console.log('saveOrUpdateOne[user]', user);
@@ -75,6 +138,7 @@ const saveOrUpdateOne = async (show, user) => {
     } catch (e) {
       savedShow = await prisma.show.create({
         data: {
+          externalId: show.id,
           adult: show.adult,
           backdropPath: show.backdrop_path,
           name: show.name ?? show.title,
@@ -148,4 +212,9 @@ const saveOrUpdateOne = async (show, user) => {
   return res;
 };
 
-export { getOneById, getMyShows, saveOrUpdateOne };
+export {
+  getOneById,
+  getMyShows,
+  removeShowFromMyListByExternalId,
+  saveOrUpdateOne,
+};

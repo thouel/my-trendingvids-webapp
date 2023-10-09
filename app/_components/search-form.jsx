@@ -7,7 +7,7 @@ export default function SearchForm() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [queryString, setQueryString] = useState(searchParams.get('q'));
+  const [queryString, setQueryString] = useState(searchParams.get('q') ?? '');
 
   const createQueryString = () => {
     const params = new URLSearchParams(searchParams);

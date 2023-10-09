@@ -31,11 +31,11 @@ export default function ShowCard({ show, onCloseCallback }) {
   };
 
   const addToMyList = async (show) => {
+    console.log('addToMyList', { show });
     if (!isAuthenticated(session)) {
       console.log('Needs to authenticate');
       return;
     }
-    var postResult;
     await fetch('/api/show', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,7 @@ export default function ShowCard({ show, onCloseCallback }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        postResult = data;
+        const postResult = data;
         if (postResult.error) {
           // set Error Message(
           setErrorMessage(postResult.error.message);
@@ -67,7 +67,31 @@ export default function ShowCard({ show, onCloseCallback }) {
       console.log('Needs to authenticate');
       return;
     }
-    return;
+
+    await fetch(`/api/show/${show.id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: session.user.id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          console.error('ERROR', data.error);
+          setErrorMessage(data.error.message);
+        }
+
+        console.log('data', { data });
+
+        // remove the show from the lists in session
+        var idx = session.user.pinnedShowsIDs.indexOf(data.show.id);
+        session.user.pinnedShowsIDs.splice(idx, 1);
+        session.user.pinnedShows.splice(idx, 1);
+        update({
+          pinnedShowsIDs: session.user.pinnedShowsIDs,
+          pinnedShows: session.user.pinnedShows,
+        });
+        setIsShowInMyList(false);
+      });
   };
 
   return (
@@ -104,6 +128,7 @@ export default function ShowCard({ show, onCloseCallback }) {
               <Dialog.Panel className='modal relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl'>
                 <div className='px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
                   <div className='sm:flex-col'>
+                    {errorMessage !== '' && <div>{errorMessage}</div>}
                     <div className=''>
                       <Image
                         src={

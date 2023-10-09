@@ -1,8 +1,9 @@
-import path from 'path';
-import { promises as fs } from 'fs';
 import { z } from 'zod';
-import { revalidatePath } from 'next/cache';
 
+/**
+ * Dead function. Used only to serve as template
+ * of a ServerAction
+ */
 async function searchShows(prevState, formData) {
   const showSchema = z
     .string()
@@ -52,17 +53,6 @@ async function searchShows(prevState, formData) {
   }
 }
 
-async function fetchGenres(pShows, pShowType) {
-  if (pShowType === undefined || pShowType === 'all') return;
-  console.log('fetch genres ', pShowType);
-
-  return await fetch(`/api/genres/${pShowType}`, { method: 'GET' })
-    .then((res) => res.json())
-    .then((data) => {
-      return updateGenresToDisplay(pShows, data.genres);
-    });
-}
-
 const updateGenresToDisplay = (pShows, pGenres) => {
   if (pGenres === undefined || pGenres.length == 0) return pGenres;
   if (pShows === undefined || pShows.length == 0) return pGenres;
@@ -80,4 +70,4 @@ const updateGenresToDisplay = (pShows, pGenres) => {
   return pGenres;
 };
 
-export { searchShows, updateGenresToDisplay };
+export { updateGenresToDisplay };
