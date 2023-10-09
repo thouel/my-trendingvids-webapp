@@ -1,3 +1,4 @@
+import Footer from '@/components/footer';
 import './globals.css';
 import AuthProvider from '@/context/AuthProvider';
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children, modal }) {
           {children}
           {/* </Providers> */}
           {modal}
+          <Footer />
         </AuthProvider>
       </body>
     </html>

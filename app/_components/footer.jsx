@@ -16,6 +16,9 @@ export default function Footer() {
       <span className=''>Obit, inc.</span>
       <ul>
         <li>
+          <Link href={'/shows/movies'}>Go to movies</Link>
+        </li>
+        <li>
           <span onClick={() => logSession()}>Log Session</span>
         </li>
         <li>

@@ -1,58 +1,50 @@
+'use server';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useState, useEffect } from 'react';
 import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
 import ShowsCarousel from './shows-carousel';
 
+const getShowsByType = async (showType) => {
+  var shows = [];
+  const res = await fetch(`http://localhost:3000/api/trends/${showType}`, {
+    method: 'POST',
+  })
+    .then((res) => res.json())
+    .then(async (pShows) => {
+      shows = pShows;
+      return fetch(`http://localhost:3000/api/genres/${showType}`, {
+        method: 'GET',
+      });
+    })
+    .then((res) => res.json())
+    .then(({ genres }) => {
+      genres = updateGenresToDisplay(shows, genres);
+
+      return {
+        isLoading: false,
+        shows: shows,
+        genres: genres,
+      };
+    });
+  return res;
+};
+
 /**
  * The Shows Component
- * @param {shows}
  * @param {showType}
  * @returns
  */
-export default function Shows({ shows, showType }) {
-  const [genres, setGenres] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchGenres() {
-      setIsLoading(true);
-
-      try {
-        setGenres(
-          await fetch(`http://localhost:3000/api/genres/${showType}`, {
-            method: 'GET',
-          })
-            .then((res) => {
-              if (res.ok) {
-                return res.json();
-              }
-              throw new Error(res.status, res.message);
-            })
-            .then((data) => {
-              const res = updateGenresToDisplay(shows, data.genres);
-              setIsLoading(false);
-              return res;
-            })
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    fetchGenres();
-  }, [shows, showType]);
+export default async function Shows({ showType }) {
+  const { shows, genres, isLoading } = await getShowsByType(showType);
 
   return (
     <>
       <div className='grid grid-flow-row grid-cols-4 gap-1 mt-4'>
-        {(shows === undefined || shows.length == 0) && (
+        {isLoading ? (
           <div className='text-xl col-span-4'>
             Nothing yet ! Perhaps soon ...
           </div>
-        )}
-        {!isLoading &&
-          shows.length > 0 &&
-          genres.length > 0 &&
+        ) : (
           genres
             .filter((g) => g.found === true)
             .map((g) => (
@@ -66,7 +58,8 @@ export default function Shows({ shows, showType }) {
                   shows={shows.filter((s) => s.genre_ids.indexOf(g.id) > -1)}
                 />
               </Fragment>
-            ))}
+            ))
+        )}
       </div>
     </>
   );
