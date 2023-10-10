@@ -1,4 +1,3 @@
-Display the pinned shows
 Remake the modal system: https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes, https://github.com/vercel-labs/nextgram/blob/main/src/components/modal/Modal.tsx
 handle 'all' error on first load: error page
 Add 'streaming on platform'
@@ -10,3 +9,4 @@ Add a toaster system to display error messages
 use real API
 Replace all http://localhost:3000 by a constant/property
 Rework as PrismaAdapter utils/db/shows and utils/db/users
+The display of pinned shows should be completed by classic display

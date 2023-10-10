@@ -13,7 +13,7 @@ import {
   KeyIcon as KeyIconSolid,
 } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Fragment } from 'react';
 import { useState } from 'react';
@@ -58,20 +58,10 @@ export default function Sidebar() {
           </li>
           {session?.user ? (
             <Fragment>
-              <li className={st === 'p-movies' ? 'sidebar-highlight' : ''}>
+              <li className={st === 'p-shows' ? 'sidebar-highlight' : ''}>
                 <span>
                   <FilmIconSolid className='h-6 w-6 inline pb-1 mr-1' />
-                  <Link href='/shows/p-movies?st=p-movies'>
-                    My Pinned Movies
-                  </Link>
-                </span>
-              </li>
-              <li className={st === 'p-tvshows' ? 'sidebar-highlight' : ''}>
-                <span>
-                  <PlayCircleIconSolid className='h-6 w-6 inline pb-1 mr-1' />
-                  <Link href='/shows/p-tvshows?st=p-tvshows'>
-                    My Pinned TV Shows
-                  </Link>
+                  <Link href='/shows/p-shows?st=p-shows'>My Shows</Link>
                 </span>
               </li>
               <li>

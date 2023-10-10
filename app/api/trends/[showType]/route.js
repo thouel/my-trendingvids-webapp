@@ -10,9 +10,18 @@ router
   .post(async (req, ctx, next) => {
     try {
       const { showType } = ctx.params;
+      const body = await req.json();
+      const { userId } = body;
+      console.log('trends/showtype', { userId, showType });
       const isPinned = showType.indexOf('p-') > -1;
       if (isPinned) {
-        let doc = await prisma.show.findMany();
+        let doc = await prisma.show.findMany({
+          where: {
+            userIDs: {
+              has: token.id,
+            },
+          },
+        });
         // let doc = await req.dbClient.collection('pinned').findOne();
         console.log('prisma shows:', doc);
         return NextResponse.json(doc);
@@ -29,8 +38,9 @@ router
         return NextResponse.json(objectData.results);
       }
     } catch (e) {
-      throw e;
+      console.error('ERROR', e);
     }
+    return NextResponse.json({ message: 'ERROR occured' });
   })
   /* .use(closeDatabase) */
   .handler({
@@ -40,6 +50,39 @@ router
     },
   });
 
-export async function POST(req, ctx /* :{ params } */) {
-  return router.run(req, ctx);
+export async function POST(req, { params }) {
+  try {
+    const body = await req.json();
+    const { userId } = body;
+    const { showType } = params;
+    console.log('trends/showtype', { userId, showType });
+
+    const isPinned = showType.indexOf('p-') > -1;
+
+    if (isPinned) {
+      const doc = await prisma.show.findMany({
+        where: {
+          userIDs: {
+            has: userId,
+          },
+        },
+      });
+      console.log('prisma shows:', doc);
+      return NextResponse.json(doc);
+    } else {
+      // Get the trendings from TMDB
+      const filePath = path.join(
+        process.cwd(),
+        `/app/(trends)/_data/trending_${showType}_week.json`
+      );
+
+      const jsonData = await fs.readFile(filePath);
+      const objectData = JSON.parse(jsonData);
+
+      return NextResponse.json(objectData.results);
+    }
+  } catch (e) {
+    console.error('ERROR', e);
+  }
+  return NextResponse.json({ message: 'ERROR occured' });
 }

@@ -8,6 +8,7 @@ import {
 } from '@/utils/helper';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function ShowCard({ show, onCloseCallback }) {
   const {
@@ -17,6 +18,7 @@ export default function ShowCard({ show, onCloseCallback }) {
   } = useSession({
     required: false,
   });
+  const router = useRouter();
 
   const [isShowInMyList, setIsShowInMyList] = useState(
     fn_isShowInMyList(show, session)
@@ -49,6 +51,8 @@ export default function ShowCard({ show, onCloseCallback }) {
           setErrorMessage(postResult.error.message);
           return;
         }
+        setErrorMessage('');
+
         // Update the list in session
         session.user.pinnedShowsIDs.push(postResult.show.id);
         session.user.pinnedShows.push(postResult.show);
@@ -67,8 +71,8 @@ export default function ShowCard({ show, onCloseCallback }) {
       console.log('Needs to authenticate');
       return;
     }
-
-    await fetch(`/api/show/${show.id}`, {
+    const id = show.externalId ?? show.id;
+    await fetch(`/api/show/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: session.user.id }),
@@ -78,7 +82,9 @@ export default function ShowCard({ show, onCloseCallback }) {
         if (data.error) {
           console.error('ERROR', data.error);
           setErrorMessage(data.error.message);
+          return;
         }
+        setErrorMessage('');
 
         console.log('data', { data });
 
@@ -91,6 +97,9 @@ export default function ShowCard({ show, onCloseCallback }) {
           pinnedShows: session.user.pinnedShows,
         });
         setIsShowInMyList(false);
+
+        //FIXME: find another way of refreshing the ShowsCarousel
+        router.refresh();
       });
   };
 
@@ -132,7 +141,8 @@ export default function ShowCard({ show, onCloseCallback }) {
                     <div className=''>
                       <Image
                         src={
-                          'https://image.tmdb.org/t/p/w500' + show.backdrop_path
+                          'https://image.tmdb.org/t/p/w500' +
+                          (show.backdrop_path ?? show.backdropPath)
                         }
                         title={getLabel(show)}
                         alt={getLabel(show)}
