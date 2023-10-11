@@ -51,11 +51,13 @@ router
   });
 
 export async function POST(req, { params }) {
+  var errorCode;
+  var errorMsg;
+  var res = {};
   try {
     const body = await req.json();
     const { userId } = body;
     const { showType } = params;
-    console.log('trends/showtype', { userId, showType });
 
     const isPinned = showType.indexOf('p-') > -1;
 
@@ -68,7 +70,7 @@ export async function POST(req, { params }) {
         },
       });
       console.log('prisma shows:', doc);
-      return NextResponse.json(doc);
+      res.shows = doc;
     } else {
       // Get the trendings from TMDB
       const filePath = path.join(
@@ -79,10 +81,15 @@ export async function POST(req, { params }) {
       const jsonData = await fs.readFile(filePath);
       const objectData = JSON.parse(jsonData);
 
-      return NextResponse.json(objectData.results);
+      res.shows = objectData.results;
     }
   } catch (e) {
-    console.error('ERROR', e);
+    errorCode = e.code;
+    errorMsg = e.message;
   }
-  return NextResponse.json({ message: 'ERROR occured' });
+
+  if (errorCode || errorMsg) {
+    res.error = { code: errorCode, message: errorMsg };
+  }
+  return NextResponse.json(res);
 }

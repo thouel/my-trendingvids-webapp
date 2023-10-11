@@ -16,7 +16,7 @@ export default function ShowsCarousel({ genreLabel, shows }) {
   const closeModal = () => {
     setModal(-1);
   };
-
+  console.log('ShowsCarousel', { shows });
   return (
     <>
       {shows === undefined || shows.length <= 0 ? (

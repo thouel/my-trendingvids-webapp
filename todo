@@ -1,5 +1,4 @@
 Remake the modal system: https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes, https://github.com/vercel-labs/nextgram/blob/main/src/components/modal/Modal.tsx
-handle 'all' error on first load: error page
 Add 'streaming on platform'
 Add footer
 Handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions/error

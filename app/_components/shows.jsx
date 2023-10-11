@@ -8,8 +8,8 @@ import { options } from 'app/api/auth/[...nextauth]/options';
 
 const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', { session, showType, q });
-  var shows = [];
-  var genres = [];
+  var resShows = [];
+  var resGenres = [];
   const isPinned = showType.indexOf('p-') > -1;
   await fetch(`http://localhost:3000/api/trends/${showType}`, {
     method: 'POST',
@@ -17,15 +17,19 @@ const getShowsByType = async (session, showType, q) => {
     body: JSON.stringify({ userId: session?.user.id }),
   })
     .then((res) => res.json())
-    .then(async (pShows) => {
+    .then(async ({ error, shows }) => {
+      if (error) {
+        console.error('ERROR on API', error);
+        return;
+      }
       // Filter the shows based on query string
-      shows = q
-        ? pShows.filter((s) => {
+      resShows = q
+        ? shows.filter((s) => {
             const lowerQ = q.toLowerCase();
             const label = (s.title ?? s.name).toLowerCase();
             return label.indexOf(lowerQ) > -1;
           })
-        : pShows;
+        : shows;
     });
 
   if (!isPinned) {
@@ -35,14 +39,18 @@ const getShowsByType = async (session, showType, q) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        genres = updateGenresToDisplay(shows, data.genres);
-        genres = genres.filter((g) => g.found === true);
+        resGenres = updateGenresToDisplay(resShows, data.genres);
+        resGenres = resGenres.filter((g) => g.found === true);
       });
   }
-
+  console.log('getShowsByType', {
+    shows: resShows,
+    genres: resGenres,
+    isPinned,
+  });
   return {
-    shows: shows,
-    genres: genres,
+    shows: resShows,
+    genres: resGenres,
     isPinned: isPinned,
   };
 };
