@@ -11,7 +11,7 @@ const getShowsByType = async (session, showType, q) => {
   var resShows = [];
   var resGenres = [];
   const isPinned = showType.indexOf('p-') > -1;
-  await fetch(`http://localhost:3000/api/trends/${showType}`, {
+  await fetch(`${process.env.LOCAL_URL}/api/trends/${showType}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId: session?.user.id }),
@@ -34,7 +34,7 @@ const getShowsByType = async (session, showType, q) => {
 
   if (!isPinned) {
     // Now fetch the genres to display shows by genres
-    await fetch(`http://localhost:3000/api/genres/${showType}`, {
+    await fetch(`${process.env.LOCAL_URL}/api/genres/${showType}`, {
       method: 'GET',
     })
       .then((res) => res.json())

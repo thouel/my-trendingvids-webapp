@@ -6,6 +6,5 @@ Remake the sidebar to be full flexbox => https://codepen.io/evankarageorgos/pen/
 add loading skeleton => https://nextjs.org/docs/app/api-reference/file-conventions/loading
 Add a toaster system to display error messages
 use real API
-Replace all http://localhost:3000 by a constant/property
 Rework as PrismaAdapter utils/db/shows and utils/db/users
 The display of pinned shows should be completed by classic display
