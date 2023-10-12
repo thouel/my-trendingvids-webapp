@@ -1,24 +1,36 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { error } from 'console';
 import { isPinned } from '@/utils/helper';
 
 export async function GET(req, { params }) {
   try {
+    var errorCode, errorMsg;
+    var res = {};
     var { showType } = params;
     if (isPinned(showType)) {
       showType = showType.substring(2);
     }
-    const filePath = path.join(
-      process.cwd(),
-      `/app/(trends)/_data/genres_${showType}.json`
-    );
-    const jsonData = await fs.readFile(filePath);
-    const objectData = JSON.parse(jsonData);
-    return NextResponse.json(objectData);
+    const st = showType === 'movies' ? 'movie' : 'tv';
+    const url = `https://api.themoviedb.org/3/genre/${st}/list?language=fr`;
+    res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return { genres: data.genres };
+      });
   } catch (e) {
-    console.log(e.message);
-    return NextResponse.json({ message: e.message }, { status: 500 });
+    errorCode = e.code;
+    errorMsg = e.message;
   }
+
+  if (errorCode || errorMsg) {
+    res.error = { code: errorCode, message: errorMsg };
+  }
+  return NextResponse.json(res);
 }

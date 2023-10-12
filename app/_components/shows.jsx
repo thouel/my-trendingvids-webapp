@@ -1,4 +1,3 @@
-'use server';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
 import { updateGenresToDisplay } from '@/utils/actions';
@@ -6,6 +5,8 @@ import ShowsCarousel from './ShowsCarousel';
 import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
 import { isPinned } from '@/utils/helper';
+
+export const dynamic = 'force-dynamic';
 
 const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', { session, showType, q });
@@ -44,11 +45,11 @@ const getShowsByType = async (session, showType, q) => {
         resGenres = resGenres.filter((g) => g.found === true);
       });
   }
-  console.log('getShowsByType', {
-    shows: resShows,
-    genres: resGenres,
-    isPinned: pinned,
-  });
+  // console.log('getShowsByType', {
+  //   shows: resShows,
+  //   genres: resGenres,
+  //   isPinned: pinned,
+  // });
   return {
     shows: resShows,
     genres: resGenres,

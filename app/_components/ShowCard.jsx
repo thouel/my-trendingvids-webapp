@@ -32,15 +32,12 @@ export default function ShowCard({ id, showType, isModal }) {
 
   useEffect(() => {
     async function fetchShow(showType) {
-      console.log('got showType', { showType });
       const pinned = isPinned(showType);
 
       if (pinned) {
         const { pinnedShows } = session.user;
         const one = pinnedShows.filter((ps) => ps.externalId === parseInt(id));
-        console.log(one);
         setShow(one[0]);
-        setIsShowInMyList(true);
       } else {
         await fetch(
           `${process.env.NEXT_PUBLIC_LOCAL_URL}/api/show/${showType}/${id}`,
@@ -51,11 +48,10 @@ export default function ShowCard({ id, showType, isModal }) {
         )
           .then((res) => res.json())
           .then((data) => {
-            console.log('received data', { data });
             setShow(data);
-            setIsShowInMyList(false);
           });
       }
+      setIsShowInMyList(pinned);
       setIsLoading(show !== null);
     }
     fetchShow(showType);
