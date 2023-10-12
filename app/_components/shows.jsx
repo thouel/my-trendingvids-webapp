@@ -5,12 +5,13 @@ import { updateGenresToDisplay } from '@/utils/actions';
 import ShowsCarousel from './ShowsCarousel';
 import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
+import { isPinned } from '@/utils/helper';
 
 const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', { session, showType, q });
   var resShows = [];
   var resGenres = [];
-  const isPinned = showType.indexOf('p-') > -1;
+  const pinned = isPinned(showType);
   await fetch(`${process.env.LOCAL_URL}/api/trends/${showType}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -32,7 +33,7 @@ const getShowsByType = async (session, showType, q) => {
         : shows;
     });
 
-  if (!isPinned) {
+  if (!pinned) {
     // Now fetch the genres to display shows by genres
     await fetch(`${process.env.LOCAL_URL}/api/genres/${showType}`, {
       method: 'GET',
@@ -46,12 +47,12 @@ const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', {
     shows: resShows,
     genres: resGenres,
-    isPinned,
+    isPinned: pinned,
   });
   return {
     shows: resShows,
     genres: resGenres,
-    isPinned: isPinned,
+    isPinned: pinned,
   };
 };
 
@@ -78,7 +79,11 @@ export default async function Shows({ showType, q }) {
               <ChevronRightIcon className='w-6 h-6 inline pb-1 mr-1' />
               My list
             </span>
-            <ShowsCarousel genreLabel={'My list'} shows={shows} />
+            <ShowsCarousel
+              genreLabel={'My list'}
+              shows={shows}
+              showType={showType}
+            />
           </Fragment>
         ) : (
           genres.map((g) => (
@@ -90,6 +95,7 @@ export default async function Shows({ showType, q }) {
               <ShowsCarousel
                 genreLabel={g.name}
                 shows={shows.filter((s) => s.genre_ids.indexOf(g.id) > -1)}
+                showType={showType}
               />
             </Fragment>
           ))

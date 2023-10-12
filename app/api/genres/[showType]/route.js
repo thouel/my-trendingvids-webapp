@@ -2,11 +2,12 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
 import { error } from 'console';
+import { isPinned } from '@/utils/helper';
 
 export async function GET(req, { params }) {
   try {
     var { showType } = params;
-    if (showType.indexOf('p-') > -1) {
+    if (isPinned(showType)) {
       showType = showType.substring(2);
     }
     const filePath = path.join(

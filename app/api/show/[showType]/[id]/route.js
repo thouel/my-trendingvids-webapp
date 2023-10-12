@@ -6,7 +6,32 @@ import { getOneById, removeShowFromMyListByExternalId } from '@/db/shows';
  * @param params.id the mongo id of the show to get
  */
 export async function GET(req, { params }) {
-  const res = await getOneById(params.id);
+  const { showType, id } = params;
+
+  const st = showType === 'movies' ? 'movie' : 'tv';
+  const url = `https://api.themoviedb.org/3/${st}/${params.id}?language=fr-FR`;
+
+  var errorCode, errorMsg;
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => {
+      errorCode = e.code;
+      errorMsg = e.message;
+    });
+
+  if (errorCode || errorMsg) {
+    res.error = { code: errorCode, message: errorMsg };
+  }
   return NextResponse.json(res);
 }
 

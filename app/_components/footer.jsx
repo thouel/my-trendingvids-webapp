@@ -42,7 +42,11 @@ export default function Footer() {
           {session ? (
             <Link href={'/api/auth/signout'}>Sign Out</Link>
           ) : (
-            <Link href={'/api/auth/signin?callbackUrl=/'}>Sign in</Link>
+            <Link
+              href={'/api/auth/signin?callbackUrl=/shows/p-shows?st=p-shows'}
+            >
+              Sign in
+            </Link>
           )}
         </li>
       </ul>

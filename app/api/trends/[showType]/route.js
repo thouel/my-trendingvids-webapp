@@ -3,6 +3,7 @@ import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { createEdgeRouter } from 'next-connect';
 import prisma from '@/db/db-prisma';
+import { isPinned } from '@/utils/helper';
 
 const router = createEdgeRouter /* <NextApiRequest, NextApiResponse> */();
 
@@ -13,8 +14,8 @@ router
       const body = await req.json();
       const { userId } = body;
       console.log('trends/showtype', { userId, showType });
-      const isPinned = showType.indexOf('p-') > -1;
-      if (isPinned) {
+      const pinned = isPinned(showType);
+      if (pinned) {
         let doc = await prisma.show.findMany({
           where: {
             userIDs: {
@@ -59,9 +60,9 @@ export async function POST(req, { params }) {
     const { userId } = body;
     const { showType } = params;
 
-    const isPinned = showType.indexOf('p-') > -1;
+    const pinned = isPinned(showType);
 
-    if (isPinned) {
+    if (pinned) {
       const doc = await prisma.show.findMany({
         where: {
           userIDs: {

@@ -72,7 +72,7 @@ export const options /* NextAuthOptions */ = {
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      console.log('jwt callback', { token, user, session, trigger });
+      // console.log('jwt callback', { token, user, session, trigger });
 
       // if an update occurs from the client side, we need to replicate it
       // in token, so it is persisted in session function below
@@ -88,13 +88,13 @@ export const options /* NextAuthOptions */ = {
           ...token,
           id: user.id,
           pinnedShowsIDs: user.pinnedShowsIDs,
-          pinnedShows: user.pinnedShows,
+          pinnedShows: user.pinnedShows ?? [],
         };
       }
       return token;
     },
     async session({ session, token, user }) {
-      console.log('session callback', { session, token, user });
+      // console.log('session callback', { session, token, user });
 
       // pass in from token to session
       return {

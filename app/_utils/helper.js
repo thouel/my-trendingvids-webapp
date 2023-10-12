@@ -6,6 +6,10 @@ const isAuthenticated = (session) => {
   return session?.user !== undefined;
 };
 
+const isPinned = (showType) => {
+  return showType.indexOf('p-') > -1;
+};
+
 const isShowInMyList = (show, session) => {
   if (!session) return false;
 
@@ -14,4 +18,4 @@ const isShowInMyList = (show, session) => {
   );
 };
 
-export { getLabel, isAuthenticated, isShowInMyList };
+export { getLabel, isAuthenticated, isPinned, isShowInMyList };

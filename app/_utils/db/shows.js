@@ -17,7 +17,7 @@ const getOneById = async (pId) => {
   try {
     one = await prisma.show.findUniqueOrThrow({
       where: {
-        id: new ObjectId(pId),
+        externalId: pId,
       },
     });
   } catch (e) {
@@ -30,8 +30,7 @@ const getOneById = async (pId) => {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
-  // console.log('end of getOneById');
-  // console.dir(res);
+
   return res;
 };
 
@@ -120,7 +119,7 @@ const removeShowFromMyListByExternalId = async (externalId, userId) => {
 };
 
 const saveOrUpdateOne = async (show, user) => {
-  // console.log('saveOrUpdateOne[show]', show);
+  console.log('saveOrUpdateOne[show]', show);
   // console.log('saveOrUpdateOne[user]', user);
   let errorMsg;
   let errorCode;
@@ -146,7 +145,7 @@ const saveOrUpdateOne = async (show, user) => {
           originalName: show.original_name ?? show.original_title,
           overview: show.overview,
           posterPath: show.poster_path,
-          mediaType: show.media_type,
+          mediaType: show.media_type ?? '',
           popularity: show.popularity,
           voteAverage: show.vote_average,
           voteCount: show.vote_count,
@@ -207,8 +206,8 @@ const saveOrUpdateOne = async (show, user) => {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
-  // console.log('end of saveOrUpdateOne');
-  // console.dir(res);
+  console.log('end of saveOrUpdateOne');
+  console.dir(res);
   return res;
 };
 

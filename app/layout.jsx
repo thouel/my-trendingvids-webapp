@@ -1,6 +1,8 @@
 import Footer from '@/components/footer';
 import './globals.css';
 import AuthProvider from '@/context/AuthProvider';
+import Sidebar from '@/components/Sidebar';
+import SearchForm from '@/components/SearchForm';
 
 export const metadata = {
   title: 'My Trending Videos Webapp',
@@ -13,7 +15,11 @@ export default function RootLayout({ children, modal }) {
       <body className='max-w-7xl'>
         <AuthProvider>
           {/* <Providers> */}
-          {children}
+          <Sidebar />
+          <main className=''>
+            <SearchForm />
+            {children}
+          </main>
           {/* </Providers> */}
           {modal}
           <Footer />
