@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getOneById, removeShowFromMyListByExternalId } from '@/db/shows';
+import { removeShowFromMyListByExternalId } from '@/db/shows';
 
 /**
  * @param req the request

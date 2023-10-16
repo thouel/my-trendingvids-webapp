@@ -4,7 +4,6 @@ Handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions
 Remake the sidebar to be full flexbox => https://codepen.io/evankarageorgos/pen/jMzLEm
 add loading skeleton => https://nextjs.org/docs/app/api-reference/file-conventions/loading
 Add a toaster system to display info, error messages
-use real API
 Rework as PrismaAdapter utils/db/shows and utils/db/users
 The display of pinned shows should be completed by classic display
 When removing a pinned show, it should refresh the ShowsCarousel behind

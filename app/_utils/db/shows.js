@@ -119,8 +119,6 @@ const removeShowFromMyListByExternalId = async (externalId, userId) => {
 };
 
 const saveOrUpdateOne = async (show, user) => {
-  console.log('saveOrUpdateOne[show]', show);
-  // console.log('saveOrUpdateOne[user]', user);
   let errorMsg;
   let errorCode;
   let savedShow;
@@ -206,8 +204,6 @@ const saveOrUpdateOne = async (show, user) => {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
-  console.log('end of saveOrUpdateOne');
-  console.dir(res);
   return res;
 };
 
