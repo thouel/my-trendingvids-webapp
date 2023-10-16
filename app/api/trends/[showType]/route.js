@@ -26,6 +26,7 @@ export async function POST(req, { params }) {
     } else {
       const st = showType === 'movies' ? 'movie' : 'tv';
       const url = `https://api.themoviedb.org/3/trending/${st}/week?language=fr-FR`;
+      console.log(`POST /trends/${showType} url`, { url });
       res = await fetch(url, {
         method: 'GET',
         headers: {
@@ -46,5 +47,6 @@ export async function POST(req, { params }) {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
+  console.log(`POST /trends/${params.showType}`, { res });
   return NextResponse.json(res);
 }

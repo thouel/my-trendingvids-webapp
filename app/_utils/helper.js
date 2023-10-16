@@ -18,4 +18,21 @@ const isShowInMyList = (show, session) => {
   );
 };
 
-export { getLabel, isAuthenticated, isPinned, isShowInMyList };
+const getBaseUrl = () => {
+  // if running on server, do not need anything
+  if (typeof window !== 'undefined') return '';
+
+  var res = '';
+  // if running on client, needs to check if we''re
+  // on vercel or local
+  const vc = process.env.VERCEL_URL;
+  if (vc) {
+    res = `https://${vc}`;
+  } else {
+    res = `${process.env.LOCAL_URL}`;
+  }
+  console.log('res', { res });
+  return res;
+};
+
+export { getLabel, isAuthenticated, isPinned, isShowInMyList, getBaseUrl };

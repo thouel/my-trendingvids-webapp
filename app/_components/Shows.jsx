@@ -4,7 +4,7 @@ import { updateGenresToDisplay } from '@/utils/actions';
 import ShowsCarousel from './ShowsCarousel';
 import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
-import { isPinned } from '@/utils/helper';
+import { isPinned, getBaseUrl } from '@/utils/helper';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +13,9 @@ const getShowsByType = async (session, showType, q) => {
   var resShows = [];
   var resGenres = [];
   const pinned = isPinned(showType);
-  await fetch(`${process.env.LOCAL_URL}/api/trends/${showType}`, {
+  var url = `${getBaseUrl()}/api/trends/${showType}`;
+  console.log('Shows Component', { url });
+  await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId: session?.user.id }),
@@ -36,7 +38,10 @@ const getShowsByType = async (session, showType, q) => {
 
   if (!pinned) {
     // Now fetch the genres to display shows by genres
-    await fetch(`${process.env.LOCAL_URL}/api/genres/${showType}`, {
+    url = `${getBaseUrl()}/api/genres/${showType}`;
+    console.log('Shows Component', { url });
+
+    await fetch(url, {
       method: 'GET',
     })
       .then((res) => res.json())

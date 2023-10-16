@@ -32,5 +32,6 @@ export async function GET(req, { params }) {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
+  console.log('/api/genres/' + params.showType, { res });
   return NextResponse.json(res);
 }

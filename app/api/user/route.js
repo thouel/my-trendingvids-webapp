@@ -5,6 +5,6 @@ export async function POST(req) {
   const body = await req.json();
   const { user } = body;
   const res = await getOrUpsertOne(user);
-  console.dir(res);
+  console.log('POST /user', { res });
   return NextResponse.json(res);
 }

@@ -14,7 +14,7 @@ import {
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { isPinned } from '@/utils/helper';
+import { isPinned, getBaseUrl } from '@/utils/helper';
 
 export default function ShowCard({ id, showType, isModal }) {
   const {
@@ -39,13 +39,13 @@ export default function ShowCard({ id, showType, isModal }) {
         const one = pinnedShows.filter((ps) => ps.externalId === parseInt(id));
         setShow(one[0]);
       } else {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_LOCAL_URL}/api/show/${showType}/${id}`,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
+        const url = `${getBaseUrl()}/api/show/${showType}/${id}`;
+        console.log('fetching ShowCard', { url });
+
+        await fetch(url, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        })
           .then((res) => res.json())
           .then((data) => {
             setShow(data);
