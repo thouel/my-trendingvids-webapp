@@ -59,7 +59,7 @@ export default function ShowCard({ id, showType, isModal }) {
 
   const uri = usePathname();
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_LOCAL_URL + uri);
+    navigator.clipboard.writeText(getBaseUrl() + uri);
     //TODO: add a toaster notification
   };
 
