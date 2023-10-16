@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { isPinned, getBaseUrl } from '@/utils/helper';
+import { useUrl } from 'nextjs-current-url';
 
 export default function ShowCard({ id, showType, isModal }) {
   const {
@@ -57,9 +58,10 @@ export default function ShowCard({ id, showType, isModal }) {
     fetchShow(showType);
   }, []);
 
-  const uri = usePathname();
+  // const uri = usePathname();
+  const { href: currentUrl } = useUrl() ?? {};
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(getBaseUrl() + uri);
+    navigator.clipboard.writeText(currentUrl);
     //TODO: add a toaster notification
   };
 

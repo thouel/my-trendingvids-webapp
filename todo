@@ -7,3 +7,8 @@ Add a toaster system to display info, error messages
 Rework as PrismaAdapter utils/db/shows and utils/db/users
 The display of pinned shows should be completed by classic display
 When removing a pinned show, it should refresh the ShowsCarousel behind
+Make the caroussel infinite
+Add a video in the Show Card
+ShowCard / DirectLink not functioning on Vercel
+Make Search Bar responsive
+Center the footer
