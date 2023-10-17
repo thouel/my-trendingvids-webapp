@@ -1,5 +1,5 @@
 /* To allow a BigInt to be JSON.stringify'd */
-const biginttojson = require('@/db/bigint-tojson');
+require('@/db/bigint-tojson');
 
 import prisma from '@/db/db-prisma';
 

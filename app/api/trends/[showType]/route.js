@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/db/db-prisma';
 import { isPinned } from '@/utils/helper';
+require('@/utils/db/bigint-tojson');
 
 export async function POST(req, { params }) {
   var errorCode;
