@@ -25,8 +25,9 @@ We use:
 - [The Movie DataBase API](https://developer.themoviedb.org/docs) to fetch trends when needed
 - [Next-Auth](https://next-auth.js.org/getting-started/introduction) to easily setup a signin/signup/signout mechanism with Github provider
 - [MongoDB](https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/) to store authentication and app data (user logged in and fav'ed shows currently)
+- [Prisma](https://www.prisma.io/docs/concepts/database-connectors/mongodb) to connect to MongoDB
 - [TailwindCSS](https://tailwindcss.com/docs/guides/nextjs) for pages styling
-- [Github](https://github.com/thouel/my-trendingvids-webapp/tree/main)
+- [Github](https://github.com/thouel/my-trendingvids-webapp/tree/main) to host app sources
 - [Vercel](https://vercel.com/) to deploy automatically (after each push on main) [@see here](https://my-trendingvids-webapp.vercel.app)
 
 ## Install

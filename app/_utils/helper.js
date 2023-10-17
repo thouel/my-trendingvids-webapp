@@ -1,5 +1,10 @@
-const getLabel = (show) => {
-  return show.title ? show.title : show.name;
+const getLabel = (show, truncate) => {
+  const maxLength = 35;
+  const label = show.title ? show.title : show.name;
+
+  if (!truncate || label.length <= maxLength) return label;
+
+  return label.substring(0, maxLength).concat('...');
 };
 
 const isAuthenticated = (session) => {
@@ -34,4 +39,16 @@ const getBaseUrl = () => {
   return res;
 };
 
-export { getLabel, isAuthenticated, isPinned, isShowInMyList, getBaseUrl };
+const isDarkTheme = () =>
+  localStorage.theme === 'dark' ||
+  (!('theme' in localStorage) &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+export {
+  getLabel,
+  isAuthenticated,
+  isPinned,
+  isShowInMyList,
+  getBaseUrl,
+  isDarkTheme,
+};

@@ -31,7 +31,7 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
           options={{
             type: 'slide',
             perPage: 4,
-            height: '140px',
+            height: '160px',
             rewind: true,
             gap: '.25rem',
             pagination: false,
@@ -40,24 +40,26 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
           {shows.map((s) => (
             <Fragment key={s.id}>
               <SplideSlide>
-                <Link
-                  href={`/show/${showType}/${s.externalId ?? s.id}`}
-                  scroll={false}
-                >
-                  <Image
-                    src={
-                      'https://image.tmdb.org/t/p/w300' +
-                      (s.backdrop_path ?? s.backdropPath)
-                    }
-                    alt={getLabel(s)}
-                    title={getLabel(s)}
-                    width={300}
-                    height={300}
-                  />
-                  <div className='text-white bg-gray-900 text-sm absolute inset-0 opacity-0 hover:opacity-100 duration-300 flex justify-center items-center z-10 p-3'>
-                    <span>{getLabel(s)}</span>
-                  </div>
-                </Link>
+                <div className='rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-100 p-1'>
+                  <Link
+                    href={`/show/${showType}/${s.externalId ?? s.id}`}
+                    scroll={false}
+                  >
+                    <Image
+                      src={
+                        'https://image.tmdb.org/t/p/w300' +
+                        (s.backdrop_path ?? s.backdropPath)
+                      }
+                      alt={getLabel(s)}
+                      title={getLabel(s)}
+                      width={300}
+                      height={300}
+                    />
+                    <span className='text-gray-900 dark:text-gray-100 text-xs'>
+                      {getLabel(s, true)}
+                    </span>
+                  </Link>
+                </div>
               </SplideSlide>
             </Fragment>
           ))}

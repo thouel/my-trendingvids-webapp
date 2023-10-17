@@ -78,7 +78,7 @@ export default async function Shows({ showType, q }) {
 
   return (
     <>
-      <div className='grid grid-flow-row grid-cols-4 gap-1 mt-4'>
+      <div className='grid grid-flow-row grid-cols-4 gap-1'>
         {isPinned ? (
           <Fragment>
             <span className='col-span-4 row-auto relative text-lg font-bold'>

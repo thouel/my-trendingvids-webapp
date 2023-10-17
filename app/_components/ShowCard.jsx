@@ -4,16 +4,12 @@ import { Dialog } from '@headlessui/react';
 import {
   PlusIcon,
   CheckCircleIcon,
-  ShareIcon,
+  LinkIcon,
 } from '@heroicons/react/24/outline';
-import {
-  getLabel,
-  isAuthenticated,
-  isShowInMyList as fn_isShowInMyList,
-} from '@/utils/helper';
+import { getLabel, isAuthenticated } from '@/utils/helper';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { isPinned, getBaseUrl } from '@/utils/helper';
 import { useUrl } from 'nextjs-current-url';
 
@@ -58,7 +54,6 @@ export default function ShowCard({ id, showType, isModal }) {
     fetchShow(showType);
   }, []);
 
-  // const uri = usePathname();
   const { href: currentUrl } = useUrl() ?? {};
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
@@ -148,10 +143,10 @@ export default function ShowCard({ id, showType, isModal }) {
   const directLinkButton = (
     <button
       type='button'
-      className='cta-button-text-with-icon'
+      className='hover:text-orange-600 text-gray-600 ml-4'
       onClick={() => copyToClipboard()}
     >
-      <ShareIcon
+      <LinkIcon
         className='h-6 w-6'
         alt={directLinkTitle}
         title={directLinkTitle}
@@ -164,7 +159,7 @@ export default function ShowCard({ id, showType, isModal }) {
   const myListButton = isShowInMyList ? (
     <button
       type='button'
-      className='cta-button-text-with-icon'
+      className='hover:text-orange-600 text-gray-600 '
       onClick={() => removeFromMyList(show)}
     >
       <CheckCircleIcon
@@ -176,7 +171,7 @@ export default function ShowCard({ id, showType, isModal }) {
   ) : (
     <button
       type='button'
-      className='cta-button-icon'
+      className='hover:text-orange-600 text-gray-600'
       onClick={() => addToMyList(show)}
     >
       <PlusIcon className='h-6 w-6' alt={addTitle} title={addTitle} />
@@ -191,14 +186,21 @@ export default function ShowCard({ id, showType, isModal }) {
   );
 
   const title = isModal ? (
-    <Dialog.Title as='h1' className='text-2xl font-semibold modal-title'>
-      {getLabel(show)}
-      {buttons}
+    <Dialog.Title
+      as='h1'
+      className='text-2xl font-semibold grid grid-cols-6 justify-items-stretch'
+    >
+      <div className='col-span-5 text-orange-600'>{getLabel(show)}</div>
+      <div className='justify-self-end pl-3 pr-3 pt-1 bg-gray-200 rounded-xl'>
+        {buttons}
+      </div>
     </Dialog.Title>
   ) : (
-    <h1 className='text-2xl font-semibold'>
-      {getLabel(show)}
-      {buttons}
+    <h1 className='text-2xl font-semibold grid grid-cols-6 justify-items-stretch'>
+      <span className='col-span-5 text-orange-600'>{getLabel(show)}</span>
+      <span className='justify-self-end pl-3 pr-3 pt-1 bg-gray-200 rounded-xl'>
+        {buttons}
+      </span>
     </h1>
   );
 
