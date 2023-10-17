@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 export default function LoadingPage() {
   return (
     <>
-      <Skeleton count={1} className='' />
+      <Skeleton count={1} height={'20px'} className='' />
       <div className='grid grid-flow-col grid-cols-4 gap-2'>
         <div>
           <Skeleton count={1} height={'100px'} inline={true} className='mb-1' />
