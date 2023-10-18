@@ -15,6 +15,7 @@ export default function Navbar() {
   const searchParams = useSearchParams();
   const st = searchParams.get('st') ?? '';
   const [queryString, setQueryString] = useState(searchParams.get('q') ?? '');
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const createQueryString = () => {
     const params = new URLSearchParams(searchParams);
@@ -25,6 +26,7 @@ export default function Navbar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     router.push(pathname.toString() + '?' + createQueryString());
+    setMenuIsOpen(false);
   };
 
   const style = {
@@ -49,6 +51,11 @@ export default function Navbar() {
     setupTheme();
   }, []);
 
+  const toggleMenu = () => {
+    console.log('menuIsOpen', { menuIsOpen });
+    setMenuIsOpen(!menuIsOpen);
+  };
+
   return (
     <nav className='bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-10 top-0 left-0 border-b  dark:border-gray-600'>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2'>
@@ -59,12 +66,13 @@ export default function Navbar() {
           </span>
         </Link>
         <div className='flex md:order-2'>
-          <button
+          {/* <button
             type='button'
             data-collapse-toggle='navbar-search'
             aria-controls='navbar-search'
             aria-expanded='false'
             className='md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1'
+            onClick={toggleMenu}
           >
             <svg
               className='w-5 h-5'
@@ -82,8 +90,15 @@ export default function Navbar() {
               />
             </svg>
             <span className='sr-only'>Search</span>
-          </button>
-          <ThemeButton />
+          </button> */}
+
+          {/* Dark/Light theme button */}
+          {/* <div className='mr-3 pt-1 pb-1 pl-2 pr-2 rounded-md text-gray-600 border-gray-200 bg-gray-100 hover:text-orange-600'> */}
+          <div className='inline-flex items-center p-2 mr-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
+            <ThemeButton />
+          </div>
+
+          {/* Search bar for large devices */}
           <div className='relative hidden md:block'>
             <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
               <svg
@@ -114,12 +129,15 @@ export default function Navbar() {
               />
             </form>
           </div>
+
+          {/* Menu icon for small devices */}
           <button
             data-collapse-toggle='navbar-search'
             type='button'
             className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
             aria-controls='navbar-search'
             aria-expanded='false'
+            onClick={toggleMenu}
           >
             <span className='sr-only'>Open main menu</span>
             <svg
@@ -140,7 +158,10 @@ export default function Navbar() {
           </button>
         </div>
         <div
-          className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1'
+          className={
+            'items-center justify-between w-full md:flex md:w-auto md:order-1' +
+            (menuIsOpen ? '' : ' hidden')
+          }
           id='navbar-search'
         >
           <div className='relative mt-3 md:hidden'>

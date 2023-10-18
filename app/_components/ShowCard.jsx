@@ -7,6 +7,8 @@ import {
   LinkIcon,
   HomeIcon,
   InformationCircleIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from '@heroicons/react/24/outline';
 import { getLabel, isAuthenticated } from '@/utils/helper';
 import Image from 'next/image';
@@ -28,6 +30,8 @@ export default function ShowCard({ id, showType, isModal }) {
   const [show, setShow] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isCTAOpen, setIsCTAOpen] = useState(false);
+  const [isShowInMyList, setIsShowInMyList] = useState(false);
 
   useEffect(() => {
     async function fetchShow(showType) {
@@ -62,7 +66,9 @@ export default function ShowCard({ id, showType, isModal }) {
     //TODO: add a toaster notification
   };
 
-  const [isShowInMyList, setIsShowInMyList] = useState(false);
+  const toggleIsCTAOpen = () => {
+    setIsCTAOpen(!isCTAOpen);
+  };
 
   const addToMyList = async (show) => {
     console.log('addToMyList', show);
@@ -145,7 +151,7 @@ export default function ShowCard({ id, showType, isModal }) {
   const directLinkButton = (
     <button
       type='button'
-      className='hover:text-orange-600 text-gray-600 ml-4'
+      className='hover:text-orange-600 text-gray-600'
       onClick={() => copyToClipboard()}
     >
       <LinkIcon
@@ -160,7 +166,7 @@ export default function ShowCard({ id, showType, isModal }) {
     <a
       target='_blank'
       href={show.homepage}
-      className='hover:text-orange-600 text-gray-600 ml-4'
+      className='hover:text-orange-600 text-gray-600'
     >
       <HomeIcon className='h-6 w-6' alt={homepageTitle} title={homepageTitle} />
     </a>
@@ -170,7 +176,7 @@ export default function ShowCard({ id, showType, isModal }) {
     <a
       target='_blank'
       href={'https://www.imdb.com/title/' + show.external_ids?.imdb_id}
-      className='hover:text-orange-600 text-gray-600 ml-4'
+      className='hover:text-orange-600 text-gray-600'
     >
       <InformationCircleIcon
         className='h-6 w-6'
@@ -204,64 +210,119 @@ export default function ShowCard({ id, showType, isModal }) {
     </button>
   );
 
-  const buttons = (
+  const closeCTATitle = 'Close Menu';
+  const closeCTAButton = (
+    <button
+      type='button'
+      className='hover:text-orange-600 text-gray-600'
+      onClick={toggleIsCTAOpen}
+    >
+      <ChevronUpIcon
+        className='h-6 w-6'
+        alt={closeCTATitle}
+        title={closeCTATitle}
+      />
+    </button>
+  );
+
+  const openCTATitle = 'Open Menu';
+  const openCTAButton = (
+    <button
+      type='button'
+      className='hover:text-orange-600 text-gray-600'
+      onClick={toggleIsCTAOpen}
+    >
+      <ChevronDownIcon
+        className='h-6 w-6'
+        alt={openCTATitle}
+        title={openCTATitle}
+      />
+    </button>
+  );
+
+  const ctaButtons = (
+    <div
+      className={
+        'px-3 py-1 bg-gray-200 flex justify-evenly gap-3 rounded-none ' +
+        (isCTAOpen ? 'rounded-tr-none' : '')
+      }
+    >
+      {myListButton}
+      {directLinkButton}
+      {homepageButton}
+      {imdbButton}
+    </div>
+  );
+
+  const label = getLabel(show);
+  const labelLength = label.length;
+  const buttonsStructure = (
     <>
-      <div className='flex justify-evenly'>
-        {myListButton}
-        {directLinkButton}
-        {homepageButton}
-        {imdbButton}
+      <div
+        className={
+          'text-orange-600 text-clip w-2/3 text-start ' +
+          (labelLength > 20 ? 'text-sm sm:text-lg' : 'text-lg sm:text-xl')
+        }
+        title={getLabel(show)}
+      >
+        {getLabel(show)}
+      </div>
+      <div
+        className={
+          'sm:hidden bg-gray-200 px-1 rounded-none ' +
+          (isCTAOpen ? 'rounded-b-none' : '')
+        }
+      >
+        {isCTAOpen ? closeCTAButton : openCTAButton}
+      </div>
+      <div
+        className={(isCTAOpen ? '' : 'hidden') + ' w-full sm:w-1/3 sm:block'}
+      >
+        {ctaButtons}
       </div>
     </>
   );
-
   const title = isModal ? (
     <Dialog.Title
       as='h1'
-      className='text-2xl font-semibold flex justify-between'
+      className='text-2xl font-semibold flex flex-wrap justify-between'
     >
-      <div className='text-orange-600 truncate' title={getLabel(show)}>
-        {getLabel(show)}
-      </div>
-      <div className='pl-3 pr-3 pt-1 pb-1 bg-gray-200 rounded-xl'>
-        {buttons}
-      </div>
+      {buttonsStructure}
     </Dialog.Title>
   ) : (
-    <h1 className='text-2xl font-semibold flex justify-between'>
-      <span className='text-orange-600'>{getLabel(show)}</span>
-      <span className='pl-3 pr-3 pt-1 pb-1 bg-gray-200 rounded-xl'>
-        {buttons}
-      </span>
+    <h1 className='text-2xl font-semibold flex flex-wrap justify-between'>
+      {buttonsStructure}
     </h1>
   );
 
   const seasons =
     showType === 'tvshows' ? (
       <span>
-        View {show.number_of_seasons} season
-        {show.number_of_seasons == '1' ? '' : 's'} on
+        {show.number_of_seasons} season
+        {show.number_of_seasons == '1' ? '' : 's'} available on
       </span>
     ) : (
       ''
     );
   const networks =
     showType === 'tvshows' ? (
-      <div className='flex flex-row gap-2 mt-2'>
+      <div className='flex flex-col sm:flex-row gap-2 mt-2'>
         {seasons}
 
-        {show.networks.map((n) => (
-          <span key={'network_' + n.id}>
-            <Image
-              src={'https://image.tmdb.org/t/p/original' + n.logo_path}
-              alt={n.name}
-              title={n.name}
-              width={40}
-              height={40}
-              className='dark:rounded p-1 dark:bg-gray-100'
-            />
-          </span>
-        ))}
+        <div className='flex flex-row gap-2 place-items-center justify-start'>
+          {show.networks.map((n) => (
+            <span key={'network_' + n.id} className=''>
+              <Image
+                src={'https://image.tmdb.org/t/p/original' + n.logo_path}
+                alt={n.name}
+                title={n.name}
+                width={40}
+                height={40}
+                className='dark:rounded p-1 dark:bg-gray-100'
+              />
+            </span>
+          ))}
+        </div>
       </div>
     ) : (
       ''
@@ -269,12 +330,16 @@ export default function ShowCard({ id, showType, isModal }) {
 
   const description = isModal ? (
     <Dialog.Description as='div' className='mt-2 text-sm flex flex-col'>
-      <p className='border-b pt-4 pb-4'>{show.overview}</p>
+      <p className={'pt-4 pb-4 ' + (networks !== '' ? 'border-b' : '')}>
+        {show.overview}
+      </p>
       {networks}
     </Dialog.Description>
   ) : (
     <div className='mt-2 text-sm'>
-      <p className='border-b pt-4 pb-4'>{show.overview}</p>
+      <p className={'pt-4 pb-4 ' + (networks !== '' ? 'border-b' : '')}>
+        {show.overview}
+      </p>
       {networks}
     </div>
   );

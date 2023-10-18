@@ -30,11 +30,21 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
           className='col-span-4'
           options={{
             type: 'slide',
-            perPage: 4,
-            height: '160px',
+            arrows: shows.length > 2 ? true : false,
+            perPage: 2,
             rewind: true,
+            heightRatio: 0.35,
             gap: '.25rem',
             pagination: false,
+            /* for devices with width>640px, custom props */
+            mediaQuery: 'min',
+            breakpoints: {
+              640: {
+                perPage: 4,
+                arrows: shows.length > 4 ? true : false,
+                heightRatio: 0.2,
+              },
+            },
           }}
         >
           {shows.map((s) => (
@@ -55,9 +65,9 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
                       width={300}
                       height={300}
                     />
-                    <span className='text-gray-900 dark:text-gray-100 text-xs'>
-                      {getLabel(s, true)}
-                    </span>
+                    <div className='text-gray-900 dark:text-gray-100 text-xs sm:text-sm truncate mt-1'>
+                      {getLabel(s)}
+                    </div>
                   </Link>
                 </div>
               </SplideSlide>

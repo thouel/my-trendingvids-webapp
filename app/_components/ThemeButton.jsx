@@ -25,10 +25,7 @@ export default function ThemeButton() {
   const isLightTheme = theme !== 'dark';
 
   return (
-    <button
-      className='mr-3 pt-1 pb-1 pl-2 pr-2 rounded-md text-gray-600 border-gray-200 bg-gray-100 hover:text-orange-600'
-      onClick={() => toggleTheme()}
-    >
+    <button className='' onClick={() => toggleTheme()}>
       {isLightTheme ? (
         <SunIcon className='h-5 w-5' />
       ) : (

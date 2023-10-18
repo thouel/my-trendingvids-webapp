@@ -1,12 +1,17 @@
-Add i18n : https://github.com/amannn/next-intl
+Make own signin / signout pages
+
+Make site fully responsive for large (lg:)
+
+- close menu when navigation changes (router events)
+- componentize ShowCard (300+ lines)
+
 Handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions/error
 Add a toaster system to display info, error messages
 Rework as PrismaAdapter utils/db/shows and utils/db/users
 The display of pinned shows should be completed by classic display
-When removing a pinned show, it should refresh the ShowsCarousel behind : add a state in ShowsCarousel and give the setXXX to the modal so that it is rerendered when a change occurs in modal
+When removing a pinned show, it should refresh the ShowsCarousel behind : add a state in ShowsCarousel and give the setXXX to the modal so that it is rerendered when a change occurs in modal => Problem: ShowCard is not directly embedded in ShowsCarousel (<Link/>)
 Make the caroussel infinite
 Add a video in the Show Card
-Add a Command Palette : https://blog.logrocket.com/react-command-palette-tailwind-css-headless-ui/
-Make site fully responsive
+Add i18n : https://github.com/amannn/next-intlAdd a Command Palette : https://blog.logrocket.com/react-command-palette-tailwind-css-headless-ui/
 
 nextjs tuto : https://nextjs.org/learn/basics/assets-metadata-css
