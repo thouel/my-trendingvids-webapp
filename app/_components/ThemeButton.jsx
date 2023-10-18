@@ -1,9 +1,11 @@
 import { SunIcon } from '@heroicons/react/24/outline';
 import { MoonIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ThemeButton() {
-  const [theme, setTheme] = useState(localStorage.theme);
+  const [theme, setTheme] = useState();
+
+  useEffect(() => setTheme(localStorage.theme), []);
 
   const toggleTheme = () => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC

@@ -1,7 +1,7 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function LoadingPage() {
+export default function ShowsLoadingPage() {
   return (
     <>
       <Skeleton count={1} height={'20px'} className='' />

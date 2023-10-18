@@ -5,6 +5,8 @@ import {
   PlusIcon,
   CheckCircleIcon,
   LinkIcon,
+  HomeIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { getLabel, isAuthenticated } from '@/utils/helper';
 import Image from 'next/image';
@@ -153,6 +155,30 @@ export default function ShowCard({ id, showType, isModal }) {
       />
     </button>
   );
+  const homepageTitle = 'Go to homepage';
+  const homepageButton = (
+    <a
+      target='_blank'
+      href={show.homepage}
+      className='hover:text-orange-600 text-gray-600 ml-4'
+    >
+      <HomeIcon className='h-6 w-6' alt={homepageTitle} title={homepageTitle} />
+    </a>
+  );
+  const imdbTitle = 'Go to IMDb';
+  const imdbButton = (
+    <a
+      target='_blank'
+      href={'https://www.imdb.com/title/' + show.external_ids?.imdb_id}
+      className='hover:text-orange-600 text-gray-600 ml-4'
+    >
+      <InformationCircleIcon
+        className='h-6 w-6'
+        alt={imdbTitle}
+        title={imdbTitle}
+      />
+    </a>
+  );
 
   const addTitle = 'Add to my list';
   const removeTitle = 'Remove from my list';
@@ -180,36 +206,77 @@ export default function ShowCard({ id, showType, isModal }) {
 
   const buttons = (
     <>
-      {myListButton}
-      {directLinkButton}
+      <div className='flex justify-evenly'>
+        {myListButton}
+        {directLinkButton}
+        {homepageButton}
+        {imdbButton}
+      </div>
     </>
   );
 
   const title = isModal ? (
     <Dialog.Title
       as='h1'
-      className='text-2xl font-semibold grid grid-cols-6 justify-items-stretch'
+      className='text-2xl font-semibold flex justify-between'
     >
-      <div className='col-span-5 text-orange-600'>{getLabel(show)}</div>
-      <div className='justify-self-end pl-3 pr-3 pt-1 bg-gray-200 rounded-xl'>
+      <div className='text-orange-600 truncate' title={getLabel(show)}>
+        {getLabel(show)}
+      </div>
+      <div className='pl-3 pr-3 pt-1 pb-1 bg-gray-200 rounded-xl'>
         {buttons}
       </div>
     </Dialog.Title>
   ) : (
-    <h1 className='text-2xl font-semibold grid grid-cols-6 justify-items-stretch'>
-      <span className='col-span-5 text-orange-600'>{getLabel(show)}</span>
-      <span className='justify-self-end pl-3 pr-3 pt-1 bg-gray-200 rounded-xl'>
+    <h1 className='text-2xl font-semibold flex justify-between'>
+      <span className='text-orange-600'>{getLabel(show)}</span>
+      <span className='pl-3 pr-3 pt-1 pb-1 bg-gray-200 rounded-xl'>
         {buttons}
       </span>
     </h1>
   );
 
+  const seasons =
+    showType === 'tvshows' ? (
+      <span>
+        View {show.number_of_seasons} season
+        {show.number_of_seasons == '1' ? '' : 's'} on
+      </span>
+    ) : (
+      ''
+    );
+  const networks =
+    showType === 'tvshows' ? (
+      <div className='flex flex-row gap-2 mt-2'>
+        {seasons}
+
+        {show.networks.map((n) => (
+          <span key={'network_' + n.id}>
+            <Image
+              src={'https://image.tmdb.org/t/p/original' + n.logo_path}
+              alt={n.name}
+              title={n.name}
+              width={40}
+              height={40}
+              className='dark:rounded p-1 dark:bg-gray-100'
+            />
+          </span>
+        ))}
+      </div>
+    ) : (
+      ''
+    );
+
   const description = isModal ? (
-    <Dialog.Description as='p' className='mt-2 text-sm'>
-      {show.overview}
+    <Dialog.Description as='div' className='mt-2 text-sm flex flex-col'>
+      <p className='border-b pt-4 pb-4'>{show.overview}</p>
+      {networks}
     </Dialog.Description>
   ) : (
-    <p className='mt-2 text-sm'>{show.overview}</p>
+    <div className='mt-2 text-sm'>
+      <p className='border-b pt-4 pb-4'>{show.overview}</p>
+      {networks}
+    </div>
   );
 
   return (
@@ -229,7 +296,7 @@ export default function ShowCard({ id, showType, isModal }) {
               height={2000}
             />
           </div>
-          <div className='mt-3 text-left'>{title}</div>
+          <div className='mt-3 text-justify'>{title}</div>
           {description}
         </div>
       </div>

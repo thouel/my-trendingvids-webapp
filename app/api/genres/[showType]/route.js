@@ -12,7 +12,7 @@ export async function GET(req, { params }) {
       showType = showType.substring(2);
     }
     const st = showType === 'movies' ? 'movie' : 'tv';
-    const url = `https://api.themoviedb.org/3/genre/${st}/list?language=fr`;
+    const url = `https://api.themoviedb.org/3/genre/${st}/list?language=en`;
     res = await fetch(url, {
       method: 'GET',
       headers: {

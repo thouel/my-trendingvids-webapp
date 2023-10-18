@@ -9,7 +9,7 @@ export async function GET(req, { params }) {
   const { showType, id } = params;
 
   const st = showType === 'movies' ? 'movie' : 'tv';
-  const url = `https://api.themoviedb.org/3/${st}/${params.id}?language=fr-FR`;
+  const url = `https://api.themoviedb.org/3/${st}/${params.id}?language=en-EN&append_to_response=external_ids`;
   console.log(`/show/${st}/${id} url`, { url });
 
   var errorCode, errorMsg;
