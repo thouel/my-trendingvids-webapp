@@ -1,10 +1,15 @@
 import Github from 'next-auth/providers/github';
+import Twitch from 'next-auth/providers/twitch';
 import Credentials from 'next-auth/providers/credentials';
+// import EmailProvider from 'next-auth/providers/email';
 import prisma from '@/db/db-prisma';
 import { MyPrismaAdapter } from '@/db/MyPrismaAdapter';
 
 export const options /* NextAuthOptions */ = {
   adapter: MyPrismaAdapter(prisma),
+  pages: {
+    signIn: '/auth/signin',
+  },
   session: {
     // Choose how you want to save the user session.
     // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
@@ -37,8 +42,18 @@ export const options /* NextAuthOptions */ = {
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
+    Twitch({
+      clientId: process.env.TWITCH_ID,
+      clientSecret: process.env.TWITCH_SECRET,
+    }) /* 
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+      maxAge: 24 * 60 * 60, // 24 hours => How long email links are valid for
+    }), */,
     Credentials({
       name: 'Credentials',
+      /* Configure the auto generated sign in page 
       credentials: {
         username: {
           label: 'Username:',
@@ -50,10 +65,22 @@ export const options /* NextAuthOptions */ = {
           type: 'password',
           placeholder: '***',
         },
-      },
-      async authorize(credentials) {
+      }, */ async authorize(credentials) {
         // This is where you need to retrieve user data
         // to verify with credentials
+
+        // Fetch User by email : prismaAdapter.getUserByEmail
+        //  User exists
+        //    Check if User has password field
+        //    User has password
+        //      Compare hashed versions of passwords
+        //        return user if the comparison is ok
+        //        return null if not
+        //    User has no password (then it is an OAuth user)
+        //      return null
+        //  User does not exist
+        //    return null
+
         const user = {
           id: '42',
           name: 'obit',
