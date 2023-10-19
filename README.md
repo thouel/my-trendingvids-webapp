@@ -1,9 +1,18 @@
 # my-trendingvids-webapp
 
+![NextJS](https://img.shields.io/badge/NextJS-cyan)
+![Next-Auth](https://img.shields.io/badge/NextAuth.js-yellow)
+![MongoDB](https://img.shields.io/badge/MongoDB-green)
+![Prisma](https://img.shields.io/badge/Prisma-green)
+![TailwindCss](https://img.shields.io/badge/Tailwind--CSS-red)
+![Responsive](https://img.shields.io/badge/Responsive-red)
+![Github](https://img.shields.io/badge/Github-blue)
+![Vercel](https://img.shields.io/badge/Vercel-black)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-TODO: Put more badges here.
+![maintained](https://img.shields.io/badge/Maintained%3F-yes-green)
+![ask](https://img.shields.io/badge/Ask_me-anything-green)
 
-A webapp to visualize the current TV shows and movies trends :
+A responsive webapp to visualize the current TV shows and movies trends :
 
 - Shows the trends sorted by genres
 - Able to filter by popularity and keyword
@@ -14,12 +23,20 @@ A webapp to visualize the current TV shows and movies trends :
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
+- [Example](#example)
 - [Maintainers](#maintainers)
 - [License](#license)
 
 ## Background
 
-We use:
+App used to step in dev world. My main focuses were:
+
+- understand the mechanics of a JS react framework : NextJs v13 with the App router does the trick
+- have a responsive designed web application (for mobile and desktop)
+- have an automatic deployment pipeline
+- store data in a cloud database
+
+Using:
 
 - [NextJs @13.4.19](https://nextjs.org/) to organize the app, using the [App Router](https://nextjs.org/docs/app)
 - [The Movie DataBase API](https://developer.themoviedb.org/docs) to fetch trends when needed
@@ -41,6 +58,10 @@ $ npm i react@latest react-dom@latest next@13.4.19
 ```
 $ npm run dev
 ```
+
+## Example
+
+[Latest deployment of main branch on Vercel](https://my-trendingvids-webapp.vercel.app/)
 
 ## Maintainers
 
