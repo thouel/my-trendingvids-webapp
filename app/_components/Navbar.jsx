@@ -56,22 +56,21 @@ export default function Navbar() {
   }, []);
 
   const toggleMenu = () => {
-    console.log('menuIsOpen', { menuIsOpen });
     setMenuIsOpen(!menuIsOpen);
   };
 
   return (
-    <nav className='bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-10 top-0 left-0 border-b  dark:border-gray-600'>
-      <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2'>
+    <nav className='fixed top-0 left-0 z-10 w-full bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-600'>
+      <div className='flex flex-wrap items-center justify-between max-w-screen-xl p-2 mx-auto'>
         <Link href={'/'} className='flex items-center'>
-          <PlayCircleIcon className='h-8 w-8 text-orange-600 mr-2' />
-          <span className='self-center text-xl font-semibold whitespace-nowrap text-black dark:text-gray-100'>
+          <PlayCircleIcon className='w-8 h-8 mr-2 text-orange-600' />
+          <span className='self-center text-xl font-semibold text-black whitespace-nowrap dark:text-gray-100'>
             My Trending Videos
           </span>
         </Link>
         <div className='flex md:order-2'>
           {/* Theme button (Dark/Light) */}
-          <div className='inline-flex items-center p-2 mr-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
+          <div className='inline-flex items-center justify-center w-10 h-10 p-2 mr-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
             <ThemeButton />
           </div>
 
@@ -98,7 +97,7 @@ export default function Navbar() {
             <form onSubmit={handleSubmit}>
               <input
                 type='text'
-                id='search-navbar'
+                id='search-navbar-sm'
                 className='block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 placeholder='Search...'
                 value={queryString}
@@ -111,7 +110,7 @@ export default function Navbar() {
           <button
             data-collapse-toggle='navbar-search'
             type='button'
-            className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+            className='inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
             aria-controls='navbar-search'
             aria-expanded='false'
             onClick={toggleMenu}
@@ -170,7 +169,7 @@ export default function Navbar() {
               />
             </form>
           </div>
-          <ul className='flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+          <ul className='flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
             <li>
               <Link
                 href='/shows/movies?st=movies'
@@ -220,8 +219,12 @@ export default function Navbar() {
             ) : (
               <li>
                 <Link
-                  href='/api/auth/signin'
-                  className={style.link.notSelected}
+                  href='/auth/signin?st=signin'
+                  className={
+                    st === 'signin'
+                      ? style.link.selected
+                      : style.link.notSelected
+                  }
                 >
                   Sign in
                 </Link>
