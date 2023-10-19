@@ -17,8 +17,11 @@ Add a profile picture top right
 
 Make site fully responsive for large (lg:)
 
+<<<<<<< HEAD
 BUGs
 
+=======
+>>>>>>> cd089c6 (chores: updated TODO)
 - componentize ShowCard (300+ lines)
 - from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 
