@@ -2,8 +2,6 @@ Make own sign in / sign out pages
 
 Make site fully responsive for large (lg:)
 
-- why 2 executions of modal fetch (ShowCard) => standard as the fetch is in useEffect ?
-- close menu when navigation changes (router events)
 - componentize ShowCard (300+ lines)
 
 Handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions/error
