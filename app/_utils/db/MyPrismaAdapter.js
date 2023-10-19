@@ -15,6 +15,7 @@ export function MyPrismaAdapter(p /* PrismaClient */) {
           },
         },
       });
+      console.log('Retrieved account', { account });
       return account?.user ?? null;
     },
   };

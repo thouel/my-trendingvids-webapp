@@ -1,10 +1,26 @@
+chores:
+
+- Remove paths aliases
+- Rename \_<directories> in <directories>
+- Remove csr-secured-alone, ssr-secured-alone, ssr-secured-by-middleware
+
 Make own sign in / sign out pages
+
+- Send new TWITCH .env to Vercel
+- Do forgot password page
+- Do signout page
+- Do signup page
+- Add EmailProvider support (magic link)
+- Handle form errors : https://next-auth.js.org/configuration/pages#error-page
+
+Add a profile picture top right
 
 Make site fully responsive for large (lg:)
 
-- why 2 executions of modal fetch (ShowCard) => standard as the fetch is in useEffect ?
-- close menu when navigation changes (router events)
+BUGs
+
 - componentize ShowCard (300+ lines)
+- from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 
 Handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions/error
 Add a toaster system to display info, error messages
