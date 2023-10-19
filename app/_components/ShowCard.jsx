@@ -25,7 +25,6 @@ export default function ShowCard({ id, showType, isModal }) {
   } = useSession({
     required: false,
   });
-  const router = useRouter();
 
   const [show, setShow] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
