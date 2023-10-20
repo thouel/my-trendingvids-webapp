@@ -6,16 +6,18 @@ chores:
 
 Make own sign in / sign out pages
 
-- Send new TWITCH .env to Vercel
-- Do forgot password page
-- Do signout page
-- Do signup page
-- Add EmailProvider support (magic link)
-- Handle form errors : https://next-auth.js.org/configuration/pages#error-page
+- Remake sent mails: https://next-auth.js.org/providers/email#customizing-emails, https://mjml.io/
 
 Add a profile picture top right
 
 Make site fully responsive for large (lg:)
+
+- have the footer on bottom of page
+- Remake the My Shows / empty state on mobile devices
+- Give loading Shows a margin-y on mobile devices
+- Give Shows a margin-y on mobile devices
+
+Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 BUGs
 

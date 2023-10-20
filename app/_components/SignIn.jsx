@@ -4,10 +4,13 @@ import { options } from 'app/api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
 import SignInProvider from './SignInProvider';
 import SignInCredentials from './SignInCredentials';
+import SignInEmail from './SignInEmail';
 import { cookies } from 'next/headers';
+import SignInError from './SignInError';
 
 export default async function SignIn() {
   const session = await getServerSession(options);
+  const providers = await getProviders();
 
   // If the user is already logged in, redirect.
   // Make sure not to redirect to the same page
@@ -16,19 +19,29 @@ export default async function SignIn() {
     redirect('/');
   }
 
-  const providers = await getProviders();
   const csrfToken = await getCsrfToken({
     req: { headers: { cookie: cookies().toString() } },
   });
 
   return (
     <div className='flex flex-col items-center justify-center gap-3 mx-5'>
-      {/* Credentials (email/password) */}
+      {/* By Email */}
       {Object.values(providers)
+        .filter((p) => p.type === 'email')
+        .map((p) => (
+          <SignInEmail token={csrfToken} key={p.name} />
+        ))}
+      {/* <div
+        className={`relative w-full sm:w-2/5 before:absolute before:block before:content-[''] before:left-0 before:top-1/2 before:h-1 before:bg-orange-400 dark:before:bg-gray-100 dark:after:bg-gray-100 before:rounded before:w-2/5  after:absolute after:block after:content-[''] after:right-0 after:top-1/2 after:h-1 after:bg-orange-400 after:rounded after:w-2/5 `}
+      >
+        <div className='text-center'>Or</div>
+      </div> */}
+      {/* Credentials (email/password) */}
+      {/* {Object.values(providers)
         .filter((p) => p.type === 'credentials')
         .map((p) => (
-          <SignInCredentials token={csrfToken} />
-        ))}
+          <SignInCredentials token={csrfToken} key={p.name} />
+        ))} */}
       {/* OAuth Providers */}
       <div
         className={`relative w-full sm:w-2/5 before:absolute before:block before:content-[''] before:left-0 before:top-1/2 before:h-1 before:bg-orange-400 dark:before:bg-gray-100 dark:after:bg-gray-100 before:rounded before:w-2/5  after:absolute after:block after:content-[''] after:right-0 after:top-1/2 after:h-1 after:bg-orange-400 after:rounded after:w-2/5 `}
@@ -46,6 +59,9 @@ export default async function SignIn() {
             <SignInProvider provider={p} />
           </div>
         ))}
+      <div className='w-full max-w-sm'>
+        <SignInError />
+      </div>
     </div>
   );
 }

@@ -1,14 +1,18 @@
 import Github from 'next-auth/providers/github';
 import Twitch from 'next-auth/providers/twitch';
 import Credentials from 'next-auth/providers/credentials';
-// import EmailProvider from 'next-auth/providers/email';
+import EmailProvider from 'next-auth/providers/email';
 import prisma from '@/db/db-prisma';
 import { MyPrismaAdapter } from '@/db/MyPrismaAdapter';
+import { createHash } from 'crypto';
+
+const myPrismaAdapter = MyPrismaAdapter(prisma);
 
 export const options /* NextAuthOptions */ = {
-  adapter: MyPrismaAdapter(prisma),
+  adapter: myPrismaAdapter,
   pages: {
     signIn: '/auth/signin',
+    signOut: '/auth/signout',
   },
   session: {
     // Choose how you want to save the user session.
@@ -45,57 +49,56 @@ export const options /* NextAuthOptions */ = {
     Twitch({
       clientId: process.env.TWITCH_ID,
       clientSecret: process.env.TWITCH_SECRET,
-    }) /* 
+    }),
     EmailProvider({
-      server: process.env.EMAIL_SERVER,
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
       from: process.env.EMAIL_FROM,
-      maxAge: 24 * 60 * 60, // 24 hours => How long email links are valid for
-    }), */,
+      maxAge: 10 * 60, // 10 minutes => How long email links are valid for
+    }) /* 
     Credentials({
       name: 'Credentials',
-      /* Configure the auto generated sign in page 
-      credentials: {
-        username: {
-          label: 'Username:',
-          type: 'text',
-          placeholder: 'your-cool-username',
-        },
-        password: {
-          label: 'Password:',
-          type: 'password',
-          placeholder: '***',
-        },
-      }, */ async authorize(credentials) {
+      async authorize(credentials) {
         // This is where you need to retrieve user data
         // to verify with credentials
 
         // Fetch User by email : prismaAdapter.getUserByEmail
-        //  User exists
-        //    Check if User has password field
-        //    User has password
-        //      Compare hashed versions of passwords
-        //        return user if the comparison is ok
-        //        return null if not
-        //    User has no password (then it is an OAuth user)
-        //      return null
-        //  User does not exist
-        //    return null
+        const user = await myPrismaAdapter.getUserByEmail(credentials.email);
+        console.log('user', { user });
+        // User exists
+        if (user) {
+          // Check if User has password field
+          if (user.password !== undefined) {
+            // User has password
+            // Compare hashed versions of passwords
+            const hashedInput = createHash('sha1')
+              .update(credentials.password)
+              .digest('hex');
 
-        const user = {
-          id: '42',
-          name: 'obit',
-          email: 'obit@obit.eu',
-          password: 'obit',
-        };
-        if (
-          credentials?.username === user.name &&
-          credentials?.password === user.password
-        ) {
-          return user;
+            console.log('hashedInput', { hashedInput });
+            console.log('hashedPassword', user.password);
+
+            // return user if the comparison is ok
+            // return null if not
+            return hashedInput === user.password ? user : null;
+          } else {
+            // User exists BUT has no password (then it is an OAuth user)
+            // return null
+            return null;
+          }
+        } else {
+          // User does not exist
+          // return null
+          return null;
         }
-        return null;
       },
-    }),
+    }) ,*/,
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {

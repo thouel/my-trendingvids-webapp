@@ -31,6 +31,7 @@ model User {
   email String @unique
   emailVerified DateTime?
   image String?
+  password String?
   accounts Account[]
   sessions Session[]
   pinnedShowsIDs String[] @db.ObjectId
@@ -65,7 +66,7 @@ model Session {
 }
 
 model VerificationToken {
-  identifier String @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String @id @default(cuid()) @map("_id")
   token      String   @unique
   expires    DateTime
 

@@ -21,6 +21,7 @@
     "next-auth": "^4.23.2",
     "next-connect": "^1.0.0-next.4",
     "nextjs-current-url": "^1.0.3",
+    "nodemailer": "^6.9.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^3.3.1",
