@@ -6,15 +6,16 @@ import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
 import { isPinned, getBaseUrl } from '@/utils/helper';
 
-export const dynamic = 'force-dynamic';
-
 const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', { session, showType, q });
+
   var resShows = [];
   var resGenres = [];
   const pinned = isPinned(showType);
   var url = `${getBaseUrl()}/api/trends/${showType}`;
+
   console.log('Shows Component', { url });
+
   await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -73,7 +74,7 @@ export default async function Shows({ showType, q }) {
   const { shows, genres, isPinned } = await getShowsByType(
     session,
     showType,
-    q
+    q,
   );
 
   return (
@@ -81,8 +82,8 @@ export default async function Shows({ showType, q }) {
       <div className='grid grid-flow-row grid-cols-4 gap-1'>
         {isPinned ? (
           <Fragment>
-            <span className='col-span-4 row-auto relative text-lg font-bold'>
-              <ChevronRightIcon className='w-6 h-6 inline pb-1 mr-1' />
+            <span className='relative col-span-4 row-auto text-lg font-bold'>
+              <ChevronRightIcon className='inline w-6 h-6 pb-1 mr-1' />
               My list
             </span>
             <ShowsCarousel
@@ -94,8 +95,8 @@ export default async function Shows({ showType, q }) {
         ) : (
           genres.map((g) => (
             <Fragment key={g.id}>
-              <span className='col-span-4 row-auto relative text-lg font-bold'>
-                <ChevronRightIcon className='w-6 h-6 inline pb-1 mr-1' />
+              <span className='relative col-span-4 row-auto text-lg font-bold'>
+                <ChevronRightIcon className='inline w-6 h-6 pb-1 mr-1' />
                 {g.name}
               </span>
               <ShowsCarousel

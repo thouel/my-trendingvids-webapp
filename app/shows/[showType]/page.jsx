@@ -2,6 +2,8 @@ import Shows from '@/components/Shows';
 import { Suspense } from 'react';
 import ShowsLoadingPage from './loading';
 
+export const dynamic = 'force-dynamic';
+
 export default function Page({ params, searchParams }) {
   return (
     <>

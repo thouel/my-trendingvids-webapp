@@ -26,16 +26,16 @@ model Show {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id String                 @id @default(auto()) @map("_id") @db.ObjectId
   name String?
-  email String @unique
+  email String              @unique
   emailVerified DateTime?
   image String?
   password String?
   accounts Account[]
   sessions Session[]
-  pinnedShowsIDs String[] @db.ObjectId
-  pinnedShows Show[] @relation(fields: [pinnedShowsIDs], references: [id])
+  pinnedShowsIDs String[]   @db.ObjectId
+  pinnedShows Show[]        @relation(fields: [pinnedShowsIDs], references: [id])
 }
 
 model Account {
@@ -66,9 +66,8 @@ model Session {
 }
 
 model VerificationToken {
-  identifier String @id @default(cuid()) @map("_id")
-  token      String   @unique
+  identifier String     @unique
+  token      String     @id @default(cuid()) @map("_id")
   expires    DateTime
 
-  @@unique([identifier, token])
 }
