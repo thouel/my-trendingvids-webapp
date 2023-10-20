@@ -14,8 +14,6 @@ Make site fully responsive for large (lg:)
 
 - have the footer on bottom of page
 - Remake the My Shows / empty state on mobile devices
-- Give loading Shows a margin-y on mobile devices
-- Give Shows a margin-y on mobile devices
 
 Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 

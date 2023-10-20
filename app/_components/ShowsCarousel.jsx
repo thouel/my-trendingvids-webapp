@@ -23,7 +23,7 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
   return (
     <>
       {shows === undefined || shows.length <= 0 ? (
-        'Nothing yet !'
+        <div className='col-span-4'>Nothing yet !</div>
       ) : (
         <Splide
           aria-label={genreLabel}
@@ -50,7 +50,7 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
           {shows.map((s) => (
             <Fragment key={s.id}>
               <SplideSlide>
-                <div className='rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-100 p-1'>
+                <div className='p-1 bg-gray-100 rounded hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-100'>
                   <Link
                     href={`/show/${showType}/${s.externalId ?? s.id}`}
                     scroll={false}
@@ -65,7 +65,7 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
                       width={300}
                       height={300}
                     />
-                    <div className='text-gray-900 dark:text-gray-100 text-xs sm:text-sm truncate mt-1'>
+                    <div className='mt-1 text-xs text-gray-900 truncate dark:text-gray-100 sm:text-sm'>
                       {getLabel(s)}
                     </div>
                   </Link>
