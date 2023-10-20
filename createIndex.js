@@ -7,7 +7,6 @@ if (!process.env.VERCEL) {
 async function createIndex() {
   console.log('Index creation --- START');
   try {
-    console.log('Configs: ', process.env.MONGODB_URL, process.env.VERCEL);
     const client = new MongoClient(process.env.MONGODB_URL, {
       serverApi: {
         version: ServerApiVersion.v1,
@@ -23,7 +22,7 @@ async function createIndex() {
 
     await client.close();
 
-    console.log('Compound index created:', { res });
+    console.log('VerificationToken index created:', { res });
   } catch (e) {
     console.error('Index creation ERROR', { e });
     return 1;
