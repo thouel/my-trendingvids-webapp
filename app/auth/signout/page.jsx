@@ -1,6 +1,6 @@
 import SignOut from '@/components/SignOut';
 
-export default function SignInPage() {
+export default function SignOutPage() {
   return (
     <>
       <SignOut />

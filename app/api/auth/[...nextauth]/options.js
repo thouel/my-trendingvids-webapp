@@ -13,6 +13,7 @@ export const options /* NextAuthOptions */ = {
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
+    verifyRequest: '/auth/verify-request',
   },
   session: {
     // Choose how you want to save the user session.

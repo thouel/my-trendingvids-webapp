@@ -1,6 +1,7 @@
 chores:
 
 - Remove paths aliases
+- Organize Functional Components (ui/, ui/shows/, ui/auth)
 - Rename \_<directories> in <directories>
 - Remove csr-secured-alone, ssr-secured-alone, ssr-secured-by-middleware
 
@@ -13,7 +14,6 @@ Add a profile picture top right
 Make site fully responsive for large (lg:)
 
 - have the footer on bottom of page
-- Remake the My Shows / empty state on mobile devices
 
 Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
