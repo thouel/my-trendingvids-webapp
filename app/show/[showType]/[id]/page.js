@@ -1,5 +1,5 @@
 'use client';
-import ShowCard from '@/components/ShowCard';
+import ShowCard from '@c/ShowCard';
 
 export default function ShowByTypeAndId({ params }) {
   console.log('from normal');

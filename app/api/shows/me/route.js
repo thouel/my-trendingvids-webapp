@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getMyShows } from '@/db/shows';
-import { getServerSession } from 'next-auth/next';
-import { options } from 'app/api/auth/[...nextauth]/options';
+import { getMyShows } from '@db/shows';
 
 export async function POST(req) {
   const body = await req.json();

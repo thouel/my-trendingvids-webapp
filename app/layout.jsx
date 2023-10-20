@@ -1,7 +1,7 @@
-import Footer from '@/components/Footer';
+import Footer from '@c/Footer';
 import './globals.css';
-import AuthProvider from '@/context/AuthProvider';
-import Navbar from '@/components/Navbar';
+import AuthProvider from '@ctx/AuthProvider';
+import Navbar from '@c/Navbar';
 
 export const metadata = {
   title: 'My Trending Videos Webapp',

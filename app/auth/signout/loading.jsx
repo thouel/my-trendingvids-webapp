@@ -1,4 +1,4 @@
-import LoadingSoloSpinner from '@/components/LoadingSoloSpinner';
+import LoadingSoloSpinner from '@c/LoadingSoloSpinner';
 
 export default function SignOutLoading() {
   return <LoadingSoloSpinner />;

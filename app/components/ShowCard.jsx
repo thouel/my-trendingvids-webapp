@@ -10,12 +10,12 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from '@heroicons/react/24/outline';
-import { getLabel, isAuthenticated } from '@/utils/helper';
+import { getLabel, isAuthenticated } from '@u/helper';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { isPinned, getBaseUrl } from '@/utils/helper';
+import { isPinned, getBaseUrl } from '@u/helper';
 import { useUrl } from 'nextjs-current-url';
+import { redirect } from 'next/navigation';
 
 export default function ShowCard({ id, showType, isModal }) {
   const {
@@ -35,6 +35,10 @@ export default function ShowCard({ id, showType, isModal }) {
   useEffect(() => {
     async function fetchShow(showType) {
       const pinned = isPinned(showType);
+
+      if (pinned && !session) {
+        redirect('/');
+      }
 
       if (pinned) {
         const { pinnedShows } = session.user;
@@ -143,6 +147,7 @@ export default function ShowCard({ id, showType, isModal }) {
   if (isLoading) {
     return null;
   }
+  console.log('isLoading and show', { isLoading, show });
 
   /*  */
 
@@ -150,11 +155,11 @@ export default function ShowCard({ id, showType, isModal }) {
   const directLinkButton = (
     <button
       type='button'
-      className='hover:text-orange-600 text-gray-600'
+      className='text-gray-600 hover:text-orange-600'
       onClick={() => copyToClipboard()}
     >
       <LinkIcon
-        className='h-6 w-6'
+        className='w-6 h-6'
         alt={directLinkTitle}
         title={directLinkTitle}
       />
@@ -165,9 +170,9 @@ export default function ShowCard({ id, showType, isModal }) {
     <a
       target='_blank'
       href={show.homepage}
-      className='hover:text-orange-600 text-gray-600'
+      className='text-gray-600 hover:text-orange-600'
     >
-      <HomeIcon className='h-6 w-6' alt={homepageTitle} title={homepageTitle} />
+      <HomeIcon className='w-6 h-6' alt={homepageTitle} title={homepageTitle} />
     </a>
   );
   const imdbTitle = 'Go to IMDb';
@@ -175,10 +180,10 @@ export default function ShowCard({ id, showType, isModal }) {
     <a
       target='_blank'
       href={'https://www.imdb.com/title/' + show.external_ids?.imdb_id}
-      className='hover:text-orange-600 text-gray-600'
+      className='text-gray-600 hover:text-orange-600'
     >
       <InformationCircleIcon
-        className='h-6 w-6'
+        className='w-6 h-6'
         alt={imdbTitle}
         title={imdbTitle}
       />
@@ -190,11 +195,11 @@ export default function ShowCard({ id, showType, isModal }) {
   const myListButton = isShowInMyList ? (
     <button
       type='button'
-      className='hover:text-orange-600 text-gray-600 '
+      className='text-gray-600 hover:text-orange-600 '
       onClick={() => removeFromMyList(show)}
     >
       <CheckCircleIcon
-        className='h-6 w-6'
+        className='w-6 h-6'
         alt={removeTitle}
         title={removeTitle}
       />
@@ -202,10 +207,10 @@ export default function ShowCard({ id, showType, isModal }) {
   ) : (
     <button
       type='button'
-      className='hover:text-orange-600 text-gray-600'
+      className='text-gray-600 hover:text-orange-600'
       onClick={() => addToMyList(show)}
     >
-      <PlusIcon className='h-6 w-6' alt={addTitle} title={addTitle} />
+      <PlusIcon className='w-6 h-6' alt={addTitle} title={addTitle} />
     </button>
   );
 
@@ -213,11 +218,11 @@ export default function ShowCard({ id, showType, isModal }) {
   const closeCTAButton = (
     <button
       type='button'
-      className='hover:text-orange-600 text-gray-600'
+      className='text-gray-600 hover:text-orange-600'
       onClick={toggleIsCTAOpen}
     >
       <ChevronUpIcon
-        className='h-6 w-6'
+        className='w-6 h-6'
         alt={closeCTATitle}
         title={closeCTATitle}
       />
@@ -228,11 +233,11 @@ export default function ShowCard({ id, showType, isModal }) {
   const openCTAButton = (
     <button
       type='button'
-      className='hover:text-orange-600 text-gray-600'
+      className='text-gray-600 hover:text-orange-600'
       onClick={toggleIsCTAOpen}
     >
       <ChevronDownIcon
-        className='h-6 w-6'
+        className='w-6 h-6'
         alt={openCTATitle}
         title={openCTATitle}
       />
@@ -284,12 +289,12 @@ export default function ShowCard({ id, showType, isModal }) {
   const title = isModal ? (
     <Dialog.Title
       as='h1'
-      className='text-2xl font-semibold flex flex-wrap justify-between'
+      className='flex flex-wrap justify-between text-2xl font-semibold'
     >
       {buttonsStructure}
     </Dialog.Title>
   ) : (
-    <h1 className='text-2xl font-semibold flex flex-wrap justify-between'>
+    <h1 className='flex flex-wrap justify-between text-2xl font-semibold'>
       {buttonsStructure}
     </h1>
   );
@@ -305,10 +310,10 @@ export default function ShowCard({ id, showType, isModal }) {
     );
   const networks =
     showType === 'tvshows' ? (
-      <div className='flex flex-col sm:flex-row gap-2 mt-2'>
+      <div className='flex flex-col gap-2 mt-2 sm:flex-row'>
         {seasons}
 
-        <div className='flex flex-row gap-2 place-items-center justify-start'>
+        <div className='flex flex-row justify-start gap-2 place-items-center'>
           {show.networks.map((n) => (
             <span key={'network_' + n.id} className=''>
               <Image
@@ -317,7 +322,7 @@ export default function ShowCard({ id, showType, isModal }) {
                 title={n.name}
                 width={40}
                 height={40}
-                className='dark:rounded p-1 dark:bg-gray-100'
+                className='p-1 dark:rounded dark:bg-gray-100'
               />
             </span>
           ))}
@@ -328,7 +333,7 @@ export default function ShowCard({ id, showType, isModal }) {
     );
 
   const description = isModal ? (
-    <Dialog.Description as='div' className='mt-2 text-sm flex flex-col'>
+    <Dialog.Description as='div' className='flex flex-col mt-2 text-sm'>
       <p className={'pt-4 pb-4 ' + (networks !== '' ? 'border-b' : '')}>
         {show.overview}
       </p>
@@ -345,7 +350,7 @@ export default function ShowCard({ id, showType, isModal }) {
 
   return (
     <Fragment>
-      <div className='px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
+      <div className='px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
         <div className='sm:flex-col'>
           {errorMessage !== '' && <div>{errorMessage}</div>}
           <div className=''>

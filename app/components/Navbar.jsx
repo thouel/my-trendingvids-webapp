@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useState, useEffect } from 'react';
-import { isDarkTheme } from '@/utils/helper';
+import { isDarkTheme } from '@u/helper';
 import ThemeButton from './ThemeButton';
 
 export default function Navbar() {

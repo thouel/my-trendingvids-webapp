@@ -1,10 +1,10 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
-import { updateGenresToDisplay } from '@/utils/actions';
+import { updateGenresToDisplay } from '@u/actions';
 import ShowsCarousel from './ShowsCarousel';
 import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
-import { isPinned, getBaseUrl } from '@/utils/helper';
+import { isPinned, getBaseUrl } from '@u/helper';
 
 const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', { session, showType, q });

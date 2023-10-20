@@ -1,15 +1,11 @@
-import Shows from '@/components/Shows';
-import { Suspense } from 'react';
-import ShowsLoadingPage from './loading';
+import Shows from '@c/Shows';
 
 export const dynamic = 'force-dynamic';
 
 export default function Page({ params, searchParams }) {
   return (
     <>
-      <Suspense fallback={<ShowsLoadingPage />}>
-        <Shows showType={params.showType} q={searchParams?.q} />
-      </Suspense>
+      <Shows showType={params.showType} q={searchParams?.q} />
     </>
   );
 }

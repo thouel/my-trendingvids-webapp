@@ -1,9 +1,10 @@
 'use client';
-import ShowCard from '@/components/ShowCard';
+import ShowCard from '@c/ShowCard';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
-import { Fragment, Suspense, useRef, useState } from 'react';
-import ShowLoadingPage from './loading';
+import { Fragment, useState } from 'react';
+
+export const dynamic = 'force-dynamic';
 
 export default function ShowByTypeAndIdModal({ params }) {
   console.log('from modal');
@@ -27,11 +28,11 @@ export default function ShowByTypeAndIdModal({ params }) {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+          <div className='fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75' />
         </Transition.Child>
         <div className='fixed inset-0 z-20 bg-black/70' aria-hidden='true' />
         <div className='fixed inset-0 z-30 w-screen overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center sm:p-0'>
+          <div className='flex items-center justify-center min-h-full p-4 text-center sm:p-0'>
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'
@@ -41,7 +42,7 @@ export default function ShowByTypeAndIdModal({ params }) {
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='bg-white dark:bg-gray-950 relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl'>
+              <Dialog.Panel className='relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-950 sm:my-8 sm:w-full sm:max-w-2xl'>
                 <ShowCard id={id} showType={showType} isModal={true} />
 
                 <div className='px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6'>

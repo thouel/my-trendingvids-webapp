@@ -1,9 +1,9 @@
 import Github from 'next-auth/providers/github';
 import Twitch from 'next-auth/providers/twitch';
-import Credentials from 'next-auth/providers/credentials';
 import EmailProvider from 'next-auth/providers/email';
-import prisma from '@/db/db-prisma';
-import { MyPrismaAdapter } from '@/db/MyPrismaAdapter';
+import prisma from '@db/db-prisma';
+import { MyPrismaAdapter } from '@db/MyPrismaAdapter';
+import Credentials from 'next-auth/providers/credentials';
 import { createHash } from 'crypto';
 
 const myPrismaAdapter = MyPrismaAdapter(prisma);

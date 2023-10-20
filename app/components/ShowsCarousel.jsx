@@ -2,24 +2,11 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import ShowCard from './ShowCard';
 import { Fragment, useState } from 'react';
-import { getLabel } from '@/utils/helper';
-import { useRouter } from 'next/navigation';
+import { getLabel } from '@u/helper';
 import Link from 'next/link';
 
 export default function ShowsCarousel({ genreLabel, shows, showType }) {
-  const router = useRouter();
-  const [modal, setModal] = useState();
-
-  const openModal = (show) => {
-    setModal(show.id);
-  };
-
-  const closeModal = () => {
-    setModal(-1);
-  };
-
   return (
     <>
       {shows === undefined || shows.length <= 0 ? (
