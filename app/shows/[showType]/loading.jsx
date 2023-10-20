@@ -5,7 +5,7 @@ export default function ShowsLoadingPage() {
   return (
     <>
       {/* Skeleton for mobile devices (lower than sm) */}
-      <div className='block sm:hidden'>
+      <div className='block px-2 sm:hidden sm:px-0'>
         <Skeleton count={1} className='w-full' height={'30px'} />
         <div className='grid grid-flow-col grid-cols-2 gap-2'>
           <div>
@@ -20,7 +20,7 @@ export default function ShowsLoadingPage() {
       </div>
 
       {/* Skeleton for sm:+ devices */}
-      <div className='hidden sm:block'>
+      <div className='hidden px-2 sm:block sm:px-0'>
         <Skeleton count={1} height={'40px'} className='' />
         <div className='grid grid-flow-col grid-cols-4 gap-2'>
           <div>
