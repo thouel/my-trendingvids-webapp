@@ -21,7 +21,7 @@ export default function SignInCredentials({ token }) {
           name='email'
           autoComplete='email'
           required
-          className='px-1 bg-gray-100 border rounded'
+          className='px-1 text-gray-600 bg-gray-100 border rounded dark:text-gray-600'
           tabIndex={1}
           autoFocus={true}
         />
