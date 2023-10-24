@@ -2,7 +2,7 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { getLabel } from '@u/helper';
 import Link from 'next/link';
 
@@ -14,7 +14,7 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
       ) : (
         <Splide
           aria-label={genreLabel}
-          className='col-span-4'
+          className='min-w-0 col-span-4'
           options={{
             type: 'slide',
             arrows: shows.length > 2 ? true : false,
