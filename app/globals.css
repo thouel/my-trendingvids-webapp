@@ -101,3 +101,15 @@
 /**
  * End of Loading Animation
  */
+
+.notification-container-item {
+  transition: 0.2s;
+
+  &:not(:first-child) {
+    margin-top: -3rem;
+  }
+  &:hover ~ .toast-container-item,
+  &:focus-within ~ .toast-container-item {
+    transform: translateY(3rem);
+  }
+}

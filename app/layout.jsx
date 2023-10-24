@@ -1,7 +1,7 @@
-import Footer from '@c/Footer';
 import './globals.css';
-import AuthProvider from '@ctx/AuthProvider';
+import Providers from '@p/Providers';
 import Navbar from '@c/Navbar';
+import Footer from '@c/Footer';
 
 export const metadata = {
   title: 'My Trending Videos Webapp',
@@ -11,19 +11,19 @@ export const metadata = {
 export default function RootLayout({ children, modal }) {
   return (
     <html lang='en'>
-      <body className='min-h-screen relative max-w-[100vw] overflow-x-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
-        <AuthProvider>
+      <body className='max-w-[100vw] overflow-x-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
+        <Providers>
           <Navbar />
-          <div className='pb-[2rem] mt-[5rem]'>
-            <main className='max-w-4xl min-h-[20rem] mr-auto ml-auto'>
+          <div className=''>
+            <main className='max-w-4xl min-w-0 p-0 mx-auto mt-20 mb-10 overflow-hidden'>
               {children}
               {modal}
             </main>
           </div>
-          <footer className=''>
+          <footer className='fixed bottom-0 left-0 z-10 w-full bg-white dark:bg-gray-900'>
             <Footer />
           </footer>
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

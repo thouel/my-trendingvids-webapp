@@ -1,8 +1,5 @@
 chores:
 
-- Remove paths aliases
-- Organize Functional Components (ui/, ui/shows/, ui/auth)
-- Rename \_<directories> in <directories>
 - Remove csr-secured-alone, ssr-secured-alone, ssr-secured-by-middleware
 
 Make own sign in / sign out pages
@@ -11,19 +8,15 @@ Make own sign in / sign out pages
 
 Add a profile picture top right
 
-Make site fully responsive for large (lg:)
-
-- have the footer on bottom of page
-
 Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 BUGs
 
-- componentize ShowCard (300+ lines)
+- my list shows have no external_ids => cuz i'm not saving them in mongodb
+- componentize ShowCard (300+ lines) : start with group all actions in a dedicated component
 - from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 
 Handle form errors => https://nextjs.org/docs/app/api-reference/file-conventions/error
-Add a toaster system to display info, error messages
 Rework as PrismaAdapter utils/db/shows and utils/db/users
 The display of pinned shows should be completed by classic display
 When removing a pinned show, it should refresh the ShowsCarousel behind : add a state in ShowsCarousel and give the setXXX to the modal so that it is rerendered when a change occurs in modal => Problem: ShowCard is not directly embedded in ShowsCarousel (<Link/>)
@@ -31,4 +24,5 @@ Make the caroussel infinite
 Add a video in the Show Card
 Add i18n : https://github.com/amannn/next-intlAdd a Command Palette : https://blog.logrocket.com/react-command-palette-tailwind-css-headless-ui/
 
+@see Intl module js
 nextjs tuto : https://nextjs.org/learn/basics/assets-metadata-css

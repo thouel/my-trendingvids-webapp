@@ -1,7 +1,9 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Toast, Types } from './Toast';
+import { useNotificationContext } from 'app/hooks/useNotificationContext';
+import { ACTIONS, TYPES } from 'app/providers/NotificationProvider';
+import { useEffect, useState } from 'react';
 
 const Errors = {
   Configuration: 'Configuration problem',
@@ -21,14 +23,19 @@ const Errors = {
 
 export default function SignInError({}) {
   const error = useSearchParams().get('error');
+  const { notificationDispatch } = useNotificationContext();
 
   if (!error) return null;
 
-  const idx = Object.keys(Errors).indexOf(error);
-  const errorMessage = Object.values(Errors).at(idx);
-  return (
-    <>
-      <Toast type={Types.Warning} message={errorMessage} />
-    </>
-  );
+  useEffect(() => {
+    const idx = Object.keys(Errors).indexOf(error);
+    const errorMessage = Object.values(Errors).at(idx);
+
+    notificationDispatch({
+      type: ACTIONS.Add,
+      payload: { content: { type: TYPES.Info, message: errorMessage } },
+    });
+  }, [error]);
+
+  return <></>;
 }
