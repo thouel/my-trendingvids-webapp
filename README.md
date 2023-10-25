@@ -11,6 +11,7 @@
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 ![maintained](https://img.shields.io/badge/Maintained%3F-yes-green)
 ![ask](https://img.shields.io/badge/Ask_me-anything-green)
+[![Playwright Tests](https://github.com/thouel/my-trendingvids-webapp/actions/workflows/playwright.yml/badge.svg)](https://github.com/thouel/my-trendingvids-webapp/actions/workflows/playwright.yml)
 
 A responsive webapp to visualize the current TV shows and movies trends :
 
@@ -35,6 +36,7 @@ App used to step in dev world. My main focuses were:
 - have a responsive designed web application (for mobile and desktop)
 - have an automatic deployment pipeline
 - store data in a cloud database
+- build a ci pipeline
 
 Using:
 
@@ -46,6 +48,7 @@ Using:
 - [TailwindCSS](https://tailwindcss.com/docs/guides/nextjs) for pages styling
 - [Github](https://github.com/thouel/my-trendingvids-webapp/tree/main) to host app sources
 - [Vercel](https://vercel.com/) to deploy automatically (after each push on main) [@see here](https://my-trendingvids-webapp.vercel.app)
+- [Playwright](https://playwright.dev) to write UI and API tests. They are started with a GitHub Action started after vercel fires the deployment event
 
 ## Install
 
