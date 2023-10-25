@@ -197,6 +197,16 @@ export default function Navbar() {
               <Fragment>
                 <li>
                   <Link
+                    href='/me?st=me'
+                    className={
+                      st === 'me' ? style.link.selected : style.link.notSelected
+                    }
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href='/shows/p-shows?st=p-shows'
                     className={
                       st === 'p-shows'
