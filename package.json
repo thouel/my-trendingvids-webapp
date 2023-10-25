@@ -29,7 +29,9 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
     "@tanstack/eslint-plugin-query": "^4.34.1",
+    "@types/node": "^20.8.8",
     "autoprefixer": "^10.4.15",
     "eslint-config-next": "13.5.4",
     "postcss": "^8.4.29",
