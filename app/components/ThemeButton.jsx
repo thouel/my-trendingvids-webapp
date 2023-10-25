@@ -25,11 +25,11 @@ export default function ThemeButton() {
   const isLightTheme = theme !== 'dark';
 
   return (
-    <button className='' onClick={() => toggleTheme()}>
+    <button aria-label='Switch Light/Dark Mode' onClick={() => toggleTheme()}>
       {isLightTheme ? (
-        <SunIcon className='h-5 w-5' />
+        <SunIcon className='w-5 h-5' />
       ) : (
-        <MoonIcon className='h-5 w-5' />
+        <MoonIcon className='w-5 h-5' />
       )}
     </button>
   );
