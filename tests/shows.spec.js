@@ -5,7 +5,7 @@ let page;
 
 test.beforeAll(async ({ browser }) => {
   page = await browser.newPage();
-  await page.goto('http://localhost:3000/');
+  await page.goto(process.env.LOCAL_URL);
 });
 
 test.afterAll(async () => await page.close());
