@@ -16,6 +16,7 @@ BUGs
 
 CHORES
 
+- GitHub Action: Please update the following actions to use Node.js 20: actions/upload-artifact@v3
 - Remove csr-secured-alone, ssr-secured-alone, ssr-secured-by-middleware
 - Rework as PrismaAdapter utils/db/shows and utils/db/users
 - The display of pinned shows should be completed by classic display

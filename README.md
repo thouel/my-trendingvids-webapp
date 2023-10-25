@@ -25,6 +25,7 @@ A responsive webapp to visualize the current TV shows and movies trends :
 - [Install](#install)
 - [Usage](#usage)
 - [Example](#example)
+- [CI](#ci)
 - [Maintainers](#maintainers)
 - [License](#license)
 
@@ -65,6 +66,11 @@ $ npm run dev
 ## Example
 
 [Latest deployment of main branch on Vercel](https://my-trendingvids-webapp.vercel.app/)
+
+## CI
+
+After each push on main branch, Vercel deploys this branch
+When the deployment is done, Vercel fires an event to start the e2e tests
 
 ## Maintainers
 
