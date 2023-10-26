@@ -56,21 +56,37 @@ jobs:
           node-version: 18
       - name: Install Vercel CLI
         run: npm install --global vercel@canary
-        #echo DATABASE_URL=${{ secrets.DATABASE_URL }} | vercel env add DATABASE_URL production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Remove environment variable to Vercel
+        run: |
+          vercel env rm TMDB_API_KEY production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm NEXTAUTH_SECRET production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm AUTH_REDIRECT_PROXY_URL production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm NEXTAUTH_GITHUB_ID production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm NEXTAUTH_GITHUB_SECRET production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm TWITCH_ID production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm TWITCH_SECRET production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm EMAIL_SERVER_USER production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm EMAIL_SERVER_PASSWORD production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm EMAIL_SERVER_HOST production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm EMAIL_SERVER_PORT production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm EMAIL_FROM production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm DATABASE_URL production --yes --token=${{ secrets.VERCEL_TOKEN }}
       - name: Push environment variable to Vercel
         run: |
           echo ${{ secrets.TMDB_API_KEY }} | vercel env add TMDB_API_KEY production --token=${{ secrets.VERCEL_TOKEN }}
           echo ${{ secrets.NEXTAUTH_SECRET }} | vercel env add NEXTAUTH_SECRET production --token=${{ secrets.VERCEL_TOKEN }}
-          echo AUTH_REDIRECT_PROXY_URL=${{ secrets.AUTH_REDIRECT_PROXY_URL }} | vercel env add AUTH_REDIRECT_PROXY_URL production --token=${{ secrets.VERCEL_TOKEN }}
-          echo NEXTAUTH_GITHUB_ID=${{ secrets.NEXTAUTH_GITHUB_ID }} | vercel env add NEXTAUTH_GITHUB_ID production --token=${{ secrets.VERCEL_TOKEN }}
-          echo NEXTAUTH_GITHUB_SECRET=${{ secrets.NEXTAUTH_GITHUB_SECRET }} | vercel env add NEXTAUTH_GITHUB_SECRET production --token=${{ secrets.VERCEL_TOKEN }}
-          echo TWITCH_ID=${{ secrets.TWITCH_ID }} | vercel env add TWITCH_ID production --token=${{ secrets.VERCEL_TOKEN }}
-          echo TWITCH_SECRET=${{ secrets.TWITCH_SECRET }} | vercel env add TWITCH_SECRET production --token=${{ secrets.VERCEL_TOKEN }}
-          echo EMAIL_SERVER_USER=${{ secrets.EMAIL_SERVER_USER }} | vercel env add EMAIL_SERVER_USER production --token=${{ secrets.VERCEL_TOKEN }}
-          echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} | vercel env add EMAIL_SERVER_PASSWORD production --token=${{ secrets.VERCEL_TOKEN }}
-          echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} | vercel env add EMAIL_SERVER_HOST production --token=${{ secrets.VERCEL_TOKEN }}
-          echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} | vercel env add EMAIL_SERVER_PORT production --token=${{ secrets.VERCEL_TOKEN }}
-          echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} | vercel env add EMAIL_FROM production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.AUTH_REDIRECT_PROXY_URL }} | vercel env add AUTH_REDIRECT_PROXY_URL production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.NEXTAUTH_GITHUB_ID }} | vercel env add NEXTAUTH_GITHUB_ID production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.NEXTAUTH_GITHUB_SECRET }} | vercel env add NEXTAUTH_GITHUB_SECRET production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.TWITCH_ID }} | vercel env add TWITCH_ID production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.TWITCH_SECRET }} | vercel env add TWITCH_SECRET production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.EMAIL_SERVER_USER }} | vercel env add EMAIL_SERVER_USER production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.EMAIL_SERVER_PASSWORD }} | vercel env add EMAIL_SERVER_PASSWORD production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.EMAIL_SERVER_HOST }} | vercel env add EMAIL_SERVER_HOST production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.EMAIL_SERVER_PORT }} | vercel env add EMAIL_SERVER_PORT production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.EMAIL_FROM }} | vercel env add EMAIL_FROM production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.DATABASE_URL }} | vercel env add DATABASE_URL production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Pull Vercel Environment Information
         run: vercel env pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
