@@ -70,7 +70,8 @@ jobs:
           echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} >> .env
           echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} >> .env
           echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env
-          EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env
+          echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env
+          echo MONGODB_URL=${{ secrets.MONGODB_URL }} >> .env
           cat .env
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
