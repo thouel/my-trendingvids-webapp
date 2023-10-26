@@ -5,7 +5,7 @@ require('dotenv').config({ path: '.env.local' });
 async function createIndex() {
   console.log('Index creation --- START');
   try {
-    const client = new MongoClient(process.env.MONGODB_URL, {
+    const client = new MongoClient(process.env.MONGODB_URI, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
