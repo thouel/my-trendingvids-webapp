@@ -27,7 +27,7 @@ env:
   EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
 
   #=========== MONGODB CONFIG ===========#
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
   # to tell nextjs to automatically push this client side, we prefix the key with NEXT_PUBLIC
   # @see https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
@@ -62,7 +62,7 @@ jobs:
           echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} >> .env.local
           echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
           echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env.local
           cat .env.local
       - name: Install dependencies
         run: npm ci

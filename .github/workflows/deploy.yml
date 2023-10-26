@@ -26,9 +26,6 @@ env:
   EMAIL_SERVER_PORT: ${{ secrets.EMAIL_SERVER_PORT }}
   EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
 
-  #=========== MONGODB CONFIG ===========#
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
   # to tell nextjs to automatically push this client side, we prefix the key with NEXT_PUBLIC
   # @see https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
   # NEXT_PUBLIC_LOCAL_URL=${LOCAL_URL}
@@ -72,7 +69,6 @@ jobs:
           vercel env rm EMAIL_SERVER_HOST production --yes --token=${{ secrets.VERCEL_TOKEN }}
           vercel env rm EMAIL_SERVER_PORT production --yes --token=${{ secrets.VERCEL_TOKEN }}
           vercel env rm EMAIL_FROM production --yes --token=${{ secrets.VERCEL_TOKEN }}
-          vercel env rm DATABASE_URL production --yes --token=${{ secrets.VERCEL_TOKEN }}
       - name: Push environment variable to Vercel
         run: |
           echo ${{ secrets.TMDB_API_KEY }} | vercel env add TMDB_API_KEY production --token=${{ secrets.VERCEL_TOKEN }}
@@ -87,8 +83,6 @@ jobs:
           echo ${{ secrets.EMAIL_SERVER_HOST }} | vercel env add EMAIL_SERVER_HOST production --token=${{ secrets.VERCEL_TOKEN }}
           echo ${{ secrets.EMAIL_SERVER_PORT }} | vercel env add EMAIL_SERVER_PORT production --token=${{ secrets.VERCEL_TOKEN }}
           echo ${{ secrets.EMAIL_FROM }} | vercel env add EMAIL_FROM production --token=${{ secrets.VERCEL_TOKEN }}
-          echo mongodb+srv://vercel-admin-user:DxpJeGrZ5bmkg5yC@cluster0.zk7alxr.mongodb.net/trendingvids?retryWrites=true&w=majority | vercel env add DATABASE_URL production --token=${{ secrets.VERCEL_TOKEN }}
-
       - name: Pull Vercel Environment Information
         run: vercel env pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: List Vercel Environment Information
