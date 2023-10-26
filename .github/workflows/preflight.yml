@@ -72,12 +72,14 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
   Start:
+    needs: [Install]
     runs-on: ubuntu-latest
     environment: Dev
     steps:
       - name: Start local server
         run: npm run start
   Test:
+    needs: [Start]
     runs-on: ubuntu-latest
     environment: Dev
     steps:
