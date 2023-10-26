@@ -1,10 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-if (process.env.VERCEL) {
-  require('dotenv').config({ path: '.env.production.local' });
-} else {
-  require('dotenv').config({ path: '.env.local' });
-}
+require('dotenv').config({ path: '.env.local' });
 
 async function createIndex() {
   console.log('Index creation --- START');
