@@ -44,8 +44,8 @@ export const options /* NextAuthOptions */ = {
   },
   providers: [
     Github({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.NEXTAUTH_GITHUB_ID,
+      clientSecret: process.env.NEXTAUTH_GITHUB_SECRET,
     }),
     Twitch({
       clientId: process.env.TWITCH_ID,

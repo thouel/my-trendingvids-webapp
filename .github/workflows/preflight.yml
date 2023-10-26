@@ -1,0 +1,84 @@
+name: Preflight
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  #=========== THE MOVIE DATABASE CONFIG ===========#
+  TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+
+  #=========== NEXT-AUTH CONFIG ===========#
+  ## NEXTAUTH_URL is not necessary in production env deployed on Vercel
+  # NEXTAUTH_URL=${LOCAL_URL}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  AUTH_REDIRECT_PROXY_URL: ${{ secrets.AUTH_REDIRECT_PROXY_URL }}
+
+  # NEXT-AUTH GITHUB PROVIDER CONFIG
+  NEXTAUTH_GITHUB_ID: ${{ secrets.NEXTAUTH_GITHUB_ID }}
+  NEXTAUTH_GITHUB_SECRET: ${{ secrets.NEXTAUTH_GITHUB_SECRET }}
+
+  # NEXT-AUTH TWITCH PROVIDER CONFIG
+  TWITCH_ID: ${{ secrets.TWITCH_ID }}
+  TWITCH_SECRET: ${{ secrets.TWITCH_SECRET }}
+
+  # NEXT-AUTH EMAIL PROVIDER CONFIG
+  EMAIL_SERVER_USER: ${{ secrets.EMAIL_SERVER_USER }}
+  EMAIL_SERVER_PASSWORD: ${{ secrets.EMAIL_SERVER_PASSWORD }}
+  EMAIL_SERVER_HOST: ${{ secrets.EMAIL_SERVER_HOST }}
+  EMAIL_SERVER_PORT: ${{ secrets.EMAIL_SERVER_PORT }}
+  EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+
+  #=========== MONGODB CONFIG ===========#
+  MONGODB_URL: ${{ secrets.MONGODB_URL }}
+
+  # to tell nextjs to automatically push this client side, we prefix the key with NEXT_PUBLIC
+  # @see https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
+  # NEXT_PUBLIC_LOCAL_URL=${LOCAL_URL}
+  NEXT_PUBLIC_LOCAL_URL: 'http://localhost:3000'
+  LOCAL_URL: 'http://localhost:3000'
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Deploy-Production:
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      # - name: Check linting
+      #   run: npm run lint
+      - name: Create env file
+        run: |
+          touch .env.local
+          echo TMDB_API_KEY=${{ secrets.TMDB_API_KEY }} >> .env.local
+          echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env.local
+          echo AUTH_REDIRECT_PROXY_URL=${{ secrets.AUTH_REDIRECT_PROXY_URL }} >> .env.local
+          echo NEXTAUTH_GITHUB_ID=${{ secrets.NEXTAUTH_GITHUB_ID }} >> .env.local
+          echo NEXTAUTH_GITHUB_SECRET=${{ secrets.NEXTAUTH_GITHUB_SECRET }} >> .env.local
+          echo TWITCH_ID=${{ secrets.TWITCH_ID }} >> .env.local
+          echo TWITCH_SECRET=${{ secrets.TWITCH_SECRET }} >> .env.local
+          echo EMAIL_SERVER_USER=${{ secrets.EMAIL_SERVER_USER }} >> .env.local
+          echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} >> .env.local
+          echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} >> .env.local
+          echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
+          EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
+          cat env.local
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+        # env:
+        #   LOCAL_URL: 'http://localhost:3000'
+        #   NEXT_PUBLIC_LOCAL_URL: 'http://localhost:3000'
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 10
+      - name: Build
+        run: npm run build

@@ -8,6 +8,15 @@ Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 - checkly should have more tests
 
+CI/CD
+
+- pipeline should be:
+  - push
+  - github action to execute tests
+    - needs to migrate all environment variables to github
+  - fires an event to vercel
+  - vercel deploys
+
 BUGs
 
 - my list shows have no external_ids => cuz i'm not saving them in mongodb

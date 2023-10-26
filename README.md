@@ -69,8 +69,7 @@ $ npm run dev
 
 ## CI
 
-After each push on main branch, Vercel deploys this branch
-When the deployment is done, Vercel fires an event to start the e2e tests
+After each push on _main_ branch, we build, lint, run tests and then build. On success build, we deploy on prod env.
 
 ## Maintainers
 
