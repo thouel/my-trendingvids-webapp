@@ -39,7 +39,7 @@ on:
     branches:
       - main
 jobs:
-  Preflight:
+  Install:
     runs-on: ubuntu-latest
     environment: Dev
     steps:
@@ -71,8 +71,16 @@ jobs:
         run: npm run build
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+  Start:
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
       - name: Start local server
-        run: npm run dev
+        run: npm run start
+  Test:
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
       - name: Run Playwright tests
         run: npx playwright test
         # env:
