@@ -67,8 +67,12 @@ jobs:
           echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
           EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
           cat .env.local
+      - name: Build
+        run: npm run build
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Start local server
+        run: npm run dev
       - name: Run Playwright tests
         run: npx playwright test
         # env:
@@ -80,5 +84,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 10
-      - name: Build
-        run: npm run build
