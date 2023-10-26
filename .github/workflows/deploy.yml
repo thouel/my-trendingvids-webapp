@@ -56,22 +56,21 @@ jobs:
           node-version: 18
       - name: Install Vercel CLI
         run: npm install --global vercel@canary
-      - name: Create env file
+      - name: Push environment variable to Vercel
         run: |
-          touch .env
-          echo ${{ secrets.TMDB_API_KEY }} | vercel env add TMDB_API_KEY preview,production
-          echo ${{ secrets.NEXTAUTH_SECRET }} | vercel env add NEXTAUTH_SECRET preview,production
-          echo AUTH_REDIRECT_PROXY_URL=${{ secrets.AUTH_REDIRECT_PROXY_URL }} | vercel env add AUTH_REDIRECT_PROXY_URL preview,production
-          echo NEXTAUTH_GITHUB_ID=${{ secrets.NEXTAUTH_GITHUB_ID }} | vercel env add NEXTAUTH_GITHUB_ID preview,production
-          echo NEXTAUTH_GITHUB_SECRET=${{ secrets.NEXTAUTH_GITHUB_SECRET }} | vercel env add NEXTAUTH_GITHUB_SECRET preview,production
-          echo TWITCH_ID=${{ secrets.TWITCH_ID }} | vercel env add TWITCH_ID preview,production
-          echo TWITCH_SECRET=${{ secrets.TWITCH_SECRET }} | vercel env add TWITCH_SECRET preview,production
-          echo EMAIL_SERVER_USER=${{ secrets.EMAIL_SERVER_USER }} | vercel env add EMAIL_SERVER_USER preview,production
-          echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} | vercel env add EMAIL_SERVER_PASSWORD preview,production
-          echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} | vercel env add EMAIL_SERVER_HOST preview,production
-          echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} | vercel env add EMAIL_SERVER_PORT preview,production
-          echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} | vercel env add EMAIL_FROM preview,production
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} | vercel env add DATABASE_URL preview,production
+          echo ${{ secrets.TMDB_API_KEY }} | vercel env add TMDB_API_KEY preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo ${{ secrets.NEXTAUTH_SECRET }} | vercel env add NEXTAUTH_SECRET preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo AUTH_REDIRECT_PROXY_URL=${{ secrets.AUTH_REDIRECT_PROXY_URL }} | vercel env add AUTH_REDIRECT_PROXY_URL preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo NEXTAUTH_GITHUB_ID=${{ secrets.NEXTAUTH_GITHUB_ID }} | vercel env add NEXTAUTH_GITHUB_ID preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo NEXTAUTH_GITHUB_SECRET=${{ secrets.NEXTAUTH_GITHUB_SECRET }} | vercel env add NEXTAUTH_GITHUB_SECRET preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo TWITCH_ID=${{ secrets.TWITCH_ID }} | vercel env add TWITCH_ID preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo TWITCH_SECRET=${{ secrets.TWITCH_SECRET }} | vercel env add TWITCH_SECRET preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo EMAIL_SERVER_USER=${{ secrets.EMAIL_SERVER_USER }} | vercel env add EMAIL_SERVER_USER preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo EMAIL_SERVER_PASSWORD=${{ secrets.EMAIL_SERVER_PASSWORD }} | vercel env add EMAIL_SERVER_PASSWORD preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo EMAIL_SERVER_HOST=${{ secrets.EMAIL_SERVER_HOST }} | vercel env add EMAIL_SERVER_HOST preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} | vercel env add EMAIL_SERVER_PORT preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} | vercel env add EMAIL_FROM preview,production --token=${{ secrets.VERCEL_TOKEN }}
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} | vercel env add DATABASE_URL preview,production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Pull Vercel Environment Information
         run: vercel env pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
