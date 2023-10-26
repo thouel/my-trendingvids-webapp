@@ -58,6 +58,7 @@ jobs:
         run: npm install --global vercel@canary
 
       - name: Remove environment variable to Vercel
+        continue-on-error: true
         run: |
           vercel env rm TMDB_API_KEY production --yes --token=${{ secrets.VERCEL_TOKEN }}
           vercel env rm NEXTAUTH_SECRET production --yes --token=${{ secrets.VERCEL_TOKEN }}
