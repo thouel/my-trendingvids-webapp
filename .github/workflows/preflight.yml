@@ -76,6 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Dev
     steps:
+      - run: cat .env.local
       - name: Start local server
         run: npm run start
   Test:
