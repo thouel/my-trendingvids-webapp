@@ -1,6 +1,8 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-if (!process.env.VERCEL) {
+if (process.env.VERCEL) {
+  require('dotenv').config({ path: '.env.production.local' });
+} else {
   require('dotenv').config({ path: '.env.local' });
 }
 
