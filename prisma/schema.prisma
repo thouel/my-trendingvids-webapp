@@ -22,8 +22,22 @@ model Show {
   popularity Float
   voteAverage Float
   voteCount BigInt
+  numberOfSeasons Int
+  homepage String
+  imdbId String
   userIDs String[] @db.ObjectId
   users User[] @relation(fields: [userIDs], references: [id])
+  networkIDs String[] @db.ObjectId
+  networks Network[] @relation(fields: [networkIDs], references: [id])
+}
+
+model Network {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  externalId BigInt @unique
+  logoPath String
+  name String
+  showIDs String[] @db.ObjectId
+  shows Show[] @relation(fields: [showIDs], references: [id])
 }
 
 model User {

@@ -4,8 +4,28 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 export function MyPrismaAdapter(p /* PrismaClient */) {
   return {
     ...PrismaAdapter(p),
+    async getUser(id) {
+      // console.log('getuserById', { id });
+      const u = await p.user.findUnique({
+        where: { id },
+        include: { pinnedShows: true },
+      });
+      // console.log('getUserById', { u });
+      return u;
+    },
+    async getUserByEmail(email) {
+      // console.log('getUserByEmail', { email });
+      const u = await p.user.findUnique({
+        where: { email },
+        include: {
+          pinnedShows: true,
+        },
+      });
+      // console.trace(`getUserByEmail ${u}`);
+      return u;
+    },
     async getUserByAccount(provider_providerAccountId) {
-      console.log('in getUserByAccount', { provider_providerAccountId });
+      // console.log('getUserByAccount', { provider_providerAccountId });
       const account = await p.account.findUnique({
         where: { provider_providerAccountId },
         include: {
@@ -16,7 +36,7 @@ export function MyPrismaAdapter(p /* PrismaClient */) {
           },
         },
       });
-      console.log('Retrieved account', { account });
+      // console.log('getUserByAccount', { account });
       return account?.user ?? null;
     },
     async useVerificationToken(identifier_token) {

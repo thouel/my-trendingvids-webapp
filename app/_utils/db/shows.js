@@ -123,6 +123,14 @@ const saveOrUpdateOne = async (show, user) => {
   let errorCode;
   let savedShow;
   let savedUser;
+  let savedNetworks = [];
+
+  //TODO: simplify if possible with nested writes ?
+  //TODO: at least, add transaction
+
+  console.log('saveOrUpdate show and user', { show, user });
+
+  // const transaction = await prisma.$transaction(async (tx) => {});
 
   try {
     // Save or update the show
@@ -147,7 +155,64 @@ const saveOrUpdateOne = async (show, user) => {
           popularity: show.popularity,
           voteAverage: show.vote_average,
           voteCount: show.vote_count,
+          numberOfSeasons: show.number_of_seasons ?? '',
+          homepage: show.homepage ?? '',
+          imdbId: show.external_ids?.imdb_id,
         },
+      });
+    }
+
+    // Update networks
+    // We do not yet handle the case where a show is being streamed on network A
+    // And a bit later it is not anymore. In this case, we should remove
+    // the link between Network and Show
+    if (show.networks) {
+      show.networks.map(async (n) => {
+        let inDbNetwork = {};
+        try {
+          // Get the network in Db by his name
+          inDbNetwork = await prisma.network.findUniqueOrThrow({
+            where: { externalId: n.externalId ?? n.id },
+          });
+
+          savedNetworks.push(inDbNetwork);
+        } catch (e) {
+          // The network does not exist, create it
+          inDbNetwork = await prisma.network.create({
+            data: {
+              externalId: n.id,
+              name: n.name,
+              logoPath: n.logo_path,
+              showIDs: [savedShow.id],
+            },
+          });
+          savedNetworks.push(inDbNetwork);
+        }
+
+        let savedNetwork = savedNetworks[savedNetworks.length - 1];
+        // Add link to show in network
+        if (savedNetwork.showIDs.indexOf(savedShow.id) <= -1) {
+          savedNetwork = await prisma.network.update({
+            where: { id: savedNetwork.id },
+            data: {
+              showIDs: {
+                push: savedShow.id,
+              },
+            },
+          });
+        }
+
+        // Add link to network in show
+        if (savedShow.networkIDs.indexOf(savedNetwork.id) <= -1) {
+          savedShow = await prisma.show.update({
+            where: { id: savedShow.id },
+            data: {
+              networkIDs: {
+                push: savedNetwork.id,
+              },
+            },
+          });
+        }
       });
     }
 
@@ -193,7 +258,11 @@ const saveOrUpdateOne = async (show, user) => {
         },
       });
     }
+
+    // await transaction.commit();
   } catch (e) {
+    // await transaction.rollback();
+
     errorCode = e.code;
     errorMsg = e.message;
   }

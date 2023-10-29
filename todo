@@ -10,20 +10,21 @@ Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 CI/CD
 
-- pipeline should be:
-  - push
-  - github action to execute tests
-    - needs to migrate all environment variables to github
-  - fires an event to vercel
-  - vercel deploys
+- take care of automatic deopting when building for production
+- analyze @vercel/analytics
 
 BUGs
 
-- my list shows have no external_ids => cuz i'm not saving them in mongodb
-- componentize ShowCard (300+ lines) : start with group all actions in a dedicated component
 - from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 
+Refactorings
+
+- in db/shows.js => refacto the saveOrUpdateOne
+- components/ShowCard (300+ lines) : start by grouping all actions in a dedicated component
+
 CHORES
+
+- Search for //TODO: in code
 
 - GitHub Action: Please update the following actions to use Node.js 20: actions/upload-artifact@v3
 - Remove csr-secured-alone, ssr-secured-alone, ssr-secured-by-middleware

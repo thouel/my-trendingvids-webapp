@@ -1,5 +1,5 @@
 'use client';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import {
   PlusIcon,
@@ -13,9 +13,8 @@ import {
 import { getLabel, isAuthenticated } from '@u/helper';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { isPinned, getBaseUrl } from '@u/helper';
 import { useUrl } from 'nextjs-current-url';
-import { redirect } from 'next/navigation';
+import useShow from 'app/hooks/useShow';
 
 export default function ShowCard({ id, showType, isModal }) {
   const {
@@ -25,43 +24,19 @@ export default function ShowCard({ id, showType, isModal }) {
   } = useSession({
     required: false,
   });
-
-  const [show, setShow] = useState(null);
+  // const [show, setShow] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [isCTAOpen, setIsCTAOpen] = useState(false);
   const [isShowInMyList, setIsShowInMyList] = useState(false);
 
-  useEffect(() => {
-    async function fetchShow(showType) {
-      const pinned = isPinned(showType);
+  const { show, isLoading } = useShow({
+    id: id,
+    showType: showType,
+    setIsShowInMyList: setIsShowInMyList,
+  });
 
-      if (pinned && !session) {
-        redirect('/');
-      }
-
-      if (pinned) {
-        const { pinnedShows } = session.user;
-        const one = pinnedShows.filter((ps) => ps.externalId === parseInt(id));
-        setShow(one[0]);
-      } else {
-        const url = `${getBaseUrl()}/api/show/${showType}/${id}`;
-        console.log('fetching ShowCard', { url });
-
-        await fetch(url, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            setShow(data);
-          });
-      }
-      setIsShowInMyList(pinned);
-      setIsLoading(show !== null);
-    }
-    fetchShow(showType);
-  }, []);
+  console.log('isLoading and show', { isLoading, show });
 
   const { href: currentUrl } = useUrl() ?? {};
   const copyToClipboard = () => {
@@ -141,13 +116,13 @@ export default function ShowCard({ id, showType, isModal }) {
 
         //FIXME: find another way of refreshing the ShowsCarousel
         // router.refresh();
+        // revalidate(/shows/${showType});
       });
   };
 
   if (isLoading) {
     return null;
   }
-  console.log('isLoading and show', { isLoading, show });
 
   /*  */
 
@@ -179,7 +154,10 @@ export default function ShowCard({ id, showType, isModal }) {
   const imdbButton = (
     <a
       target='_blank'
-      href={'https://www.imdb.com/title/' + show.external_ids?.imdb_id}
+      href={
+        'https://www.imdb.com/title/' +
+        (show.external_ids?.imdb_id ?? show.imdbId)
+      }
       className='text-gray-600 hover:text-orange-600'
     >
       <InformationCircleIcon
@@ -302,8 +280,9 @@ export default function ShowCard({ id, showType, isModal }) {
   const seasons =
     showType === 'tvshows' ? (
       <span>
-        {show.number_of_seasons} season
-        {show.number_of_seasons == '1' ? '' : 's'} available on
+        {show.number_of_seasons ?? show.numberOfSeasons} season
+        {show.number_of_seasons ?? show.numberOfSeasons == '1' ? '' : 's'}{' '}
+        available on
       </span>
     ) : (
       ''
@@ -315,9 +294,12 @@ export default function ShowCard({ id, showType, isModal }) {
 
         <div className='flex flex-row justify-start gap-2 place-items-center'>
           {show.networks.map((n) => (
-            <span key={'network_' + n.id} className=''>
+            <span key={'network_' + (n.id ?? n.externalId)} className=''>
               <Image
-                src={'https://image.tmdb.org/t/p/original' + n.logo_path}
+                src={
+                  'https://image.tmdb.org/t/p/original' +
+                  (n.logo_path ?? n.logoPath)
+                }
                 alt={n.name}
                 title={n.name}
                 width={40}
