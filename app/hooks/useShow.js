@@ -1,11 +1,17 @@
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect } from 'react';
 import { isPinned, getBaseUrl } from '@u/helper';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 
-export default function useShow({ id, showType, setIsShowInMyList }) {
-  const [show, setShow] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function useShow({ id, showType }) {
+  // const [show, setShow] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState('');
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isShowInMyList, setIsShowInMyList] = useState(false);
+  let resShow = null;
+  let resErrorMessage = '';
+  let resIsLoading = true;
+  let resIsShowInMyList = false;
   const {
     data: session,
     status,
@@ -25,8 +31,8 @@ export default function useShow({ id, showType, setIsShowInMyList }) {
       if (pinned) {
         const { pinnedShows } = session.user;
         const one = pinnedShows.filter((ps) => ps.externalId === parseInt(id));
-        setShow(one[0]);
-        console.log('show in session', { show });
+        resShow = one[0];
+        console.log('show in session', { resShow });
       } else {
         const url = `${getBaseUrl()}/api/show/${showType}/${id}`;
         console.log('fetching ShowCard', { url });
@@ -36,15 +42,21 @@ export default function useShow({ id, showType, setIsShowInMyList }) {
           headers: { 'Content-Type': 'application/json' },
         })
           .then((res) => res.json())
-          .then((data) => {
-            setShow(data);
+          .then(({ error, show }) => {
+            resErrorMessage = error?.message ?? '';
+            resShow = show;
           });
       }
-      setIsShowInMyList(pinned);
-      setIsLoading(show !== null);
+      resIsShowInMyList = pinned;
+      resIsLoading = resShow !== null;
     }
     fetchShow(showType);
   }, []);
 
-  return { show: show, isLoading: isLoading };
+  return {
+    show: resShow,
+    isLoading: resIsLoading,
+    errorMessage: resErrorMessage,
+    isShowInMyList: resIsShowInMyList,
+  };
 }

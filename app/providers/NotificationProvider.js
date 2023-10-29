@@ -69,7 +69,7 @@ export const NotificationProvider = (props) => {
   return (
     <NotificationContext.Provider value={notificationData}>
       {props.children}
-      <Notification notification={notification} />,
+      <Notification notification={notification} />
       {/* {typeof window !== 'undefined'
         ? createPortal(
             document.body,
