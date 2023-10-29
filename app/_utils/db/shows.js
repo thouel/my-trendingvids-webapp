@@ -155,7 +155,7 @@ const saveOrUpdateOne = async (show, user) => {
           popularity: show.popularity,
           voteAverage: show.vote_average,
           voteCount: show.vote_count,
-          numberOfSeasons: show.number_of_seasons ?? '',
+          numberOfSeasons: show.number_of_seasons ?? 0,
           homepage: show.homepage ?? '',
           imdbId: show.external_ids?.imdb_id,
         },
