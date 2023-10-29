@@ -1,15 +1,13 @@
-'use client';
-import { useSession } from 'next-auth/react';
 import {
   EnvelopeIcon,
   CodeBracketIcon,
   BugAntIcon,
 } from '@heroicons/react/24/outline';
+import { getServerSession } from 'next-auth';
+import { options } from 'app/api/auth/[...nextauth]/options';
 
 export default function Footer() {
-  const { data: session } = useSession({
-    required: false,
-  });
+  const session = getServerSession(options);
 
   const logSession = () => {
     console.log(session);

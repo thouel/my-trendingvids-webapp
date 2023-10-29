@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useNotificationContext } from 'app/hooks/useNotificationContext';
 import { ACTIONS, TYPES } from 'app/providers/NotificationProvider';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const Errors = {
   Configuration: 'Configuration problem',

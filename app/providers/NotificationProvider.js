@@ -1,9 +1,8 @@
 'use client';
 
 import { NotificationContext } from './Contexts';
-import { createPortal } from 'react-dom';
 import Notification from 'app/components/Notification';
-const { useState, useReducer } = require('react');
+const { useReducer } = require('react');
 
 const initialState = [];
 
@@ -70,11 +69,6 @@ export const NotificationProvider = (props) => {
     <NotificationContext.Provider value={notificationData}>
       {props.children}
       <Notification notification={notification} />
-      {/* {typeof window !== 'undefined'
-        ? createPortal(
-            document.body,
-          )
-        : ''} */}
     </NotificationContext.Provider>
   );
 };
