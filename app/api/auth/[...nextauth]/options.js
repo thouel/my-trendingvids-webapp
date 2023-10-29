@@ -5,6 +5,7 @@ import prisma from '@db/db-prisma';
 import { MyPrismaAdapter } from '@db/MyPrismaAdapter';
 import Credentials from 'next-auth/providers/credentials';
 import { createHash } from 'crypto';
+import { getOne } from 'app/_utils/db/users';
 
 const myPrismaAdapter = MyPrismaAdapter(prisma);
 
@@ -114,12 +115,24 @@ export const options /* NextAuthOptions */ = {
 
       // user is filled only when signing in/up
       if ((trigger === 'signIn' || trigger === 'signUp') && user) {
+        let u = null;
+        if (!user.pinnedShows) {
+          // console.log('Fetching pinnedShows');
+          try {
+            u = await getOne(user.email);
+          } catch (e) {
+            console.error(e);
+            u = { pinnedShows: [] };
+          }
+          // console.log('Fetched pinnedShows', { u });
+        }
+
         // pass in from user to token
         return {
           ...token,
           id: user.id,
           pinnedShowsIDs: user.pinnedShowsIDs,
-          pinnedShows: user.pinnedShows ?? [],
+          pinnedShows: user.pinnedShows ?? u.pinnedShows,
         };
       }
       return token;

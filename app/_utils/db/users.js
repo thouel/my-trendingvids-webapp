@@ -45,4 +45,19 @@ const getOrUpsertOne = async (user) => {
   return res;
 };
 
-export { getOrUpsertOne };
+const getOne = async (email) => {
+  let u;
+  try {
+    u = await prisma.user.findUniqueOrThrow({
+      where: { email },
+      include: {
+        pinnedShows: true,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+  return u;
+};
+
+export { getOrUpsertOne, getOne };
