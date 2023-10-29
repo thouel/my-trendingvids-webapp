@@ -13,8 +13,9 @@ export async function GET(req, { params }) {
   console.log(`/show/${st}/${id} url`, { url });
 
   var errorCode, errorMsg;
+  var res = {};
 
-  const res = await fetch(url, {
+  await fetch(url, {
     method: 'GET',
     headers: {
       accept: 'application/json',
@@ -23,11 +24,12 @@ export async function GET(req, { params }) {
   })
     .then((res) => res.json())
     .then((data) => {
-      return data;
+      res.show = data;
     })
     .catch((e) => {
       errorCode = e.code;
       errorMsg = e.message;
+      return {};
     });
 
   if (errorCode || errorMsg) {

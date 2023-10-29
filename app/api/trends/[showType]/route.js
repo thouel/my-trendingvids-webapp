@@ -43,6 +43,7 @@ export async function POST(req, { params }) {
   } catch (e) {
     errorCode = e.code;
     errorMsg = e.message;
+    console.error(e);
   }
 
   if (errorCode || errorMsg) {

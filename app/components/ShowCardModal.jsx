@@ -1,14 +1,13 @@
 'use client';
-import ShowCard from '@c/ShowCard';
+import ShowCard from './ShowCard';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
 
-export default function ShowByTypeAndIdModal({ params }) {
-  console.log('from modal');
+export default function ShowCardModal({ showType, show, isShowInMyList }) {
+  console.log('in ShowCardModal', { show, showType, isShowInMyList });
   const router = useRouter();
   const [open, setOpen] = useState(true);
-  const { showType, id } = params;
   const closeModal = () => {
     setOpen(false);
     router.back();
@@ -41,7 +40,12 @@ export default function ShowByTypeAndIdModal({ params }) {
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
               <Dialog.Panel className='relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl dark:bg-gray-950 sm:my-8 sm:w-full sm:max-w-2xl'>
-                <ShowCard id={id} showType={showType} isModal={true} />
+                <ShowCard
+                  showType={showType}
+                  show={show}
+                  isShowInMyList={isShowInMyList}
+                  isModal={true}
+                />
 
                 <div className='px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6'>
                   <button

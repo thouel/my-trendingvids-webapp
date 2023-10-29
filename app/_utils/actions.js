@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { getBaseUrl, isPinned } from './helper';
 
 /**
  * Dead function. Used only to serve as template
@@ -34,7 +35,7 @@ async function searchShows(prevState, formData) {
       `http://localhost:3000/api/trends/${form.showType}`,
       {
         method: 'POST',
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => data);
@@ -70,4 +71,49 @@ const updateGenresToDisplay = (pShows, pGenres) => {
   return pGenres;
 };
 
-export { updateGenresToDisplay };
+const fetchShow = async (showType, id, session) => {
+  let resShow = null;
+  let resErrorMessage = '';
+  let resIsLoading = true;
+  let resIsShowInMyList = false;
+  const pinned = isPinned(showType);
+
+  if (pinned && !session) {
+    redirect('/');
+  }
+
+  if (pinned) {
+    const { pinnedShows } = session.user;
+    const one = pinnedShows.filter((ps) => ps.externalId === parseInt(id));
+    resShow = one[0];
+    resIsLoading = false;
+  } else {
+    const url = `${getBaseUrl()}/api/show/${showType}/${id}`;
+    console.log('fetchShow', { url });
+
+    await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => res.json())
+      .then(({ error, show }) => {
+        resErrorMessage = error?.message ?? '';
+        resShow = show;
+      })
+      .finally(() => {
+        resIsLoading = false;
+      });
+  }
+  resIsShowInMyList = pinned;
+
+  const res = {
+    show: resShow,
+    isLoading: resIsLoading,
+    errorMessage: resErrorMessage,
+    isShowInMyList: resIsShowInMyList,
+  };
+  console.log('fetchShow res', { res });
+  return res;
+};
+
+export { updateGenresToDisplay, fetchShow };

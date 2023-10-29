@@ -19,8 +19,7 @@ BUGs
 
 Refactorings
 
-- in db/shows.js => refacto the saveOrUpdateOne
-- components/ShowCard (300+ lines) : start by grouping all actions in a dedicated component
+- in db/shows.js => refacto the saveOrUpdateOne: we could push scalar changes directly (no need to update the js object)
 
 CHORES
 
