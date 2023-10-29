@@ -4,8 +4,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
 
-export const dynamic = 'force-dynamic';
-
 export default function ShowByTypeAndIdModal({ params }) {
   console.log('from modal');
   const router = useRouter();
