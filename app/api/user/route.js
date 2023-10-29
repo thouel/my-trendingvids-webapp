@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getOrUpsertOne } from '@db/users';
+import { getOrUpsertOne } from 'app/_utils/db/users';
 
 export async function POST(req) {
   const body = await req.json();

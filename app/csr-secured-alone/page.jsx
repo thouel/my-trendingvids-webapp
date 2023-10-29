@@ -3,7 +3,7 @@
 // client components to useSession
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import UserCard from '@c/UserCard';
+import UserCard from 'app/components/UserCard';
 
 export default function ClientSideRenderedPageSecuredAlone() {
   const { data } = useSession({

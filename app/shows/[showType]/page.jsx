@@ -1,4 +1,4 @@
-import Shows from '@c/Shows';
+import Shows from 'app/components/shows/Shows';
 
 //TODO: Extract the fetch here
 export default function Page({ params, searchParams }) {

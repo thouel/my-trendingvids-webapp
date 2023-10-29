@@ -1,8 +1,8 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
-import Providers from '@p/Providers';
-import Navbar from '@c/Navbar';
-import Footer from '@c/Footer';
+import Providers from './providers/Providers';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 export const metadata = {
   title: 'My Trending Videos Webapp',

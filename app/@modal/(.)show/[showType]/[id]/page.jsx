@@ -1,4 +1,4 @@
-import ShowCardModal from 'app/components/ShowCardModal';
+import ShowCardModal from 'app/components/show/ShowCardModal';
 import { fetchShow } from 'app/_utils/actions';
 import LambdaError from 'app/components/LambdaError';
 import { getServerSession } from 'next-auth';

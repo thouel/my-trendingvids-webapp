@@ -1,4 +1,4 @@
-import SkeletonShowCard from 'app/components/SkeletonShowCard';
+import SkeletonShowCard from 'app/components/show/SkeletonShowCard';
 
 export default function ShowModalLoadingPage() {
   return (

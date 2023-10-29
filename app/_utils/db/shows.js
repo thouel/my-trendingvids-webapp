@@ -1,7 +1,7 @@
 /* To allow a BigInt to be JSON.stringify'd */
-require('@db/bigint-tojson');
+require('./bigint-tojson');
 
-import prisma from '@db/db-prisma';
+import prisma from './db-prisma';
 import { ObjectId } from 'mongodb';
 
 //TODO: rework as PrismaAdapter:

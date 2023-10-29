@@ -1,4 +1,4 @@
-import SignIn from '@c/SignIn';
+import SignIn from 'app/components/auth/SignIn';
 
 export default function SignInPage() {
   return (

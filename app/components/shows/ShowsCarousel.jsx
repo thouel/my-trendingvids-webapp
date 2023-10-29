@@ -1,10 +1,10 @@
 'use client';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import Image from 'next/image';
-import '@splidejs/react-splide/css';
 import { Fragment } from 'react';
-import { getLabel } from '@u/helper';
+import Image from 'next/image';
 import Link from 'next/link';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
+import { getLabel } from 'app/_utils/helper';
 
 export default function ShowsCarousel({ genreLabel, shows, showType }) {
   return (

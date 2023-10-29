@@ -1,11 +1,11 @@
-import { getServerSession, signIn } from 'next-auth';
-import { getProviders, getCsrfToken } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
+import { getProviders, getCsrfToken } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 import SignInProvider from './SignInProvider';
 import SignInCredentials from './SignInCredentials';
 import SignInEmail from './SignInEmail';
-import { cookies } from 'next/headers';
 import SignInError from './SignInError';
 
 export default async function SignIn() {

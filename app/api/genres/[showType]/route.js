@@ -1,7 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
-import { isPinned } from '@u/helper';
+import { isPinned } from 'app/_utils/helper';
 
 export async function GET(req, { params }) {
   try {

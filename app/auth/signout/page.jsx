@@ -1,4 +1,4 @@
-import SignOut from '@c/SignOut';
+import SignOut from 'app/components/auth/SignOut';
 
 export default function SignOutPage() {
   return (

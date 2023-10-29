@@ -1,4 +1,4 @@
-import VerifyRequest from '@c/VerifyRequest';
+import VerifyRequest from 'app/components/auth/VerifyRequest';
 
 export default function VerifyRequestPage() {
   return (

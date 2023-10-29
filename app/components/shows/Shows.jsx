@@ -1,12 +1,11 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
-import { updateGenresToDisplay } from '@u/actions';
+import { updateGenresToDisplay } from 'app/_utils/actions';
+import { isPinned, getBaseUrl } from 'app/_utils/helper';
 import ShowsCarousel from './ShowsCarousel';
 import { getServerSession } from 'next-auth';
 import { options } from 'app/api/auth/[...nextauth]/options';
-import { isPinned, getBaseUrl } from '@u/helper';
-import { redirect } from 'next/navigation';
-import LambdaError from './LambdaError';
+import LambdaError from '../LambdaError';
 
 const getShowsByType = async (session, showType, q) => {
   console.log('getShowsByType', { session, showType, q });

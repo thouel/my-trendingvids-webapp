@@ -1,7 +1,7 @@
 import { options } from 'app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
-import UserCard from '@c/UserCard';
+import UserCard from 'app/components/UserCard';
 
 export default async function ServerSideRenderedPageSecuredAlone() {
   const session = await getServerSession(options);

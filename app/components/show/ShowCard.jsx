@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
-import { getLabel } from '@u/helper';
 import Image from 'next/image';
+import { getLabel } from 'app/_utils/helper';
 import ShowCardTitleAndDescription from './ShowCardTitleAndDescription';
 
 export default function ShowCard({ showType, show, isModal, isShowInMyList }) {

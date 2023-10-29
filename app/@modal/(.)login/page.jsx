@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import Modal from 'react-modal';
 
 export default function LoginModal() {
   const router = useRouter();
