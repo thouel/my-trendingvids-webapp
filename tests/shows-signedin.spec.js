@@ -1,21 +1,17 @@
 // @ts-check
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
-let page;
+// test.use({ storageState: 'playwright/.auth/user.json' });
 
-test.beforeAll(async ({ browser }) => {
-  page = await browser.newPage();
+test('has title', async ({ page }) => {
   await page.goto(process.env.LOCAL_URL);
-});
 
-test.afterAll(async () => await page.close());
-
-test('has title', async () => {
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Trending/);
 });
 
-test('check menu is 3 items long when not logged in', async () => {
+test('check menu is 5 items long when logged in', async ({ page }) => {
+  await page.goto(process.env.LOCAL_URL);
   if (!(await page.getByRole('link', { name: 'TV Shows' }).isVisible())) {
     // click on the menu opener
     page.getByRole('button', { name: 'Open main menu' }).click();
@@ -23,10 +19,13 @@ test('check menu is 3 items long when not logged in', async () => {
 
   await expect(page.getByRole('link', { name: /movies/i })).toBeVisible();
   await expect(page.getByRole('link', { name: /tv shows/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /sign in/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /sign out/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /my profile/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /my shows/i })).toBeVisible();
 });
 
-test('check tv shows load', async () => {
+test('check tv shows load', async ({ page }) => {
+  await page.goto(process.env.LOCAL_URL);
   // if we're on mobile device, the menu is not visible
   if (!(await page.getByRole('link', { name: 'TV Shows' }).isVisible())) {
     // click on the menu opener
@@ -40,12 +39,14 @@ test('check tv shows load', async () => {
   await expect(page.getByText('Animation')).toBeVisible({ timeout: 10000 });
 });
 
-test('check footer is visible', async () => {
+test('check footer is visible', async ({ page }) => {
+  await page.goto(process.env.LOCAL_URL);
   await expect(page.getByRole('link', { name: 'Contact' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Repo' })).toBeVisible();
 });
 
-test('check switching to dark mode is ok', async () => {
+test('check switching to dark mode is ok', async ({ page }) => {
+  await page.goto(process.env.LOCAL_URL);
   await expect(page.getByRole('button', { name: /switch/i })).toBeVisible();
   await page.getByRole('button', { name: /switch/i }).click();
   await expect(page.getByRole('link', { name: /contact/i })).toBeVisible();
@@ -53,15 +54,18 @@ test('check switching to dark mode is ok', async () => {
   await expect(page.locator('xpath=//html/body')).toHaveClass(/text-gray/);
 });
 
-test('signin with github', async () => {
-  if (!(await page.getByRole('link', { name: 'Sign in' }).isVisible())) {
+test('check my shows load', async ({ page }) => {
+  await page.goto(process.env.LOCAL_URL);
+  await page.waitForTimeout(1000);
+  // if we're on mobile device, the menu is not visible
+  if (!(await page.getByRole('link', { name: 'My Shows' }).isVisible())) {
     // click on the menu opener
     page.getByRole('button', { name: 'Open main menu' }).click();
   }
 
-  await page.getByRole('link', { name: 'Sign in' }).click();
+  // click the tv shows link
+  await page.getByRole('link', { name: 'My Shows' }).click();
 
-  await expect(page.getByLabel(/email/i)).toBeVisible();
-  await expect(page.getByRole('button', { name: /twitch/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /github/i })).toBeVisible();
+  // assert we have the animation genre loaded
+  await expect(page.getByText('My List')).toBeVisible({ timeout: 10000 });
 });
