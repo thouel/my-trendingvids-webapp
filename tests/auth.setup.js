@@ -17,7 +17,7 @@ setup('authenticate with github', async ({ page }) => {
     .getByLabel('Username or email address')
     .fill(process.env.TEST_USERNAME);
   await page.getByLabel('Password').fill(process.env.TEST_PASSWORD);
-  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   if (await page.getByRole('button', { name: 'Authorize' }).isVisible()) {
     await page.getByRole('button', { name: 'Authorize' }).click();
   }
