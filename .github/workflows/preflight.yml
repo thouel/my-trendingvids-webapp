@@ -29,6 +29,10 @@ env:
   #=========== MONGODB CONFIG ===========#
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
+  #=========== TEST CONFIG ==============#
+  TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+  TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
   # to tell nextjs to automatically push this client side, we prefix the key with NEXT_PUBLIC
   # @see https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
   # NEXT_PUBLIC_LOCAL_URL=${LOCAL_URL}
@@ -63,11 +67,13 @@ jobs:
           echo EMAIL_SERVER_PORT=${{ secrets.EMAIL_SERVER_PORT }} >> .env.local
           echo EMAIL_FROM=${{ secrets.EMAIL_FROM }} >> .env.local
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env.local
+          echo TEST_USERNAME=${{ secrets.TEST_USERNAME }} >> .env.local
+          echo TEST_PASSWORD=${{ secrets.TEST_PASSWORD }} >> .env.local
           cat .env.local
       - name: Install dependencies
         run: npm ci
-      # - name: Check linting
-      #   run: npm run lint
+      - name: Check linting
+        run: npm run lint
       - name: Build
         run: npm run build
       - name: Install Playwright Browsers
