@@ -1,10 +1,28 @@
+import { fetchShowsByType } from 'app/_utils/actions';
+import { options } from 'app/api/auth/[...nextauth]/options';
 import Shows from 'app/components/shows/Shows';
+import { getServerSession } from 'next-auth';
 
-//TODO: Extract the fetch here
-export default function Page({ params, searchParams }) {
+export default async function Page({ params, searchParams }) {
+  const session = await getServerSession(options);
+  const { shows, genres, isPinned, error } = await fetchShowsByType(
+    session,
+    params.showType,
+    searchParams?.q,
+  );
+
+  if (error) {
+    return <LambdaError />;
+  }
+
   return (
     <>
-      <Shows showType={params.showType} q={searchParams?.q} />
+      <Shows
+        shows={shows}
+        genres={genres}
+        isPinned={isPinned}
+        showType={params.showType}
+      />
     </>
   );
 }

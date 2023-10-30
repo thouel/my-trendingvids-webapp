@@ -19,7 +19,9 @@ BUGs
 
 Refactorings
 
+- addToMyList, removeFromMyList => Change as server actions ?
 - in db/shows.js => refacto the saveOrUpdateOne: we could push scalar changes directly (no need to update the js object)
+- in db/shows.js => we should use transaction
 
 CHORES
 
@@ -30,6 +32,7 @@ CHORES
 - Rework as PrismaAdapter utils/db/shows and utils/db/users
 - The display of pinned shows should be completed by classic display
 - When removing a pinned show, it should refresh the ShowsCarousel behind : add a state in ShowsCarousel and give the setXXX to the modal so that it is rerendered when a change occurs in modal => Problem: ShowCard is not directly embedded in ShowsCarousel (<Link/>)
+  - Revalidate : works fine but can not force a refresh of the component ShowsCarousel
 - Make the caroussel infinite
 - Add a video in the Show Card
 - Add i18n : https://github.com/amannn/next-intlAdd a Command Palette : https://blog.logrocket.com/react-command-palette-tailwind-css-headless-ui/

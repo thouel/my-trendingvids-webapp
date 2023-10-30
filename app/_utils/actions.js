@@ -71,6 +71,71 @@ const updateGenresToDisplay = (pShows, pGenres) => {
   return pGenres;
 };
 
+const fetchShowsByType = async (session, showType, q) => {
+  console.log('fetchShowsByType', { session, showType, q });
+
+  var resShows = [];
+  var resGenres = [];
+  const pinned = isPinned(showType);
+  var resError = null;
+  var url = `${getBaseUrl()}/api/trends/${showType}`;
+
+  console.log('Shows Component', { url });
+
+  await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: session?.user.id }),
+  })
+    .then((res) => res.json())
+    .then(async ({ error, shows }) => {
+      if (error) {
+        console.error('ERROR on API', error);
+        resError = error;
+        return;
+      }
+      // Filter the shows based on query string
+      resShows = q
+        ? shows.filter((s) => {
+            const lowerQ = q.toLowerCase();
+            const label = (s.title ?? s.name).toLowerCase();
+            return label.indexOf(lowerQ) > -1;
+          })
+        : shows;
+    });
+
+  if (!resError && !pinned) {
+    // Now fetch the genres to display shows by genres
+    url = `${getBaseUrl()}/api/genres/${showType}`;
+    console.log('Shows Component', { url });
+
+    await fetch(url, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then(({ error, genres }) => {
+        if (error) {
+          console.error('ERROR on API', error);
+          resError = error;
+          return;
+        }
+        resGenres = updateGenresToDisplay(resShows, genres);
+        resGenres = resGenres.filter((g) => g.found === true);
+      });
+  }
+  // console.log('fetchShowsByType', {
+  //   shows: resShows,
+  //   genres: resGenres,
+  //   isPinned: pinned,
+  // });
+  return {
+    shows: resShows,
+    genres: resGenres,
+    isPinned: pinned,
+    error: resError,
+  };
+};
+
 const fetchShow = async (showType, id, session) => {
   let resShow = null;
   let resErrorMessage = '';
@@ -116,4 +181,4 @@ const fetchShow = async (showType, id, session) => {
   return res;
 };
 
-export { updateGenresToDisplay, fetchShow };
+export { updateGenresToDisplay, fetchShowsByType, fetchShow };
