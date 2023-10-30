@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
 export function MyPrismaAdapter(p /* PrismaClient */) {

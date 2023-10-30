@@ -1,5 +1,6 @@
 import { fetchShowsByType } from 'app/_utils/actions';
 import { options } from 'app/api/auth/[...nextauth]/options';
+import LambdaError from 'app/components/LambdaError';
 import Shows from 'app/components/shows/Shows';
 import { getServerSession } from 'next-auth';
 

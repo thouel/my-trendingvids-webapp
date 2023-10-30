@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { getBaseUrl, isPinned } from './helper';
+import { redirect } from 'next/navigation';
 
 /**
  * Dead function. Used only to serve as template
  * of a ServerAction
  */
+// eslint-disable-next-line no-unused-vars
 async function searchShows(prevState, formData) {
   const showSchema = z
     .string()

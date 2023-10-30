@@ -21,7 +21,7 @@ const Errors = {
   Default: 'Something bad happened',
 };
 
-export default function SignInError({}) {
+export default function SignInError() {
   const error = useSearchParams().get('error');
   const { notificationDispatch } = useNotificationContext();
 

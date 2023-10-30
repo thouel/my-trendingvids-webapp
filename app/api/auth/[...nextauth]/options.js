@@ -3,8 +3,7 @@ import Twitch from 'next-auth/providers/twitch';
 import EmailProvider from 'next-auth/providers/email';
 import prisma from 'app/_utils/db/db-prisma';
 import { MyPrismaAdapter } from 'app/_utils/db/MyPrismaAdapter';
-import Credentials from 'next-auth/providers/credentials';
-import { createHash } from 'crypto';
+import { randomBytes, randomUUID } from 'crypto';
 import { getOne } from 'app/_utils/db/users';
 
 const myPrismaAdapter = MyPrismaAdapter(prisma);
@@ -137,6 +136,7 @@ export const options /* NextAuthOptions */ = {
       }
       return token;
     },
+    // eslint-disable-next-line no-unused-vars
     async session({ session, token, user }) {
       // console.log('session callback', { session, token, user });
 

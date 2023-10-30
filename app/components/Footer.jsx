@@ -30,6 +30,7 @@ export default function Footer() {
       </a>
       <a
         target='_blank'
+        rel='noreferrer'
         href='https://github.com/thouel/my-trendingvids-webapp'
         className='hover:text-orange-600'
       >

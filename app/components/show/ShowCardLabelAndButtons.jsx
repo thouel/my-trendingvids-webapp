@@ -24,6 +24,7 @@ export default function ShowCardLabelAndButtons({
   const { href: currentUrl } = useUrl() ?? {};
   const {
     data: session,
+    // eslint-disable-next-line no-unused-vars
     status,
     update,
   } = useSession({
@@ -140,6 +141,7 @@ export default function ShowCardLabelAndButtons({
   const homepageTitle = 'Go to homepage';
   const homepageButton = (
     <a
+      rel='noreferrer'
       target='_blank'
       href={show.homepage}
       className='text-gray-600 hover:text-orange-600'
@@ -152,6 +154,7 @@ export default function ShowCardLabelAndButtons({
   const imdbTitle = 'Go to IMDb';
   const imdbButton = (
     <a
+      rel='noreferrer'
       target='_blank'
       href={
         'https://www.imdb.com/title/' +

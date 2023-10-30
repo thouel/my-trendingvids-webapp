@@ -12,11 +12,7 @@ export default function useShow({ id, showType }) {
   let resErrorMessage = '';
   let resIsLoading = true;
   let resIsShowInMyList = false;
-  const {
-    data: session,
-    status,
-    update,
-  } = useSession({
+  const { data: session } = useSession({
     required: false,
   });
 

@@ -4,7 +4,6 @@ import { getProviders, getCsrfToken } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import SignInProvider from './SignInProvider';
-import SignInCredentials from './SignInCredentials';
 import SignInEmail from './SignInEmail';
 import SignInError from './SignInError';
 

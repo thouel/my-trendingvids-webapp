@@ -1,6 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
-import { isPinned } from 'app/_utils/helper';
 import ShowsCarousel from './ShowsCarousel';
 
 /**
