@@ -16,6 +16,7 @@ import { useState } from 'react';
 
 export default function ShowCardLabelAndButtons({
   show,
+  showType,
   initialIsShowInMyList,
 }) {
   const [isCTAOpen, setIsCTAOpen] = useState(false);
@@ -39,6 +40,7 @@ export default function ShowCardLabelAndButtons({
     setIsCTAOpen(!isCTAOpen);
   };
 
+  //TODO: transfer as server actions ?
   const addToMyList = async (show) => {
     console.log('addToMyList', show);
     if (!isAuthenticated(session)) {
@@ -51,7 +53,7 @@ export default function ShowCardLabelAndButtons({
       body: JSON.stringify({ show: show, user: session.user }),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         const postResult = data;
         if (postResult.error) {
           // set Error Message(
@@ -62,7 +64,7 @@ export default function ShowCardLabelAndButtons({
         // setErrorMessage('');
 
         // Update the list in session
-        session.user.pinnedShowsIDs.push(postResult.show.externalId);
+        session.user.pinnedShowsIDs.push(postResult.show.id);
         session.user.pinnedShows.push(postResult.show);
         update({
           pinnedShowsIDs: session.user.pinnedShowsIDs,
@@ -70,23 +72,26 @@ export default function ShowCardLabelAndButtons({
         });
 
         setIsShowInMyList(true);
+        await fetch('/api/revalidate?path=/shows/p-shows')
+          .then((res) => res.json())
+          .then((data) => console.log('Revalidate res', { data }));
       });
   };
-
+  //TODO: transfer as server actions ?
   const removeFromMyList = async (show) => {
     console.log('removeFromMyList', { show });
     if (!isAuthenticated(session)) {
       console.log('Needs to authenticate');
       return;
     }
-    const id = show.externalId ?? show.id;
+    const id = show.externalId;
     await fetch(`/api/show/${showType}/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: session.user.id }),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         if (data.error) {
           console.error('Error while removing from My List', data.error);
           // setErrorMessage(data.error.message);
@@ -105,8 +110,9 @@ export default function ShowCardLabelAndButtons({
         setIsShowInMyList(false);
 
         //FIXME: find another way of refreshing the ShowsCarousel
-        // router.refresh();
-        //? revalidate(/shows/${showType});
+        await fetch('/api/revalidate?path=/shows/p-shows')
+          .then((res) => res.json())
+          .then((data) => console.log('Revalidate res', { data }));
       });
   };
 

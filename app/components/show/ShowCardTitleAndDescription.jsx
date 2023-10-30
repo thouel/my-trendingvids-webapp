@@ -17,6 +17,7 @@ export default function ShowCardTitleAndDescription({
     >
       <ShowCardLabelAndButtons
         show={show}
+        showType={showType}
         initialIsShowInMyList={initialIsShowInMyList}
       />
     </Dialog.Title>
@@ -24,6 +25,7 @@ export default function ShowCardTitleAndDescription({
     <h1 className='flex flex-wrap justify-between text-2xl font-semibold'>
       <ShowCardLabelAndButtons
         show={show}
+        showType={showType}
         initialIsShowInMyList={initialIsShowInMyList}
       />
     </h1>
