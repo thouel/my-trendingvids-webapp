@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getOne } from 'app/_utils/db/users';
+import { getOne } from 'app/utils/db/users';
 
 export async function GET(req, { params }) {
   const { email } = params;

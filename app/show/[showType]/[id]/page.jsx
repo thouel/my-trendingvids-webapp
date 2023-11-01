@@ -1,5 +1,5 @@
 import ShowCard from 'app/components/show/ShowCard';
-import { fetchShow } from 'app/_utils/actions';
+import { fetchShow } from 'app/utils/actions';
 import { options } from 'app/api/auth/[...nextauth]/options';
 import LambdaError from 'app/components/LambdaError';
 import { getServerSession } from 'next-auth';

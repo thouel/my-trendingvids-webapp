@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import prisma from 'app/_utils/db/db-prisma';
-import { isPinned } from 'app/_utils/helper';
+import prisma from 'app/utils/db/db-prisma';
+import { isPinned } from 'app/utils/helper';
 
-require('../../../_utils/db/bigint-tojson');
+require('../../../utils/db/bigint-tojson');
 
 export async function POST(req, { params }) {
   var errorCode;
@@ -23,12 +23,10 @@ export async function POST(req, { params }) {
           },
         },
       });
-      console.log('prisma shows:', doc);
       res = { shows: doc };
     } else {
       const st = showType === 'movies' ? 'movie' : 'tv';
       const url = `https://api.themoviedb.org/3/trending/${st}/week?language=en-EN`;
-      console.log(`POST /trends/${showType} url`, { url });
       res = await fetch(url, {
         method: 'GET',
         headers: {
@@ -50,6 +48,6 @@ export async function POST(req, { params }) {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
-  console.log(`POST /trends/${params.showType}`, { res });
+  console.log(`END POST /api/trends/${params.showType}` /* , { res } */);
   return NextResponse.json(res);
 }

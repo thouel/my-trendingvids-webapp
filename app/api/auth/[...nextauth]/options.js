@@ -1,10 +1,10 @@
 import Github from 'next-auth/providers/github';
 import Twitch from 'next-auth/providers/twitch';
 import EmailProvider from 'next-auth/providers/email';
-import prisma from 'app/_utils/db/db-prisma';
-import { MyPrismaAdapter } from 'app/_utils/db/MyPrismaAdapter';
+import prisma from 'app/utils/db/db-prisma';
+import { MyPrismaAdapter } from 'app/utils/db/MyPrismaAdapter';
 import { randomBytes, randomUUID } from 'crypto';
-import { getOne } from 'app/_utils/db/users';
+import { getOne } from 'app/utils/db/users';
 
 const myPrismaAdapter = MyPrismaAdapter(prisma);
 

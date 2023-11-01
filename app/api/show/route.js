@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { saveOrUpdateOne } from 'app/_utils/db/shows';
+import { saveOrUpdateOne } from 'app/utils/db/shows';
 
 export async function POST(req) {
   const body = await req.json();

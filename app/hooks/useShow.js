@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { isPinned, getBaseUrl } from 'app/_utils/helper';
+import { isPinned, getBaseUrl } from 'app/utils/helper';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 

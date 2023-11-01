@@ -19,7 +19,7 @@ const isShowInMyList = (show, session) => {
   if (!session) return false;
 
   return session.user.pinnedShows?.find(
-    (s) => s.name === (show.name || show.title)
+    (s) => s.name === (show.name || show.title),
   );
 };
 
@@ -35,7 +35,6 @@ const getBaseUrl = () => {
   } else {
     res = `${process.env.LOCAL_URL}`;
   }
-  console.log('res', { res });
   return res;
 };
 

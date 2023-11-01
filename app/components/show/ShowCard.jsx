@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import Image from 'next/image';
-import { getLabel } from 'app/_utils/helper';
+import { getLabel } from 'app/utils/helper';
 import ShowCardTitleAndDescription from './ShowCardTitleAndDescription';
 import LambdaError from '../LambdaError';
 

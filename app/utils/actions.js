@@ -73,16 +73,15 @@ const updateGenresToDisplay = (pShows, pGenres) => {
   return pGenres;
 };
 
-const fetchShowsByType = async (session, showType, q) => {
-  console.log('fetchShowsByType', { session, showType, q });
-
+const fetchShowsByType = async ({ queryKey }) => {
+  const { showType, q, session } = queryKey[1];
   var resShows = [];
   var resGenres = [];
   const pinned = isPinned(showType);
   var resError = null;
   var url = `${getBaseUrl()}/api/trends/${showType}`;
 
-  console.log('Shows Component', { url });
+  console.log('fetchShowsByType', { url });
 
   await fetch(url, {
     method: 'POST',
@@ -93,8 +92,7 @@ const fetchShowsByType = async (session, showType, q) => {
     .then(async ({ error, shows }) => {
       if (error) {
         console.error('ERROR on API', error);
-        resError = error;
-        return;
+        throw new Error(error);
       }
       // Filter the shows based on query string
       resShows = q
@@ -109,7 +107,6 @@ const fetchShowsByType = async (session, showType, q) => {
   if (!resError && !pinned) {
     // Now fetch the genres to display shows by genres
     url = `${getBaseUrl()}/api/genres/${showType}`;
-    console.log('Shows Component', { url });
 
     await fetch(url, {
       method: 'GET',
@@ -118,23 +115,16 @@ const fetchShowsByType = async (session, showType, q) => {
       .then(({ error, genres }) => {
         if (error) {
           console.error('ERROR on API', error);
-          resError = error;
-          return;
+          throw new Error(error);
         }
         resGenres = updateGenresToDisplay(resShows, genres);
         resGenres = resGenres.filter((g) => g.found === true);
       });
   }
-  // console.log('fetchShowsByType', {
-  //   shows: resShows,
-  //   genres: resGenres,
-  //   isPinned: pinned,
-  // });
   return {
     shows: resShows,
     genres: resGenres,
     isPinned: pinned,
-    error: resError,
   };
 };
 

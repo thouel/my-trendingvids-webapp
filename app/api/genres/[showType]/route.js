@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { isPinned } from 'app/_utils/helper';
+import { isPinned } from 'app/utils/helper';
 
 export async function GET(req, { params }) {
   try {
@@ -30,6 +30,6 @@ export async function GET(req, { params }) {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
-  console.log('/api/genres/' + params.showType, { res });
+  console.log('END GET /api/genres/' + params.showType /* , { res } */);
   return NextResponse.json(res);
 }
