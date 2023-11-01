@@ -9,7 +9,8 @@ import {
   LinkIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
-import { getLabel, isAuthenticated } from 'app/_utils/helper';
+import { useQueryClient } from '@tanstack/react-query';
+import { getLabel, isAuthenticated } from 'app/utils/helper';
 import { useSession } from 'next-auth/react';
 import { useUrl } from 'nextjs-current-url';
 import { useState } from 'react';
@@ -30,6 +31,7 @@ export default function ShowCardLabelAndButtons({
   } = useSession({
     required: false,
   });
+  const queryClient = useQueryClient();
 
   /**
    * Actions
@@ -73,9 +75,7 @@ export default function ShowCardLabelAndButtons({
         });
 
         setIsShowInMyList(true);
-        await fetch('/api/revalidate?path=/shows/p-shows')
-          .then((res) => res.json())
-          .then((data) => console.log('Revalidate res', { data }));
+        queryClient.invalidateQueries({ queryKey: ['shows-p-shows'] });
       });
   };
   //TODO: transfer as server actions ?
@@ -110,10 +110,8 @@ export default function ShowCardLabelAndButtons({
         });
         setIsShowInMyList(false);
 
-        //FIXME: find another way of refreshing the ShowsCarousel
-        await fetch('/api/revalidate?path=/shows/p-shows')
-          .then((res) => res.json())
-          .then((data) => console.log('Revalidate res', { data }));
+        // Refreshing the ShowsCarousel
+        queryClient.invalidateQueries({ queryKey: ['shows-p-shows'] });
       });
   };
 
