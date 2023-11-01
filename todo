@@ -10,11 +10,16 @@ Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 CI/CD
 
+- REACTIVATE tests
 - take care of automatic deopting when building for production
 - analyze @vercel/analytics
 
 BUGs
 
+- tests: add an optional step that crawls the gmail to check if a confirmation code has been sent when auth'ing with github
+- tests: add a test that auth by mail as well
+- the modal show card loading is in the calling page, not in the modal.
+- we do not have episodes and networks when displaying a pinned tvshow
 - from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 
 Refactorings
@@ -31,8 +36,6 @@ CHORES
 - Remove csr-secured-alone, ssr-secured-alone, ssr-secured-by-middleware
 - Rework as PrismaAdapter utils/db/shows and utils/db/users
 - The display of pinned shows should be completed by classic display
-- When removing a pinned show, it should refresh the ShowsCarousel behind : add a state in ShowsCarousel and give the setXXX to the modal so that it is rerendered when a change occurs in modal => Problem: ShowCard is not directly embedded in ShowsCarousel (<Link/>)
-  - Revalidate : works fine but can not force a refresh of the component ShowsCarousel
 - Make the caroussel infinite
 - Add a video in the Show Card
 - Add i18n : https://github.com/amannn/next-intlAdd a Command Palette : https://blog.logrocket.com/react-command-palette-tailwind-css-headless-ui/
