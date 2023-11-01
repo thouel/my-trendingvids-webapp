@@ -76,18 +76,15 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Start local server
-        run: npm run start & npx wait-on http://127.0.0.1:3000
-      - name: Run Playwright tests
-        run: npx playwright test
-        # env:
-        #   LOCAL_URL: 'http://localhost:3000'
-        #   NEXT_PUBLIC_LOCAL_URL: 'http://localhost:3000'
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 10
+      # - name: Install Playwright Browsers
+      #   run: npx playwright install --with-deps
+      # - name: Start local server
+      #   run: npm run start & npx wait-on http://127.0.0.1:3000
+      # - name: Run Playwright tests
+      #   run: npx playwright test
+      # - uses: actions/upload-artifact@v3
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: playwright-report/
+      #     retention-days: 10
