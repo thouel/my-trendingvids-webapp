@@ -59,7 +59,8 @@ setup('authenticate with github', async ({ page }) => {
     // Copy the code in the right input
     await page.getByPlaceholder('XXXXXX').fill(res[1]);
 
-    // Validate the page
+    // The page seems to be auto-validated once the code
+    // is set.
     //await page.getByRole('button', { name: 'Verify' }).click();
   }
   // --- End of authentication steps
