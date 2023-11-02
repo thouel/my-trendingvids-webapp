@@ -86,7 +86,7 @@ jobs:
       - name: Start local server
         run: npm run start & npx wait-on http://127.0.0.1:3000
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --debug
       - uses: actions/upload-artifact@v3
         if: always()
         with:
