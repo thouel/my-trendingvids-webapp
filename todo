@@ -1,3 +1,7 @@
+Func:
+
+- Add SEO for all pages
+
 Make own sign in / sign out pages
 
 - Remake sent mails: https://next-auth.js.org/providers/email#customizing-emails, https://mjml.io/

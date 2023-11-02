@@ -1,6 +1,13 @@
-import { test as setup } from '@playwright/test';
+import { expect, test as setup } from '@playwright/test';
+import { check_inbox, refresh_access_token } from 'gmail-tester';
 
 const authFile = 'playwright/.auth/user.json';
+const credentialsFile = 'playwright/.auth/credentials.json';
+const tokenFile = 'playwright/.auth/token.json';
+
+setup('refresh mail-tester token', async () => {
+  await refresh_access_token(credentialsFile, tokenFile);
+});
 
 setup('authenticate with github', async ({ page }) => {
   await page.goto(process.env.LOCAL_URL);
@@ -18,8 +25,41 @@ setup('authenticate with github', async ({ page }) => {
     .fill(process.env.TEST_USERNAME);
   await page.getByLabel('Password').fill(process.env.TEST_PASSWORD);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+
+  // Check if there's a 'Authorize' page
   if (await page.getByRole('button', { name: 'Authorize' }).isVisible()) {
     await page.getByRole('button', { name: 'Authorize' }).click();
+  }
+
+  // Check if there's a 'Code Verification' page
+  // The verification code is sent by mail, so
+  // we need to go fetch the mail, get the code
+  // and set it up in the page
+  if (await page.getByRole('button', { name: 'Verify' }).isVisible()) {
+    // Wait for the mail to arrive in inbox
+    await page.waitForTimeout(1000);
+
+    // Get the mail
+    var dateAfter = new Date();
+    dateAfter.setMinutes(dateAfter.getMinutes() - 1);
+    const messages = await check_inbox(credentialsFile, tokenFile, {
+      from: 'noreply@github.com',
+      subject: '[GitHub] Please verify your device',
+      after: dateAfter,
+      include_body: true,
+    });
+
+    expect(messages.length).toBeGreaterThanOrEqual(1);
+
+    // Get the code
+    const regex = /verification code:.(([0-9]){6})/gim;
+    const res = regex.exec(messages[0].body.text);
+
+    // Copy the code in the right input
+    await page.getByPlaceholder('XXXXXX').fill(res[1]);
+
+    // Validate the page
+    await page.getByRole('button', { name: 'Verify' }).click();
   }
   // --- End of authentication steps
 
