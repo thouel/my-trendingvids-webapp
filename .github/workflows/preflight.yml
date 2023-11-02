@@ -79,8 +79,8 @@ jobs:
       - name: Create config files for mail-tester
         run: |
           mkdir -p playwright/.auth
-          echo ${{secrets.TEST_CREDENTIALS}} > playwright/.auth/credentials.json
-          echo ${{secrets.TEST_TOKEN}} > playwright/.auth/token.json
+          echo ${{secrets.TEST_CREDENTIALS}} | base64 -d > playwright/.auth/credentials.json
+          echo ${{secrets.TEST_TOKEN}} | base64 -d > playwright/.auth/token.json
           cat playwright/.auth/credentials.json
           echo "========================="
           cat playwright/.auth/token.json
