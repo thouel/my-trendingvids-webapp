@@ -57,7 +57,7 @@
     {
       "label": "fire test",
       "type": "shell",
-      "command": "npx playwright test",
+      "command": "set DEBUG=pw:api ; npx playwright test",
       "group": {
         "kind": "test"
       },
