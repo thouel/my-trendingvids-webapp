@@ -1,0 +1,85 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "group": "test",
+      "promptOnClose": false
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "npm run build",
+      "group": "test",
+      "promptOnClose": false,
+      "dependsOn": ["lint"]
+    },
+    {
+      "label": "start",
+      "type": "shell",
+      "isBackground": true,
+      "command": "npm run start",
+      "group": "test",
+      "presentation": { "reveal": "silent" },
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "line": 1,
+              "column": 1,
+              "message": 1
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": { "regexp": "." },
+            "endsPattern": { "regexp": "." }
+          }
+        }
+      ],
+      "promptOnClose": false,
+      "dependsOn": ["build"]
+    },
+    {
+      "label": "wait", // server to start
+      "type": "shell",
+      "command": "Start-Sleep -Seconds 3",
+      "group": "test",
+      "promptOnClose": false,
+      "dependsOn": ["start"]
+    },
+    {
+      "label": "fire test",
+      "type": "shell",
+      "command": "npx playwright test",
+      "group": {
+        "kind": "test"
+      },
+      "dependsOn": ["wait"]
+    },
+    {
+      "label": "cleanup",
+      "type": "shell",
+      "command": "echo ${input:terminate}",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "dependsOn": ["fire test"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminate",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "terminateAll"
+    }
+  ]
+}
