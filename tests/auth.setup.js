@@ -64,7 +64,7 @@ setup('authenticate with github', async ({ page }) => {
   // --- End of authentication steps
 
   // Wait for the homepage to load
-  await page.waitForURL(process.env.LOCAL_URL);
+  await page.waitForTimeout(2000);
 
   // Then save the cookies
   await page.context().storageState({ path: authFile });
