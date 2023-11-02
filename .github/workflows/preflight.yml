@@ -78,7 +78,7 @@ jobs:
         run: npm run build
       - name: Create config files for mail-tester
         run: |
-          touch playwright/.auth/credentials.json
+          mkdir -p playwright/.auth && touch playwright/.auth/credentials.json
           echo ${{secrets.TEST_CREDENTIALS}} >> playwright/.auth/credentials.json
           touch playwright/.auth/token.json
           echo ${{secrets.TEST_TOKEN}} >> playwright/.auth/token.json
