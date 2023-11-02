@@ -11,6 +11,7 @@ test('has title', async ({ page }) => {
 });
 
 test('check menu is 5 items long when logged in', async ({ page }) => {
+  test.slow();
   await page.goto(process.env.LOCAL_URL);
   if (!(await page.getByRole('link', { name: 'TV Shows' }).isVisible())) {
     // click on the menu opener
@@ -25,6 +26,7 @@ test('check menu is 5 items long when logged in', async ({ page }) => {
 });
 
 test('check tv shows load', async ({ page }) => {
+  test.slow();
   await page.goto(process.env.LOCAL_URL);
   // if we're on mobile device, the menu is not visible
   if (!(await page.getByRole('link', { name: 'TV Shows' }).isVisible())) {

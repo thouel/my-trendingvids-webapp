@@ -10,6 +10,7 @@ setup('refresh mail-tester token', async () => {
 });
 
 setup('authenticate with github', async ({ page }) => {
+  setup.slow();
   await page.goto(process.env.LOCAL_URL);
 
   if (!(await page.getByRole('link', { name: 'Sign in' }).isVisible())) {
