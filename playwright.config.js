@@ -49,6 +49,7 @@ module.exports = defineConfig({
         ...devices['Desktop Chrome'],
         // Use prepared auth state.
         storageState: 'playwright/.auth/user.json',
+        headless: process.env.CI ? true : false,
       },
       dependencies: ['setup'],
     },
@@ -70,6 +71,7 @@ module.exports = defineConfig({
         ...devices['Pixel 5'],
         // Use prepared auth state.
         storageState: 'playwright/.auth/user.json',
+        headless: process.env.CI ? true : false,
       },
       dependencies: ['setup'],
     },
@@ -79,6 +81,7 @@ module.exports = defineConfig({
         ...devices['iPhone 12'],
         // Use prepared auth state.
         storageState: 'playwright/.auth/user.json',
+        headless: process.env.CI ? true : false,
       },
       dependencies: ['setup'],
     },
