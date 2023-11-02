@@ -60,7 +60,7 @@ setup('authenticate with github', async ({ page }) => {
     await page.getByPlaceholder('XXXXXX').fill(res[1]);
 
     // Validate the page
-    await page.getByRole('button', { name: 'Verify' }).click();
+    //await page.getByRole('button', { name: 'Verify' }).click();
   }
   // --- End of authentication steps
 
