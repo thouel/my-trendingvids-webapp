@@ -78,11 +78,12 @@ jobs:
         run: npm run build
       - name: Create config files for mail-tester
         run: |
-          mkdir -p playwright/.auth && touch playwright/.auth/credentials.json
-          echo ${{secrets.TEST_CREDENTIALS}} >> playwright/.auth/credentials.json
-          touch playwright/.auth/token.json
-          echo ${{secrets.TEST_TOKEN}} >> playwright/.auth/token.json
-          cat playwright/.auth/*.json
+          mkdir -p playwright/.auth
+          echo ${{secrets.TEST_CREDENTIALS}} > playwright/.auth/credentials.json
+          echo ${{secrets.TEST_TOKEN}} > playwright/.auth/token.json
+          cat playwright/.auth/credentials.json
+          echo "========================="
+          cat playwright/.auth/token.json
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Start local server
