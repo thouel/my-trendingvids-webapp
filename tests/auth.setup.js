@@ -70,4 +70,5 @@ setup('authenticate with github', async ({ page }) => {
 
   // Then save the cookies
   await page.context().storageState({ path: authFile });
+  console.log('cookies', await page.context().cookies());
 });
