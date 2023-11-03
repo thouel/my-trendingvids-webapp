@@ -3,8 +3,6 @@ const { defineConfig, devices } = require('@playwright/test');
 
 require('dotenv').config({ path: '.env.local' });
 
-console.log('process.env.CI', process.env.CI);
-console.log('headless', process.env.CI ? true : false);
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
