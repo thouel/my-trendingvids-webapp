@@ -1,4 +1,5 @@
 import { expect, test as setup } from '@playwright/test';
+import prisma from 'app/utils/db/db-prisma';
 import { check_inbox, refresh_access_token } from 'gmail-tester';
 
 const authFile = 'playwright/.auth/user.json';
@@ -66,7 +67,76 @@ setup('authenticate with github', async ({ page }) => {
   // --- End of authentication steps
 
   // Wait for the homepage to load
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(5000);
+
+  console.log(
+    'cookies',
+    (await page.context().cookies()).filter(
+      (c) => c.name.indexOf('next-auth') > -1,
+    ),
+  );
+
+  var foundSessionToken = false;
+  (await page.context().cookies()).filter((c) => {
+    if (c.name.indexOf('next-auth.session-token') > -1)
+      foundSessionToken = true;
+  });
+
+  if (!foundSessionToken) {
+    // This is a dummy random session token
+    const sessionToken = '04456e41-ec3b-4edf-92c1-48c14e57cacd2';
+
+    const date = new Date();
+    const expires = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    await prisma.user.delete({
+      where: {
+        email: 'thoueldev@gmail.com',
+      },
+    });
+
+    // we make sure the test user exists in our database
+    await prisma.user.upsert({
+      where: {
+        email: 'thoueldev@gmail.com',
+      },
+      create: {
+        name: 'thoueldev',
+        email: 'thoueldev@gmail.com',
+        sessions: {
+          create: {
+            expires,
+            sessionToken,
+          },
+        },
+        accounts: {
+          create: {
+            type: 'oauth',
+            provider: 'github',
+            providerAccountId: '2222222',
+            access_token: 'ggg_zZl1pWIvKkf3UDynZ09zLvuyZsm1yC0YoRPt',
+            token_type: 'bearer',
+            scope: 'read:org,read:user,repo,user:email',
+          },
+        },
+      },
+      update: {},
+    });
+
+    // we add a session token cookie
+    await page.context().addCookies([
+      {
+        name: 'next-auth.session-token',
+        value: sessionToken,
+        domain: 'localhost',
+        path: '/',
+        httpOnly: true,
+        sameSite: 'Lax',
+        expires: expires.getTime() / 1000,
+      },
+    ]);
+    console.log('cookie added');
+  }
 
   console.log(
     'cookies',
