@@ -66,9 +66,14 @@ setup('authenticate with github', async ({ page }) => {
   // --- End of authentication steps
 
   // Wait for the homepage to load
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(10000);
 
+  console.log(
+    'cookies',
+    (await page.context().cookies()).filter(
+      (c) => c.name.indexOf('next-auth') > -1,
+    ),
+  );
   // Then save the cookies
   await page.context().storageState({ path: authFile });
-  console.log('cookies', await page.context().cookies());
 });
