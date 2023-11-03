@@ -128,7 +128,7 @@ setup('authenticate with github', async ({ page }) => {
       {
         name: 'next-auth.session-token',
         value: sessionToken,
-        domain: 'localhost',
+        domain: process.env.CI ? '127.0.0.1' : 'localhost',
         path: '/',
         httpOnly: true,
         sameSite: 'Lax',

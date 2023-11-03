@@ -11,6 +11,14 @@ test('has title', async ({ page }) => {
 });
 
 test('check menu is 5 items long when logged in', async ({ page }) => {
+  console.log('check menu is 5 items long when logged in');
+  console.log(
+    'cookies',
+    (await page.context().cookies()).filter(
+      (c) => c.name.indexOf('next-auth') > -1,
+    ),
+  );
+
   await page.goto(process.env.LOCAL_URL);
   if (!(await page.getByRole('link', { name: 'TV Shows' }).isVisible())) {
     // click on the menu opener
