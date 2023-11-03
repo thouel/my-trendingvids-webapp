@@ -47,21 +47,13 @@
       "dependsOn": ["build"]
     },
     {
-      "label": "wait", // server to start
-      "type": "shell",
-      "command": "Start-Sleep -Seconds 3",
-      "group": "test",
-      "promptOnClose": false,
-      "dependsOn": ["start"]
-    },
-    {
       "label": "fire test",
       "type": "shell",
       "command": "set DEBUG=pw:api ; npx playwright test",
       "group": {
         "kind": "test"
       },
-      "dependsOn": ["wait"]
+      "dependsOn": ["start"]
     },
     {
       "label": "cleanup",
