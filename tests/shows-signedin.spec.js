@@ -18,6 +18,7 @@ test('check menu is 5 items long when logged in', async ({ page }) => {
       (c) => c.name.indexOf('next-auth') > -1,
     ),
   );
+  console.log('storageState:', await page.context().storageState());
 
   await page.goto(process.env.LOCAL_URL);
   if (!(await page.getByRole('link', { name: 'TV Shows' }).isVisible())) {

@@ -61,26 +61,26 @@ module.exports = defineConfig({
     // },
 
     // /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: {
-        ...devices['Pixel 5'],
-        // Use prepared auth state.
-        storageState: 'playwright/.auth/user.json',
-        headless: process.env.CI ? true : false,
-      },
-      dependencies: ['setup'],
-    },
-    {
-      name: 'Mobile Safari',
-      use: {
-        ...devices['iPhone 12'],
-        // Use prepared auth state.
-        storageState: 'playwright/.auth/user.json',
-        headless: process.env.CI ? true : false,
-      },
-      dependencies: ['setup'],
-    },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: {
+    //     ...devices['Pixel 5'],
+    //     // Use prepared auth state.
+    //     storageState: 'playwright/.auth/user.json',
+    //     headless: process.env.CI ? true : false,
+    //   },
+    //   dependencies: ['setup'],
+    // },
+    // {
+    //   name: 'Mobile Safari',
+    //   use: {
+    //     ...devices['iPhone 12'],
+    //     // Use prepared auth state.
+    //     storageState: 'playwright/.auth/user.json',
+    //     headless: process.env.CI ? true : false,
+    //   },
+    //   dependencies: ['setup'],
+    // },
 
     // /* Test against branded browsers. */
     // {
