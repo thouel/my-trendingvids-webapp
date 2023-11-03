@@ -144,6 +144,9 @@ setup('authenticate with github', async ({ page }) => {
       (c) => c.name.indexOf('next-auth') > -1,
     ),
   );
+
+  await page.screenshot({ path: 'playwright-report/authends.png' });
+
   // Then save the cookies
   await page.context().storageState({ path: authFile });
 });
