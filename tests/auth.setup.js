@@ -27,10 +27,16 @@ setup('authenticate with github', async ({ page }) => {
   await page.getByLabel('Password').fill(process.env.TEST_PASSWORD);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
 
+  await page.waitForTimeout(5000);
+  console.log('url of page 1:', await page.url().toString());
+
   // Check if there's a 'Authorize' page
   if (await page.getByRole('button', { name: 'Authorize' }).isVisible()) {
     await page.getByRole('button', { name: 'Authorize' }).click();
   }
+
+  await page.waitForTimeout(5000);
+  console.log('url of page 2:', await page.url().toString());
 
   // Check if there's a 'Code Verification' page
   // The verification code is sent by mail, so
@@ -66,6 +72,7 @@ setup('authenticate with github', async ({ page }) => {
   // --- End of authentication steps
 
   await page.waitForTimeout(5000);
+  console.log('url of page 3:', await page.url().toString());
 
   // Wait for the homepage to load
   await Promise.all([
