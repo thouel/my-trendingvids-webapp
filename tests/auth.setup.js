@@ -27,16 +27,10 @@ setup('authenticate with github', async ({ page }) => {
   await page.getByLabel('Password').fill(process.env.TEST_PASSWORD);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
 
-  await page.waitForTimeout(5000);
-  console.log('url of page 1:', await page.url().toString());
-
   // Check if there's a 'Authorize' page
   if (await page.getByRole('button', { name: 'Authorize' }).isVisible()) {
     await page.getByRole('button', { name: 'Authorize' }).click();
   }
-
-  await page.waitForTimeout(5000);
-  console.log('url of page 2:', await page.url().toString());
 
   // Check if there's a 'Code Verification' page
   // The verification code is sent by mail, so
@@ -71,19 +65,8 @@ setup('authenticate with github', async ({ page }) => {
   }
   // --- End of authentication steps
 
-  await page.waitForTimeout(5000);
-  console.log('url of page 3:', await page.url().toString());
-
-  // Wait for the homepage to load
-  await Promise.all([
-    page.waitForResponse(
-      (response) =>
-        response.url().indexOf(process.env.LOCAL_URL) > -1 &&
-        response.status() === 200,
-    ),
-    page.screenshot({ path: 'playwright-report/authends-1.png' }),
-    // expect(page.getByText('Welcome')).toBeVisible(),
-  ]);
+  await expect(page.url()).not.toContain('/auth/signin');
+  await expect(page.getByText('Welcome')).toBeVisible();
 
   console.log(
     'cookies',
