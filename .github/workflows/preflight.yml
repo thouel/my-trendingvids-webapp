@@ -88,7 +88,7 @@ jobs:
       - name: Start local server
         run: npm run start & npx wait-on http://127.0.0.1:3000
       - name: Run Playwright tests
-        run: DEBUG=pw:api xvfb-run npx playwright test shows-signedin --debug
+        run: DEBUG=pw:api xvfb-run npx playwright test shows-signedin
       - uses: actions/upload-artifact@v3
         if: always()
         with:
