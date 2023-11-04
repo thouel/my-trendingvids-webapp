@@ -2,8 +2,8 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 require('dotenv').config({ path: '.env.local' });
 
-async function createIndex() {
-  console.log('Index creation --- START');
+async function dropDatabase() {
+  console.log('Drop database --- START');
   try {
     const client = new MongoClient(process.env.MONGODB_URI, {
       serverApi: {
@@ -15,19 +15,18 @@ async function createIndex() {
 
     await client.connect();
 
-    const collection = client.db().collection('VerificationToken');
-    const res = await collection.createIndex({ identifier: 1, token: 1 });
+    const res = client.db().dropDatabase();
 
     await client.close();
 
-    console.log('VerificationToken index created:', { res });
+    console.log('Database dropped:', { res });
   } catch (e) {
-    console.error('Index creation ERROR', { e });
+    console.error('Drop database ERROR', { e });
     return 1;
   }
-  console.log('Index creation --- END');
+  console.log('Drop database --- END');
   return 0;
 }
 
-await createIndex();
+await dropDatabase();
 process.exit(0);

@@ -83,6 +83,8 @@ jobs:
           echo ${{secrets.TEST_TOKEN}} | base64 -d > playwright/.auth/token.json
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Drop DB
+        run: node dropDatabase.js
       - name: Start local server
         run: npm run start & npx wait-on http://127.0.0.1:3000
       - name: Run Playwright tests
