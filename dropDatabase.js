@@ -21,7 +21,7 @@ async function dropDatabase() {
 
     console.log('Database dropped:', { res });
   } catch (e) {
-    console.error('Drop database ERROR', { e });
+    console.log('Drop database ERROR', { e });
     return 1;
   }
   console.log('Drop database --- END');

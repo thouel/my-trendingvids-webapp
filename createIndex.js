@@ -22,7 +22,7 @@ async function createIndex() {
 
     console.log('VerificationToken index created:', { res });
   } catch (e) {
-    console.error('Index creation ERROR', { e });
+    console.log('Index creation ERROR', { e });
     return 1;
   }
   console.log('Index creation --- END');
