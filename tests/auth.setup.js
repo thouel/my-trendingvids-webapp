@@ -66,12 +66,14 @@ setup('authenticate with github', async ({ page }) => {
   }
   // --- End of authentication steps
 
+  // take a screenshot
+  await page.screenshot({ path: 'playwright-report/authends-1.png' });
+
   // Wait for the homepage to load
-  await page.waitForTimeout(30000);
-  // await Promise.all([
-  //   page.waitForResponse((response) => response.status() === 200),
-  // expect(page.getByText('Welcome')).toBeVisible(),
-  // ]);
+  await Promise.all([
+    page.waitForResponse((response) => response.status() === 200),
+    expect(page.getByText('Welcome')).toBeVisible(),
+  ]);
 
   console.log(
     'cookies',
