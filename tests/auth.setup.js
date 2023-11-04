@@ -89,12 +89,6 @@ setup('authenticate with github', async ({ page }) => {
     const date = new Date();
     const expires = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-    await prisma.user.delete({
-      where: {
-        email: 'thoueldev@gmail.com',
-      },
-    });
-
     // we make sure the test user exists in our database
     await prisma.user.upsert({
       where: {
