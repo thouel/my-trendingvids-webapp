@@ -122,7 +122,18 @@ setup('authenticate with github', async ({ page }) => {
       {
         name: 'next-auth.session-token',
         value: sessionToken,
-        domain: process.env.CI ? '127.0.0.1' : 'localhost',
+        domain: 'localhost',
+        path: '/',
+        httpOnly: true,
+        sameSite: 'Lax',
+        expires: expires.getTime() / 1000,
+      },
+    ]);
+    await page.context().addCookies([
+      {
+        name: 'next-auth.session-token',
+        value: sessionToken,
+        domain: '127.0.0.1',
         path: '/',
         httpOnly: true,
         sameSite: 'Lax',
