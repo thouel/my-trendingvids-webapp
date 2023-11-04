@@ -67,7 +67,7 @@ setup('authenticate with github', async ({ page }) => {
   // --- End of authentication steps
 
   // Wait for the homepage to load
-  page.waitForTimeout(20000);
+  await page.waitForTimeout(20000);
   // await Promise.all([
   //   page.waitForResponse(
   //     (response) =>
