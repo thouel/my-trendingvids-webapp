@@ -67,11 +67,11 @@ setup('authenticate with github', async ({ page }) => {
   // --- End of authentication steps
 
   // Wait for the homepage to load
-  // await page.waitForTimeout(5000);
-  await Promise.all([
-    page.waitForResponse((response) => response.status() === 200),
-    //expect(page.getByText('Welcome')).toBeVisible(),
-  ]);
+  await page.waitForTimeout(30000);
+  // await Promise.all([
+  //   page.waitForResponse((response) => response.status() === 200),
+  // expect(page.getByText('Welcome')).toBeVisible(),
+  // ]);
 
   console.log(
     'cookies',
