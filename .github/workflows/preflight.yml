@@ -78,11 +78,9 @@ jobs:
         run: npm run build
       - name: Create config files for mail-tester
         run: |
-          mkdir -p playwright/.auth
-          echo ${{secrets.TEST_CREDENTIALS}} | base64 -d > playwright/.auth/credentials.json
-          echo ${{secrets.TEST_TOKEN}} | base64 -d > playwright/.auth/token.json
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+          mkdir -p mail-tester/
+          echo ${{secrets.TEST_CREDENTIALS}} | base64 -d > mail-tester/credentials.json
+          echo ${{secrets.TEST_TOKEN}} | base64 -d > mail-tester/token.json
       - name: Drop DB
         run: node dropDatabase.js
       - name: Cypress run
@@ -92,7 +90,7 @@ jobs:
           # Starts web server for E2E tests - replace with your own server invocation
           # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
           start: npm start
-          wait-on: 'http://localhost:3000' # Waits for above
+          wait-on: ${{ env.LOCAL_URL }} # Waits for above
           # Records to Cypress Cloud
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
           record: true
