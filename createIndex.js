@@ -1,37 +1,46 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-
 require('dotenv').config({ path: '.env.local' });
 
-async function createIndex() {
-  console.log('Index creation --- START');
+const uri = process.env.MONGODB_URI;
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+async function run() {
   try {
-    console.log('1');
-    const client = new MongoClient(process.env.MONGODB_URI, {
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      },
-    });
-    console.log('2');
-    client.connect().then(async () => {
-      console.log('3');
-      const collection = client.db().collection('VerificationToken');
-      collection.createIndex({ identifier: 1, token: 1 }).then(async (res) => {
-        console.log('4');
-        await client.close();
-        console.log('VerificationToken index created:', { res });
-      });
-    });
-  } catch (e) {
-    console.log('Index creation ERROR', { e });
-    return 1;
+    // Connect the client to the server (optional starting in v4.7)
+    await client.connect();
+
+    // Send a ping to confirm a successful connection
+    await client.db('admin').command({ ping: 1 });
+    console.log(
+      'Pinged your deployment. You successfully connected to MongoDB!',
+    );
+
+    // Create the Index
+    const result = await client
+      .db()
+      .collection('VerificationToken')
+      .createIndex({ identifier: 1, token: 1 });
+    console.log('Created index', { result });
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
   }
-  console.log('Index creation --- END');
   return 0;
 }
 
-var res = 1;
 (async () => {
-  res = await createIndex();
-})().then(process.exit(res));
+  const res = await run().catch((e) => {
+    console.dir(e);
+    return 1;
+  });
+  console.log('res', { res });
+  process.exit(res);
+})();
