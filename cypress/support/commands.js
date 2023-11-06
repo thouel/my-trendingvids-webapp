@@ -12,21 +12,7 @@
 Cypress.Commands.add('signInByMail', (email, csrfToken) => {
   expect(email).to.be.not.empty;
   expect(csrfToken).to.be.not.empty;
-  console.log('email', { email });
-  console.log('csrfToken', { csrfToken });
 
-  // Go to homepage
-
-  // // Open the sign in page
-  // cy.get('a[href*="/auth/signin"]').click();
-
-  // enter mail
-  // cy.get('#email').type(email);
-
-  // cy.intercept('POST', '/api/auth/signin/email').as('signin');
-
-  // click button
-  //cy.get('button[type=submit][tabindex=2]').click();
   cy.request({
     method: 'POST',
     url: '/api/auth/signin/email',
@@ -38,21 +24,24 @@ Cypress.Commands.add('signInByMail', (email, csrfToken) => {
     },
   });
 
-  // cy.wait('@signin').its('request.body').should('contain', 'csrfToken=');
+  const minutesAgo = new Date();
+  minutesAgo.setMinutes(minutesAgo.getMinutes() - 5);
 
-  // // check the page correctly transitioned
-  // cy.url().should('include', '/auth/verify-request');
-
-  // const oneMinuteAgo = new Date();
-  // oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1);
-
-  // // Calls the task that performs the mail search using mail-tester
-  // cy.task('getLinkInMail', {
-  //   subject: 'Sign in to localhost:3000',
-  //   after: oneMinuteAgo,
-  //   include_body: true,
-  // }).then((link) => {
-  //   // Opens the found link
-  //   cy.visit(link);
-  // });
+  // Calls the task that performs the mail search using mail-tester
+  cy.task(
+    'getLinkInMail',
+    {
+      subject: 'Sign in to localhost:3000',
+      after: minutesAgo,
+      include_body: true,
+    },
+    { log: true, timeout: 10000 },
+  ).then((link) => {
+    // Opens the found link
+    cy.request({
+      method: 'GET',
+      url: link,
+      failOnStatusCode: false,
+    });
+  });
 });

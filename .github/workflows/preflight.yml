@@ -83,8 +83,8 @@ jobs:
           echo ${{secrets.TEST_TOKEN}} | base64 -d > playwright/.auth/token.json
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      # - name: Drop DB
-      #   run: node dropDatabase.js
+      - name: Drop DB
+        run: node dropDatabase.js
       - name: Cypress run
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6

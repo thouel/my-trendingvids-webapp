@@ -1,7 +1,7 @@
-'use client';
+import { cookies } from 'next/headers';
 import { Fragment } from 'react';
 
-export default function SignInCredentials({ token }) {
+export default function SignInEmail({ token }) {
   return (
     <Fragment>
       <p>By email</p>

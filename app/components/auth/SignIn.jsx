@@ -18,14 +18,9 @@ export default async function SignIn() {
     redirect('/');
   }
 
-  cookies();
   const csrfToken = await getCsrfToken({
     req: { headers: { cookie: cookies().toString() } },
   });
-  // const csrfToken = cookies().get('next-auth.csrf-token')?.value.split('|')[0];
-
-  console.log('cookies', cookies().get('next-auth.csrf-token'));
-  console.log('csrfToken', csrfToken);
 
   return (
     <div className='flex flex-col items-center justify-center gap-3 mx-5'>
