@@ -9,6 +9,7 @@ import { getOne } from 'app/utils/db/users';
 const myPrismaAdapter = MyPrismaAdapter(prisma);
 
 export const options /* NextAuthOptions */ = {
+  debug: true,
   adapter: myPrismaAdapter,
   pages: {
     signIn: '/auth/signin',
@@ -101,6 +102,11 @@ export const options /* NextAuthOptions */ = {
       },
     }) ,*/,
   ],
+  events: {
+    async error({ e }) {
+      console.log('ERROR', { e });
+    },
+  },
   callbacks: {
     async jwt({ token, user, session, trigger }) {
       // console.log('jwt callback', { token, user, session, trigger });

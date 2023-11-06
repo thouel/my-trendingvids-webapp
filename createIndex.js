@@ -29,8 +29,9 @@ async function createIndex() {
   return 0;
 }
 
+var res = 1;
 (async () => {
-  await createIndex();
+  res = await createIndex();
 })();
 
-process.exit(0);
+process.exit(res);

@@ -27,7 +27,7 @@ env:
   EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
 
   # TEST CONFIG
-  TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+  TEST_MAIL: ${{ secrets.TEST_MAIL }}
   TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
   # to tell nextjs to automatically push this client side, we prefix the key with NEXT_PUBLIC
@@ -73,7 +73,7 @@ jobs:
           vercel env rm EMAIL_SERVER_HOST production --yes --token=${{ secrets.VERCEL_TOKEN }}
           vercel env rm EMAIL_SERVER_PORT production --yes --token=${{ secrets.VERCEL_TOKEN }}
           vercel env rm EMAIL_FROM production --yes --token=${{ secrets.VERCEL_TOKEN }}
-          vercel env rm TEST_USERNAME production --yes --token=${{ secrets.VERCEL_TOKEN }}
+          vercel env rm TEST_MAIL production --yes --token=${{ secrets.VERCEL_TOKEN }}
           vercel env rm TEST_PASSWORD production --yes --token=${{ secrets.VERCEL_TOKEN }}
       - name: Push environment variable to Vercel
         run: |
@@ -89,7 +89,7 @@ jobs:
           echo -n ${{ secrets.EMAIL_SERVER_HOST }} | vercel env add EMAIL_SERVER_HOST production --token=${{ secrets.VERCEL_TOKEN }}
           echo -n ${{ secrets.EMAIL_SERVER_PORT }} | vercel env add EMAIL_SERVER_PORT production --token=${{ secrets.VERCEL_TOKEN }}
           echo -n ${{ secrets.EMAIL_FROM }} | vercel env add EMAIL_FROM production --token=${{ secrets.VERCEL_TOKEN }}
-          echo -n ${{ secrets.TEST_USERNAME }} | vercel env add TEST_USERNAME production --token=${{ secrets.VERCEL_TOKEN }}
+          echo -n ${{ secrets.TEST_MAIL }} | vercel env add TEST_MAIL production --token=${{ secrets.VERCEL_TOKEN }}
           echo -n ${{ secrets.TEST_PASSWORD }} | vercel env add TEST_PASSWORD production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Pull Vercel Environment Information
         run: vercel env pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}

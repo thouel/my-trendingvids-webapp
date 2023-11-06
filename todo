@@ -14,7 +14,7 @@ Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 CI/CD
 
-- REACTIVATE tests
+- remove completely playwright
 - take care of automatic deopting when building for production
 - analyze @vercel/analytics
 

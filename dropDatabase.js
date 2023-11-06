@@ -28,8 +28,9 @@ async function dropDatabase() {
   return 0;
 }
 
+var res = 1;
 (async () => {
-  await dropDatabase();
+  res = await dropDatabase();
 })();
 
-process.exit(0);
+process.exit(res);
