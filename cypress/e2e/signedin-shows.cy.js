@@ -1,25 +1,8 @@
-const login = (mail) => {
+const signIn = (mail) => {
   cy.session(
     mail.toString(),
     () => {
-      var csrfToken = '';
-      cy.visit('/');
-
-      cy.visit('/auth/signin').then(() => {
-        cy.getCookie('next-auth.csrf-token')
-          .then((cookie) => {
-            csrfToken = cookie.value.split('%7C')[0];
-            cy.log('csrfToken', { csrfToken });
-          })
-          .then(() => {
-            cy.signInByMail(mail, csrfToken).then((res) => {
-              console.log('res', { res });
-              expect(res.status).to.eq(200);
-              expect(res.body).not.to.include('Sign in with');
-              expect(res.body).to.include('Welcome');
-            });
-          });
-      });
+      cy.signIn(mail);
     },
     {
       validate: () => {
@@ -46,7 +29,11 @@ describe('signedin-menu-and-shows', () => {
   });
   beforeEach(() => {
     const mail = Cypress.env('TEST_MAIL');
-    login(mail);
+    signIn(mail);
+    cy.visit('/');
+  });
+  afterEach(() => {
+    cy.signOut();
     cy.visit('/');
   });
 
@@ -64,6 +51,7 @@ describe('signedin-menu-and-shows', () => {
     // Opens the first show card of the first line
     cy.get('#splide01-slide01').click();
 
+    //TODO: could be refactored using .as() to store the element
     var title = '';
     cy.get('h1 > div[title]')
       .then((el) => {

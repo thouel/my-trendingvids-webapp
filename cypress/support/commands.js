@@ -45,3 +45,33 @@ Cypress.Commands.add('signInByMail', (email, csrfToken) => {
     });
   });
 });
+
+Cypress.Commands.add('signIn', (email) => {
+  var csrfToken = '';
+  cy.visit('/');
+
+  cy.visit('/auth/signin').then(() => {
+    cy.getCookie('next-auth.csrf-token')
+      .then((cookie) => {
+        csrfToken = cookie.value.split('%7C')[0];
+        cy.log('csrfToken', { csrfToken });
+      })
+      .then(() => {
+        cy.signInByMail(email, csrfToken).then((res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body).not.to.include('Sign in with');
+          expect(res.body).to.include('Welcome');
+        });
+      });
+  });
+});
+
+Cypress.Commands.add('signOut', () => {
+  cy.request({
+    method: 'GET',
+    url: '/api/auth/signout?callbackUrl=/',
+    failOnStatusCode: false,
+  });
+  cy.clearCookie(Cypress.env('SESSION_COOKIE_NAME'));
+  cy.getCookie(Cypress.env('SESSION_COOKIE_NAME')).should('not.exist');
+});
