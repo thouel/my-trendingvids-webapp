@@ -49,7 +49,7 @@
     {
       "label": "fire test",
       "type": "shell",
-      "command": "set DEBUG=pw:api ; npx playwright test",
+      "command": "npm run cy:run",
       "group": {
         "kind": "test"
       },

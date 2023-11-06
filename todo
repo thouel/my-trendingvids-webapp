@@ -12,6 +12,10 @@ Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 - checkly should have more tests
 
+TESTS
+
+- login cypress function should be extracted somewhere else
+
 CI/CD
 
 - remove completely playwright

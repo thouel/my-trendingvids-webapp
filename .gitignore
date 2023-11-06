@@ -8,4 +8,5 @@ node_modules
 /playwright/.cache/
 /playwright/.auth
 cypress.env.json
+cypress/screenshots/
 /mail-tester/

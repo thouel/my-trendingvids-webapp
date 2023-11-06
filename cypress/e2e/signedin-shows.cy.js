@@ -1,49 +1,52 @@
-describe('signin', () => {
-  before(() => {
-    const mail = Cypress.env('TEST_MAIL');
+const login = (mail) => {
+  cy.session(
+    mail.toString(),
+    () => {
+      var csrfToken = '';
+      cy.visit('/');
 
-    Cypress.session.clearAllSavedSessions();
-
-    cy.session(
-      mail.toString(),
-      () => {
-        var csrfToken = '';
-        cy.visit('/');
-
-        cy.visit('/auth/signin').then(() => {
-          cy.getCookie('next-auth.csrf-token')
-            .then((cookie) => {
-              csrfToken = cookie.value.split('%7C')[0];
-              cy.log('csrfToken', { csrfToken });
-            })
-            .then(() => {
-              cy.signInByMail(mail, csrfToken).then((res) => {
-                console.log('res', { res });
-                expect(res.status).to.eq(200);
-                expect(res.body).not.to.include('Sign in with');
-                expect(res.body).to.include('Welcome');
-              });
+      cy.visit('/auth/signin').then(() => {
+        cy.getCookie('next-auth.csrf-token')
+          .then((cookie) => {
+            csrfToken = cookie.value.split('%7C')[0];
+            cy.log('csrfToken', { csrfToken });
+          })
+          .then(() => {
+            cy.signInByMail(mail, csrfToken).then((res) => {
+              console.log('res', { res });
+              expect(res.status).to.eq(200);
+              expect(res.body).not.to.include('Sign in with');
+              expect(res.body).to.include('Welcome');
             });
+          });
+      });
+    },
+    {
+      validate: () => {
+        // Search across all cookies if each session cookie has a value property
+        var found = false;
+        cy.getCookies().then((cookies) => {
+          cookies.map((c) => {
+            if (c.name.startsWith(Cypress.env('SESSION_COOKIE_NAME'))) {
+              expect(c.value).to.be.not.empty;
+              found = true;
+            }
+          });
+          expect(found).to.be.true;
         });
       },
-      {
-        validate: () => {
-          // Search across all cookies if each session cookie has a value property
-          var found = false;
-          cy.getCookies().then((cookies) => {
-            cookies.map((c) => {
-              if (c.name.startsWith(Cypress.env('SESSION_COOKIE_NAME'))) {
-                expect(c.value).to.be.not.empty;
-                found = true;
-              }
-            });
-            expect(found).to.be.true;
-          });
-        },
-      },
-    );
+      // cacheAcrossSpecs: true,
+    },
+  );
+};
+
+describe('signedin-menu-and-shows', () => {
+  before(() => {
+    Cypress.session.clearAllSavedSessions();
   });
   beforeEach(() => {
+    const mail = Cypress.env('TEST_MAIL');
+    login(mail);
     cy.visit('/');
   });
 
@@ -69,10 +72,12 @@ describe('signin', () => {
       })
       .then(() => {
         // Adds this show to my list
-        cy.get('button > svg[alt*="Add to"]').click();
+        cy.get('button svg[alt*="Add to"]').parent().click();
 
-        // Checks that the movie has been added to my list
-        expect(cy.get('button > svg[alt*="Remove from"]')).to.be.not.null;
+        // Checks that the movie has been added to my list and the button changed
+        cy.get('button > svg[alt*="Remove from"]', { timeout: 10000 }).should(
+          'be.visible',
+        );
 
         // Close the show card
         cy.get('button:contains("Close")').click();
@@ -80,8 +85,9 @@ describe('signin', () => {
         // Opens the My list page
         cy.get('a[href*="/shows/p-shows"]').click();
 
-        // Checks that the title of the image is the same as the one we added a few steps before
-        // Then open the show card
+        // Checks that the title of the image is the same as the one
+        // we added a few steps before,
+        // then open the show card
         cy.get(`a[href] > img[title="${title}"]:first`)
           .should('be.visible')
           .click();
