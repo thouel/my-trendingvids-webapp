@@ -14,7 +14,6 @@ Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
 
 CI/CD
 
-- remove completely playwright
 - take care of automatic deopting when building for production
 - analyze @vercel/analytics
 
@@ -22,7 +21,6 @@ BUGs
 
 - possible to add the same show in pinnedShows many times
 - the modal show card loading is in the calling page, not in the modal.
-- we do not have episodes and networks when displaying a pinned tvshow
 - from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 
 Refactorings
