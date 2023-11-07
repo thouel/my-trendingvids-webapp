@@ -4,16 +4,16 @@ const { check_inbox } = require('gmail-tester');
 require('dotenv').config({ path: '.env.local' });
 
 module.exports = defineConfig({
-  env: {
-    LOCAL_URL: process.env.LOCAL_URL,
-    TEST_MAIL: process.env.TEST_MAIL,
-    MAIL_CREDENTIALS_PATH: './mail-tester/credentials.json',
-    MAIL_TOKEN_PATH: './mail-tester/token.json',
-    SESSION_COOKIE_NAME: 'next-auth.session-token',
-    CSRF_COOKIE_NAME: 'next-auth.csrf-token',
-  },
   projectId: '78ae92',
   e2e: {
+    env: {
+      LOCAL_URL: process.env.LOCAL_URL,
+      TEST_MAIL: process.env.TEST_MAIL,
+      MAIL_CREDENTIALS_PATH: './mail-tester/credentials.json',
+      MAIL_TOKEN_PATH: './mail-tester/token.json',
+      SESSION_COOKIE_NAME: 'next-auth.session-token',
+      CSRF_COOKIE_NAME: 'next-auth.csrf-token',
+    },
     baseUrl: process.env.LOCAL_URL,
     setupNodeEvents(on) {
       on('task', {

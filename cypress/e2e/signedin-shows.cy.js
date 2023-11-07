@@ -9,7 +9,8 @@ const signIn = (mail) => {
         // Search across all cookies if each session cookie has a value property
         var found = false;
         cy.getCookies().then((cookies) => {
-          cookies.map((c) => {
+          cookies.map((c, i) => {
+            cy.log(`cookie[${i}]`, c.name);
             if (c.name.startsWith(Cypress.env('SESSION_COOKIE_NAME'))) {
               expect(c.value).to.be.not.empty;
               found = true;
