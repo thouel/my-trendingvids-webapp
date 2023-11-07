@@ -37,10 +37,12 @@ Cypress.Commands.add('signInByMail', (email, csrfToken) => {
     },
     { log: true, timeout: 10000 },
   ).then((link) => {
+    const url = link.split(':3000')[1];
+    cy.log('opening', { url });
     // Opens the found link
     cy.request({
       method: 'GET',
-      url: link,
+      url: url,
       failOnStatusCode: false,
     });
   });
