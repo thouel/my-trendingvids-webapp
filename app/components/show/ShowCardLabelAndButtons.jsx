@@ -14,6 +14,7 @@ import { getLabel, isAuthenticated } from 'app/utils/helper';
 import { useSession } from 'next-auth/react';
 import { useUrl } from 'nextjs-current-url';
 import { useState } from 'react';
+import { getHref } from '../../utils/helper';
 
 export default function ShowCardLabelAndButtons({
   show,
@@ -141,7 +142,7 @@ export default function ShowCardLabelAndButtons({
     <a
       rel='noreferrer'
       target='_blank'
-      href={show.homepage}
+      href={getHref(show.homepage)}
       className='text-gray-600 hover:text-orange-600'
     >
       <HomeIcon className='w-6 h-6' alt={homepageTitle} title={homepageTitle} />

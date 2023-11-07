@@ -31,7 +31,8 @@ export default function ShowCardTitleAndDescription({
     </h1>
   );
   const seasons =
-    showType === 'tvshows' ? (
+    showType === 'tvshows' ||
+    (showType === 'p-shows' && show.mediaType === 'tv') ? (
       <span>
         {show.number_of_seasons ?? show.numberOfSeasons} season
         {show.number_of_seasons ?? show.numberOfSeasons == '1' ? '' : 's'}{' '}
@@ -41,7 +42,8 @@ export default function ShowCardTitleAndDescription({
       ''
     );
   const networks =
-    showType === 'tvshows' ? (
+    showType === 'tvshows' ||
+    (showType === 'p-shows' && show.mediaType === 'tv') ? (
       <div className='flex flex-col gap-2 mt-2 sm:flex-row'>
         {seasons}
 

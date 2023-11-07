@@ -19,6 +19,9 @@ const getOneById = async (pId) => {
       where: {
         externalId: pId,
       },
+      include: {
+        networks: true,
+      },
     });
   } catch (e) {
     errorCode = e.code;
@@ -42,6 +45,9 @@ const getMyShows = async (userId) => {
     myShows = await prisma.show.findMany({
       where: {
         users: { every: { id: new ObjectId(userId) } },
+      },
+      include: {
+        networks: true,
       },
     });
   } catch (e) {
@@ -73,6 +79,7 @@ const removeShowFromMyListByExternalId = async (externalId, userId) => {
     // get the show
     show = await prisma.show.findUniqueOrThrow({
       where: { externalId: externalId },
+      include: { networks: true },
     });
 
     // search for the index of user in the array
@@ -139,6 +146,9 @@ const saveOrUpdateOne = async (show, user) => {
         where: {
           name: show.name ?? show.title,
         },
+        include: {
+          networks: true,
+        },
       });
     } catch (e) {
       savedShow = await prisma.show.create({
@@ -151,7 +161,7 @@ const saveOrUpdateOne = async (show, user) => {
           originalName: show.original_name ?? show.original_title,
           overview: show.overview,
           posterPath: show.poster_path,
-          mediaType: show.media_type ?? '',
+          mediaType: show.number_of_seasons ? 'tv' : 'movie',
           popularity: show.popularity,
           voteAverage: show.vote_average,
           voteCount: show.vote_count,
@@ -224,16 +234,20 @@ const saveOrUpdateOne = async (show, user) => {
         },
       });
 
-      savedUser.pinnedShowsIDs.push(savedShow.id);
+      // Only updates the pinnedShows with the current show if it is not already
+      // in the pinnedShows of the user (no duplicates)
+      if (savedUser.pinnedShowsIDs.indexOf(savedShow.id) <= -1) {
+        savedUser.pinnedShowsIDs.push(savedShow.id);
 
-      savedUser = await prisma.user.update({
-        where: {
-          email: savedUser.email,
-        },
-        data: {
-          pinnedShowsIDs: savedUser.pinnedShowsIDs,
-        },
-      });
+        savedUser = await prisma.user.update({
+          where: {
+            email: savedUser.email,
+          },
+          data: {
+            pinnedShowsIDs: savedUser.pinnedShowsIDs,
+          },
+        });
+      }
     } catch (e) {
       savedUser = await prisma.user.create({
         data: {
@@ -246,8 +260,8 @@ const saveOrUpdateOne = async (show, user) => {
     /* Finally update the user linked to the show */
 
     // First, search for the user id in the show
+    // If it does not exist, we have something to do
     if (savedShow.userIDs.indexOf(savedUser.id) <= -1) {
-      // If it does not exist, we have something to do
       savedShow.userIDs.push(savedUser.id);
       savedShow = await prisma.show.update({
         where: {

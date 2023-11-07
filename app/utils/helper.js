@@ -38,6 +38,10 @@ const getBaseUrl = () => {
   return res;
 };
 
+const getHref = (href) => {
+  return href === null || href === '' ? '#' : href;
+};
+
 const isDarkTheme = () =>
   localStorage.theme === 'dark' ||
   (!('theme' in localStorage) &&
@@ -50,4 +54,5 @@ export {
   isShowInMyList,
   getBaseUrl,
   isDarkTheme,
+  getHref,
 };

@@ -51,7 +51,11 @@ const getOne = async (email) => {
     u = await prisma.user.findUniqueOrThrow({
       where: { email },
       include: {
-        pinnedShows: true,
+        pinnedShows: {
+          include: {
+            networks: true,
+          },
+        },
       },
     });
   } catch (e) {

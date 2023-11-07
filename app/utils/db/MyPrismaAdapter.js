@@ -7,7 +7,13 @@ export function MyPrismaAdapter(p /* PrismaClient */) {
       console.log('getuserById', { id });
       const u = await p.user.findUnique({
         where: { id },
-        include: { pinnedShows: true },
+        include: {
+          pinnedShows: {
+            include: {
+              networks: true,
+            },
+          },
+        },
       });
       console.log('getUserById', { u });
       return u;
@@ -17,7 +23,11 @@ export function MyPrismaAdapter(p /* PrismaClient */) {
       const u = await p.user.findUnique({
         where: { email },
         include: {
-          pinnedShows: true,
+          pinnedShows: {
+            include: {
+              networks: true,
+            },
+          },
         },
       });
       console.trace(`getUserByEmail ${u}`);
@@ -30,7 +40,11 @@ export function MyPrismaAdapter(p /* PrismaClient */) {
         include: {
           user: {
             include: {
-              pinnedShows: true,
+              pinnedShows: {
+                include: {
+                  networks: true,
+                },
+              },
             },
           },
         },

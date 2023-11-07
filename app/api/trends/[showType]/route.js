@@ -22,6 +22,9 @@ export async function POST(req, { params }) {
             has: userId,
           },
         },
+        include: {
+          networks: true,
+        },
       });
       res = { shows: doc };
     } else {
