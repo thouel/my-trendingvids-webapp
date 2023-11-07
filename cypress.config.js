@@ -9,6 +9,8 @@ module.exports = defineConfig({
     TEST_MAIL: process.env.TEST_MAIL,
     MAIL_CREDENTIALS_PATH: './mail-tester/credentials.json',
     MAIL_TOKEN_PATH: './mail-tester/token.json',
+    SESSION_COOKIE_NAME: 'next-auth.session-token',
+    CSRF_COOKIE_NAME: 'next-auth.csrf-token',
   },
   projectId: '78ae92',
   e2e: {
