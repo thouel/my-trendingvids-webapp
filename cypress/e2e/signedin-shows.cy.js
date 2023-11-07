@@ -6,7 +6,7 @@ describe('signedin-menu-and-shows', () => {
   });
   beforeEach(() => {
     const mail = Cypress.env('TEST_MAIL');
-    cy.signIn(mail);
+    cy.signInByAPI(mail);
     cy.visit('/');
   });
   afterEach(() => {

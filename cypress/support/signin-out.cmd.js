@@ -37,7 +37,7 @@ Cypress.Commands.add('signInByMail', (email, csrfToken) => {
   });
 });
 
-Cypress.Commands.add('signIn', (email) => {
+Cypress.Commands.add('signInByAPI', (email) => {
   cy.log(`signIn using ${email}`);
   cy.session(
     email.toString(),

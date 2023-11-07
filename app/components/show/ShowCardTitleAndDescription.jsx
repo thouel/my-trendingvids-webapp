@@ -46,9 +46,8 @@ export default function ShowCardTitleAndDescription({
     (showType === 'p-shows' && show.mediaType === 'tv') ? (
       <div className='flex flex-col gap-2 mt-2 sm:flex-row'>
         {seasons}
-
         <div className='flex flex-row justify-start gap-2 place-items-center'>
-          {show.networks.map((n) => (
+          {show.networks?.map((n) => (
             <span key={'network_' + (n.id ?? n.externalId)} className=''>
               <Image
                 src={
