@@ -1,5 +1,8 @@
 const { defineConfig } = require('cypress');
 const { check_inbox } = require('gmail-tester');
+// const prisma = require('./app/utils/db/db-prisma');
+const teardown = require('./scripts/teardown');
+const init = require('./scripts/init');
 
 require('dotenv').config({ path: '.env.local' });
 
@@ -14,6 +17,10 @@ module.exports = defineConfig({
       SESSION_COOKIE_NAME: 'next-auth.session-token',
       CSRF_COOKIE_NAME: 'next-auth.csrf-token',
     },
+    specPattern: [
+      'cypress/api/*.spec.{js,jsx,ts,tsx}',
+      'cypress/e2e/*.cy.{js,jsx,ts,tsx}',
+    ],
     baseUrl: process.env.LOCAL_URL,
     setupNodeEvents(on) {
       on('task', {
@@ -39,12 +46,17 @@ module.exports = defineConfig({
 
           return link;
         },
+        'db:teardown': () => teardown(),
+        'db:init': () => init(),
       });
       // implement node event listeners here
     },
   },
 
   component: {
+    env: {
+      LOCAL_URL: process.env.LOCAL_URL,
+    },
     devServer: {
       framework: 'next',
       bundler: 'webpack',
