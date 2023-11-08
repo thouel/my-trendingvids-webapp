@@ -39,7 +39,7 @@ model Network {
   updatedAt           DateTime      @updatedAt
   externalId          BigInt        @unique
   logoPath            String
-  name                String
+  name                String        @unique
   showIDs             String[]      @db.ObjectId
   shows               Show[]        @relation(fields: [showIDs], references: [id])
 }

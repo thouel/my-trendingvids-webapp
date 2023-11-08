@@ -125,168 +125,94 @@ const removeShowFromMyListByExternalId = async (externalId, userId) => {
   return res;
 };
 
+const externalToDBNetworks = (networks) => {
+  const res = [];
+
+  networks?.map((n) => {
+    res.push({
+      name: n.name,
+      externalId: n.id,
+      logoPath: n.logo_path,
+    });
+  });
+
+  return res;
+};
+
 const saveOrUpdateOne = async (show, user) => {
   let errorMsg;
   let errorCode;
   let savedShow;
   let savedUser;
-  let savedNetworks = [];
-
-  //TODO: simplify if possible with nested writes ?
-  //TODO: at least, add transaction
-
   console.log('saveOrUpdate show and user', { show, user });
 
-  // const transaction = await prisma.$transaction(async (tx) => {});
-
   try {
-    // Save or update the show
-    try {
-      savedShow = await prisma.show.findUniqueOrThrow({
-        where: {
-          name: show.name ?? show.title,
-        },
-        include: {
-          networks: true,
-        },
-      });
-    } catch (e) {
-      savedShow = await prisma.show.create({
-        data: {
-          externalId: show.id,
-          adult: show.adult,
-          backdropPath: show.backdrop_path,
-          name: show.name ?? show.title,
-          originalLanguage: show.original_language,
-          originalName: show.original_name ?? show.original_title,
-          overview: show.overview,
-          posterPath: show.poster_path,
-          mediaType: show.number_of_seasons ? 'tv' : 'movie',
-          popularity: show.popularity,
-          voteAverage: show.vote_average,
-          voteCount: show.vote_count,
-          numberOfSeasons: show.number_of_seasons ?? 0,
-          homepage: show.homepage ?? '',
-          imdbId: show.external_ids?.imdb_id,
-        },
-      });
-    }
-
-    // Update networks
-    // We do not yet handle the case where a show is being streamed on network A
-    // And a bit later it is not anymore. In this case, we should remove
-    // the link between Network and Show
-    if (show.networks) {
-      show.networks.map(async (n) => {
-        let inDbNetwork = {};
-        try {
-          // Get the network in Db by his name
-          inDbNetwork = await prisma.network.findUniqueOrThrow({
-            where: { externalId: n.externalId ?? n.id },
-          });
-
-          savedNetworks.push(inDbNetwork);
-        } catch (e) {
-          // The network does not exist, create it
-          inDbNetwork = await prisma.network.create({
-            data: {
-              externalId: n.id,
-              name: n.name,
-              logoPath: n.logo_path,
-              showIDs: [savedShow.id],
-            },
-          });
-          savedNetworks.push(inDbNetwork);
-        }
-
-        let savedNetwork = savedNetworks[savedNetworks.length - 1];
-        // Add link to show in network
-        if (savedNetwork.showIDs.indexOf(savedShow.id) <= -1) {
-          savedNetwork = await prisma.network.update({
-            where: { id: savedNetwork.id },
-            data: {
-              showIDs: {
-                push: savedShow.id,
-              },
-            },
-          });
-        }
-
-        // Add link to network in show
-        if (savedShow.networkIDs.indexOf(savedNetwork.id) <= -1) {
-          savedShow = await prisma.show.update({
-            where: { id: savedShow.id },
-            data: {
-              networkIDs: {
-                push: savedNetwork.id,
-              },
-            },
-          });
-        }
-      });
-    }
-
-    // Update the user
-    try {
-      savedUser = await prisma.user.findUniqueOrThrow({
-        where: {
-          email: user.email ?? user.name,
-        },
-      });
-
-      // Only updates the pinnedShows with the current show if it is not already
-      // in the pinnedShows of the user (no duplicates)
-      if (savedUser.pinnedShowsIDs.indexOf(savedShow.id) <= -1) {
-        savedUser.pinnedShowsIDs.push(savedShow.id);
-
-        savedUser = await prisma.user.update({
+    await prisma.$transaction(async (tx) => {
+      // Save or update the show
+      try {
+        savedShow = await tx.show.findUniqueOrThrow({
           where: {
-            email: savedUser.email,
+            name: show.name ?? show.title,
           },
+          include: {
+            networks: true,
+          },
+        });
+      } catch (e) {
+        const networksDB = externalToDBNetworks(show.networks);
+
+        savedShow = await tx.show.create({
           data: {
-            pinnedShowsIDs: savedUser.pinnedShowsIDs,
+            externalId: show.id,
+            adult: show.adult,
+            backdropPath: show.backdrop_path,
+            name: show.name ?? show.title,
+            originalLanguage: show.original_language,
+            originalName: show.original_name ?? show.original_title,
+            overview: show.overview,
+            posterPath: show.poster_path,
+            mediaType: show.number_of_seasons ? 'tv' : 'movie',
+            popularity: show.popularity,
+            voteAverage: show.vote_average,
+            voteCount: show.vote_count,
+            numberOfSeasons: show.number_of_seasons ?? 0,
+            homepage: show.homepage ?? '',
+            imdbId: show.external_ids?.imdb_id,
+            networks: {
+              connectOrCreate: networksDB.map((n) => {
+                return {
+                  create: n,
+                  where: { name: n.name },
+                };
+              }),
+            },
           },
         });
       }
-    } catch (e) {
-      savedUser = await prisma.user.create({
-        data: {
-          email: user.email ?? user.name,
-          pinnedShowsIDs: [savedShow.id],
-        },
-      });
-    }
 
-    /* Finally update the user linked to the show */
-
-    // First, search for the user id in the show
-    // If it does not exist, we have something to do
-    if (savedShow.userIDs.indexOf(savedUser.id) <= -1) {
-      savedShow.userIDs.push(savedUser.id);
-      savedShow = await prisma.show.update({
+      // Updates the user
+      savedUser = await tx.user.update({
         where: {
-          id: savedShow.id,
+          email: user.email ?? user.name,
         },
         data: {
-          userIDs: savedShow.userIDs,
+          pinnedShows: {
+            connect: { id: savedShow.id },
+          },
         },
       });
-    }
-
-    // await transaction.commit();
+    });
   } catch (e) {
-    // await transaction.rollback();
-
     errorCode = e.code;
     errorMsg = e.message;
   }
-  var res = {
-    show: savedShow,
-    user: savedUser,
-  };
-  if (errorCode || errorMsg) {
-    res.error = { code: errorCode, message: errorMsg };
-  }
+  var res = errorMsg
+    ? { error: { code: errorCode, message: errorMsg } }
+    : {
+        show: savedShow,
+        user: savedUser,
+      };
+
   return res;
 };
 

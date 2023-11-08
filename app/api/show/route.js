@@ -6,5 +6,5 @@ export async function POST(req) {
   const { show, user } = body;
   const res = await saveOrUpdateOne(show, user);
   console.log('POST /show', { res });
-  return NextResponse.json(res);
+  return NextResponse.json(res, { status: res?.error?.message ? 400 : 200 });
 }

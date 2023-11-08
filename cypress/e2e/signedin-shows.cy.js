@@ -1,8 +1,7 @@
-// import { signIn } from 'cypress/support/e2e.js';
-
 describe('signedin-menu-and-shows', () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
+    cy.task('db:teardown');
   });
   beforeEach(() => {
     const mail = Cypress.env('TEST_MAIL');
