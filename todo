@@ -9,7 +9,12 @@ Make own sign in / sign out pages
 TESTs
 
 - Add mobile testing
-- Add API testing
+- Add API testing:
+  - show/[showType]/[id]
+  - shows/me
+  - trends/[showType]
+  - user/[email]
+  - user
 
 CI/CD
 
@@ -23,6 +28,7 @@ BUGs
 
 Refactorings
 
+- remove pinnedShows from session. Just use ids
 - addToMyList, removeFromMyList => Change as server actions ?
 - in db/shows.js => refacto the saveOrUpdateOne: we could push scalar changes directly (no need to update the js object)
 - in db/shows.js => we should use transaction
