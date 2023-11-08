@@ -6,11 +6,10 @@ Make own sign in / sign out pages
 
 - Remake sent mails: https://next-auth.js.org/providers/email#customizing-emails, https://mjml.io/
 
-Add a profile picture top right
+TESTs
 
-Set Vercel Checks up : https://vercel.com/docs/observability/checks-overview
-
-- checkly should have more tests
+- Add mobile testing
+- Add API testing
 
 CI/CD
 
@@ -19,7 +18,6 @@ CI/CD
 
 BUGs
 
-- possible to add the same show in pinnedShows many times
 - the modal show card loading is in the calling page, not in the modal.
 - from ../p-shows, why clicking outside of the Modal redirects to ../movies (and vice versa) ?
 

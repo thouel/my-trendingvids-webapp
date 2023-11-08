@@ -51,7 +51,7 @@ Using:
 - [Github](https://github.com/thouel/my-trendingvids-webapp/tree/main) to host app sources
 - [GitHub Actions](https://github.com/thouel/my-trendingvids-webapp/actions) to automate continuous integration & fire Vercel deployment
 - [Vercel](https://vercel.com/) to deploy automatically (after each push on main) [@see here](https://my-trendingvids-webapp.vercel.app)
-- [Playwright](https://playwright.dev) to write UI and API tests. They are started with a GitHub Action started after vercel fires the deployment event
+- ~~[Playwright](https://playwright.dev)~~ [Cypress](https://docs.cypress.io/guides/overview/why-cypress) to write UI and API tests. They are started in [Preflight](https://github.com/thouel/my-trendingvids-webapp/actions/workflows/preflight.yml/) (GitHub Action) before deploying to Vercel
 
 ## Install
 
