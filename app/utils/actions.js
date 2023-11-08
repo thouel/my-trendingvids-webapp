@@ -26,13 +26,6 @@ async function searchShows(prevState, formData) {
       showType: formData.get('showType'),
     });
 
-    // const filePath = path.join(
-    //   process.cwd(),
-    //   `/app/(trends)/_data/trending_${data.showType}_week.json`
-    // );
-    // const byteData = await fs.readFile(filePath);
-    // const jsonData = await JSON.parse(byteData);
-
     var results = await fetch(
       `http://localhost:3000/api/trends/${form.showType}`,
       {
