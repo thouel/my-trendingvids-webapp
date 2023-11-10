@@ -36,8 +36,8 @@ export async function GET(req, { params }) {
   if (errorMsg) {
     res.error = { message: errorMsg };
   }
-  console.log(`GET /show/${st}/${id}`, { res });
-  return NextResponse.json(res, { status: res?.error?.message ? 400 : 200 });
+  console.log(`GET /api/show/${st}/${id}`, { res });
+  return NextResponse.json(res, { status: res.error?.message ? 400 : 200 });
 }
 
 /**
@@ -47,7 +47,8 @@ export async function GET(req, { params }) {
 export async function DELETE(req, { params }) {
   const body = await req.json();
   const { userId } = body;
-  const res = await removeShowFromMyListByExternalId(params.id, userId);
-  console.log(`DELETE /show/${params.showType}/${params.id}`, { res });
-  return NextResponse.json(res, { status: res?.error?.message ? 400 : 200 });
+  const { id: showId } = params;
+  const res = await removeShowFromMyListByExternalId(showId, userId);
+  console.log(`DELETE /api/show/${params.showType}/${showId}`, { res });
+  return NextResponse.json(res, { status: res.error?.message ? 400 : 200 });
 }

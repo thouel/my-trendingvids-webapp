@@ -1,5 +1,6 @@
 /* To allow a BigInt to be JSON.stringify'd */
 require('./bigint-tojson');
+import { isInt, isHex } from '../numberHelper';
 
 import prisma from './db-prisma';
 import { ObjectId } from 'mongodb';
@@ -68,50 +69,70 @@ const removeShowFromMyListByExternalId = async (externalId, userId) => {
   var user;
 
   try {
+    if (!isInt(externalId)) {
+      throw Error(`Unknown show [${externalId}]`);
+    }
+    if (!isHex(userId) || userId.length != 24) {
+      throw Error(`Unknown user [${userId}]`);
+    }
+
     // We assume that both user and show already exists.
-
-    // In order to update an array of String, we need to fetch
-    // the document, update the array in javascript then update
-    // the document in mongo
-
-    /* Suppress link between show and user (in show) */
-
-    // get the show
-    show = await prisma.show.findUniqueOrThrow({
-      where: { externalId: externalId },
-      include: { networks: true },
-    });
-
-    // search for the index of user in the array
-    var idx = show.userIDs.indexOf(userId);
-    // remove the user linked to the show
-    show.userIDs.splice(idx, 1);
-
-    // update the show in db
     show = await prisma.show.update({
-      where: { id: show.id },
+      where: { externalId: externalId },
       data: {
-        userIDs: show.userIDs,
+        users: {
+          disconnect: [{ id: userId }],
+        },
+      },
+      include: {
+        networks: true,
       },
     });
 
-    /* Suppress link between user and show (in user) */
-
-    // get the user
     user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
 
-    // search for the index of show in the array
-    idx = user.pinnedShowsIDs.indexOf(show.id);
-    // remove the show linked to the user
-    user.pinnedShowsIDs.splice(idx, 1);
+    // // In order to update an array of String, we need to fetch
+    // // the document, update the array in javascript then update
+    // // the document in mongo
 
-    // update the user in db
-    user = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        pinnedShowsIDs: user.pinnedShowsIDs,
-      },
-    });
+    // /* Suppress link between show and user (in show) */
+
+    // // get the show
+    // show = await prisma.show.findUniqueOrThrow({
+    //   where: { externalId: externalId },
+    //   include: { networks: true },
+    // });
+
+    // // search for the index of user in the array
+    // var idx = show.userIDs.indexOf(userId);
+    // // remove the user linked to the show
+    // show.userIDs.splice(idx, 1);
+
+    // // update the show in db
+    // show = await prisma.show.update({
+    //   where: { id: show.id },
+    //   data: {
+    //     userIDs: show.userIDs,
+    //   },
+    // });
+
+    // /* Suppress link between user and show (in user) */
+
+    // // get the user
+    // user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+
+    // // search for the index of show in the array
+    // idx = user.pinnedShowsIDs.indexOf(show.id);
+    // // remove the show linked to the user
+    // user.pinnedShowsIDs.splice(idx, 1);
+
+    // // update the user in db
+    // user = await prisma.user.update({
+    //   where: { id: userId },
+    //   data: {
+    //     pinnedShowsIDs: user.pinnedShowsIDs,
+    //   },
+    // });
   } catch (e) {
     errorCode = e.code;
     errorMsg = e.message;
@@ -148,7 +169,7 @@ const saveOrUpdateOne = async (show, user) => {
 
   try {
     await prisma.$transaction(async (tx) => {
-      // Save or update the show
+      // Save or create the show
       try {
         savedShow = await tx.show.findUniqueOrThrow({
           where: {
@@ -190,7 +211,7 @@ const saveOrUpdateOne = async (show, user) => {
         });
       }
 
-      // Updates the user
+      // Updates the user with the showId
       savedUser = await tx.user.update({
         where: {
           email: user.email ?? user.name,
@@ -198,6 +219,16 @@ const saveOrUpdateOne = async (show, user) => {
         data: {
           pinnedShows: {
             connect: { id: savedShow.id },
+          },
+        },
+      });
+
+      // Finally, update the show with userId
+      savedShow = await tx.show.update({
+        where: { id: savedShow.id },
+        data: {
+          users: {
+            connect: { id: savedUser.id },
           },
         },
       });

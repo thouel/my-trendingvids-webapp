@@ -1,7 +1,7 @@
 const url = '/api/show';
 
 describe('Test the /api/show route', () => {
-  before(() => {
+  beforeEach(() => {
     cy.task('db:teardown');
     cy.task('db:init');
   });
@@ -74,6 +74,7 @@ describe('Test the /api/show route', () => {
         expect(res.body.user).not.to.be.undefined;
         expect(res.body.user.pinnedShowsIDs).to.have.length(1);
         expect(res.body.user.pinnedShowsIDs).include(res.body.show.id);
+        expect(res.body.show.userIDs).include(res.body.user.id);
         expect(res.body.error).to.not.exist;
         expect(res.body.error?.message).to.not.exist;
       });
@@ -91,6 +92,7 @@ describe('Test the /api/show route', () => {
           expect(res.body.user).not.to.be.undefined;
           expect(res.body.user.pinnedShowsIDs).to.have.length(2);
           expect(res.body.user.pinnedShowsIDs).include(res.body.show.id);
+          expect(res.body.show.userIDs).include(res.body.user.id);
           expect(res.body.error).to.not.exist;
           expect(res.body.error?.message).to.not.exist;
         });
@@ -112,6 +114,7 @@ describe('Test the /api/show route', () => {
         expect(res.body.show.name).equals('Pain Hustlers');
         expect(res.body.user).not.to.be.undefined;
         expect(res.body.user.pinnedShowsIDs).include(res.body.show.id);
+        expect(res.body.show.userIDs).include(res.body.user.id);
         expect(res.body.error).to.not.exist;
         expect(res.body.error?.message).to.not.exist;
       });

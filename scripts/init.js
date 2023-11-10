@@ -1,4 +1,3 @@
-// scripts/teardown.js
 const { PrismaClient } = require('@prisma/client');
 
 async function init() {
