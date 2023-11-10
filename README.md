@@ -24,6 +24,7 @@ A responsive webapp to visualize the current TV shows and movies trends :
 
 - [Background](#background)
 - [Install](#install)
+- [Test](#test)
 - [Usage](#usage)
 - [Example](#example)
 - [CI](#ci)
@@ -59,7 +60,20 @@ Using:
 $ npm i react@latest react-dom@latest next@13.4.19
 ```
 
+## Test
+
+We use [gmail-tester](https://www.npmjs.com/package/gmail-tester) to get signin mails.
+To set it up or in case you see an `invalid_grant` error, please follow the steps 2. and 3. of the gmail-tester npm page.
+
+You need to set the `credentials.json` and `token.json` files in the directory `mail-tester` at the root of the application. See mail-tester.example
+
 ## Usage
+
+We use [TMDB API](https://developer.themoviedb.org/docs) to fetch live data of trending movies and tvshows. You need to get your own API_KEY in order to make it work.
+
+We use [MongoDB Atlas](https://www.mongodb.com/atlas/database) as mongodb host. You can get your own and set up the uri.
+
+We use a gmail account to send magic links to the users who want to signin. To set this up, you need to [create & use an app password](https://support.google.com/accounts/answer/185833?sjid=12187193246270210576-EU). Preferably, you will use a side-account to do that. Do not use your main. You also can use a custom smtp server.
 
 ```
 $ npm run dev
