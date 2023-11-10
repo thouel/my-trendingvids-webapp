@@ -10,9 +10,8 @@ TESTs
 
 - Add mobile testing
 - Add API testing:
-  - show/[showType]/[id]
-  - shows/me
   - trends/[showType]
+  - shows/me
   - user/[email]
   - user
 
