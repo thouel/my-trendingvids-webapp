@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from 'app/utils/db/db-prisma';
-import { isPinned } from 'app/utils/helper';
+import { areMyShowsRequested } from 'app/utils/helper';
 
 require('../../../utils/db/bigint-tojson');
 
@@ -13,9 +13,9 @@ export async function POST(req, { params }) {
     const { userId } = body;
     const { showType } = params;
 
-    const pinned = isPinned(showType);
+    const myShowsAreRequested = areMyShowsRequested(showType);
 
-    if (pinned) {
+    if (myShowsAreRequested) {
       const doc = await prisma.show.findMany({
         where: {
           userIDs: {
@@ -51,6 +51,6 @@ export async function POST(req, { params }) {
   if (errorCode || errorMsg) {
     res.error = { code: errorCode, message: errorMsg };
   }
-  console.log(`END POST /api/trends/${params.showType}` /* , { res } */);
+  console.log(`END POST /api/trends/${params.showType}`, { res });
   return NextResponse.json(res);
 }

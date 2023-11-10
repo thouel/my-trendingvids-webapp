@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
-import { isPinned } from 'app/utils/helper';
+import { removePrefixFromShowType } from 'app/utils/helper';
 
 export async function GET(req, { params }) {
   try {
     var errorCode, errorMsg;
     var res = {};
     var { showType } = params;
-    if (isPinned(showType)) {
-      showType = showType.substring(2);
-    }
+    showType = removePrefixFromShowType(showType);
     const st = showType === 'movies' ? 'movie' : 'tv';
     const url = `https://api.themoviedb.org/3/genre/${st}/list?language=en`;
     res = await fetch(url, {

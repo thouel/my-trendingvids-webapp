@@ -12,7 +12,7 @@ export async function GET(req, { params }) {
   const url = `https://api.themoviedb.org/3/${st}/${params.id}?language=en-EN&append_to_response=external_ids`;
   console.log(`/show/${st}/${id} url`, { url });
 
-  var errorCode, errorMsg;
+  var errorMsg;
   var res = {};
 
   await fetch(url, {
@@ -23,20 +23,21 @@ export async function GET(req, { params }) {
     },
   })
     .then((res) => res.json())
-    .then((data) => {
-      res.show = data;
+    .then((json) => {
+      if (json.success != undefined && json.success === false) {
+        throw Error(json.status_message);
+      }
+      res.show = json;
     })
     .catch((e) => {
-      errorCode = e.code;
       errorMsg = e.message;
-      return {};
     });
 
-  if (errorCode || errorMsg) {
-    res.error = { code: errorCode, message: errorMsg };
+  if (errorMsg) {
+    res.error = { message: errorMsg };
   }
   console.log(`GET /show/${st}/${id}`, { res });
-  return NextResponse.json(res);
+  return NextResponse.json(res, { status: res?.error?.message ? 400 : 200 });
 }
 
 /**
@@ -48,5 +49,5 @@ export async function DELETE(req, { params }) {
   const { userId } = body;
   const res = await removeShowFromMyListByExternalId(params.id, userId);
   console.log(`DELETE /show/${params.showType}/${params.id}`, { res });
-  return NextResponse.json(res);
+  return NextResponse.json(res, { status: res?.error?.message ? 400 : 200 });
 }

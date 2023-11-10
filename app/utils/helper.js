@@ -11,16 +11,18 @@ const isAuthenticated = (session) => {
   return session?.user !== undefined;
 };
 
-const isPinned = (showType) => {
+const removePrefixFromShowType = (showType) => {
+  return showType.indexOf('p-') > -1 ? showType.substring(2) : showType;
+};
+
+const areMyShowsRequested = (showType) => {
   return showType.indexOf('p-') > -1;
 };
 
-const isShowInMyList = (show, session) => {
+const isShowInMyList = (id, session) => {
   if (!session) return false;
 
-  return session.user.pinnedShows?.find(
-    (s) => s.name === (show.name || show.title),
-  );
+  return session.user.pinnedShows.some((s) => s.externalId == id);
 };
 
 const getBaseUrl = () => {
@@ -50,7 +52,8 @@ const isDarkTheme = () =>
 export {
   getLabel,
   isAuthenticated,
-  isPinned,
+  removePrefixFromShowType,
+  areMyShowsRequested,
   isShowInMyList,
   getBaseUrl,
   isDarkTheme,

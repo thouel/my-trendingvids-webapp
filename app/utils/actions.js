@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getBaseUrl, isPinned } from './helper';
+import { areMyShowsRequested, getBaseUrl, isShowInMyList } from './helper';
 import { redirect } from 'next/navigation';
 
 /**
@@ -70,7 +70,7 @@ const fetchShowsByType = async ({ queryKey }) => {
   const { showType, q, session } = queryKey[1];
   var resShows = [];
   var resGenres = [];
-  const pinned = isPinned(showType);
+  const myShowsAreRequested = areMyShowsRequested(showType);
   var resError = null;
   var url = `${getBaseUrl()}/api/trends/${showType}`;
 
@@ -97,7 +97,7 @@ const fetchShowsByType = async ({ queryKey }) => {
         : shows;
     });
 
-  if (!resError && !pinned) {
+  if (!resError && !myShowsAreRequested) {
     // Now fetch the genres to display shows by genres
     url = `${getBaseUrl()}/api/genres/${showType}`;
 
@@ -117,7 +117,7 @@ const fetchShowsByType = async ({ queryKey }) => {
   return {
     shows: resShows,
     genres: resGenres,
-    isPinned: pinned,
+    isPinned: myShowsAreRequested,
   };
 };
 
@@ -126,13 +126,14 @@ const fetchShow = async (showType, id, session) => {
   let resErrorMessage = '';
   let resIsLoading = true;
   let resIsShowInMyList = false;
-  const pinned = isPinned(showType);
+  const myShowsAreRequested = areMyShowsRequested(showType);
+  const thisShowIsInMyList = isShowInMyList(id, session);
 
-  if (pinned && !session) {
+  if (myShowsAreRequested && !session) {
     redirect('/');
   }
 
-  if (pinned) {
+  if (myShowsAreRequested) {
     const { pinnedShows } = session.user;
     const one = pinnedShows.filter((ps) => ps.externalId === parseInt(id));
     resShow = one[0];
@@ -154,8 +155,8 @@ const fetchShow = async (showType, id, session) => {
         resIsLoading = false;
       });
   }
-  resIsShowInMyList = pinned;
-
+  resIsShowInMyList = myShowsAreRequested || thisShowIsInMyList;
+  console.log('shows boolean', { myShowsAreRequested, thisShowIsInMyList });
   const res = {
     show: resShow,
     isLoading: resIsLoading,
