@@ -1,3 +1,7 @@
+Cypress.Commands.add('refreshMailToken', () => {
+  cy.task('mail:refreshToken');
+});
+
 Cypress.Commands.add('signInByMail', (email, csrfToken) => {
   expect(email).to.be.not.empty;
   expect(csrfToken).to.be.not.empty;
@@ -18,7 +22,7 @@ Cypress.Commands.add('signInByMail', (email, csrfToken) => {
 
   // Calls the task that performs the mail search using mail-tester
   cy.task(
-    'getLinkInMail',
+    'mail:getLink',
     {
       subject: 'Sign in to localhost:3000',
       after: minutesAgo,

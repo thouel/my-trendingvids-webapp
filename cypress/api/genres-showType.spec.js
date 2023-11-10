@@ -1,14 +1,4 @@
 describe('Test the /api/genres/[showType] route', () => {
-  beforeEach(() => {
-    cy.intercept('/api/**/*', { middleware: true }, (req) => {
-      req.on('before:response', (res) => {
-        // force all API responses to not be cached
-        res.headers['cache-control'] = 'no-store';
-        delete req.headers['if-none-match'];
-      });
-    });
-  });
-
   it('should load movie-related genres', () => {
     cy.request({
       method: 'GET',

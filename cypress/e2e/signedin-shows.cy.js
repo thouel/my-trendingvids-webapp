@@ -1,6 +1,7 @@
 describe('signedin-menu-and-shows', () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
+    cy.task('mail:refreshToken');
     cy.task('db:teardown');
   });
   beforeEach(() => {
