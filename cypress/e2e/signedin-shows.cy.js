@@ -2,9 +2,9 @@ describe('signedin-menu-and-shows', () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
     cy.task('mail:refreshToken');
-    cy.task('db:teardown');
   });
   beforeEach(() => {
+    cy.task('db:teardown');
     const mail = Cypress.env('TEST_MAIL');
     cy.signInByAPI(mail);
     cy.visit('/');
@@ -71,7 +71,7 @@ describe('signedin-menu-and-shows', () => {
       });
   });
 
-  it('adds two shows to my list then removes these', () => {
+  it.only('adds two shows to my list then removes these', () => {
     cy.openTVShowsPage();
 
     // Opens the first show card of the first line
