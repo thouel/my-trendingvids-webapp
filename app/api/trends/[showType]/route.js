@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from 'app/utils/db/db-prisma';
+import { prisma } from 'app/utils/db/db-prisma';
 import { areMyShowsRequested } from 'app/utils/helper';
 
 require('../../../utils/db/bigint-tojson');

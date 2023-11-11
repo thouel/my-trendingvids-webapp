@@ -1,7 +1,7 @@
 /* To allow a BigInt to be JSON.stringify'd */
 require('./bigint-tojson');
 
-import prisma from './db-prisma';
+import { prisma } from './db-prisma';
 
 //TODO: rework as PrismaAdapter:
 // export function UserAdapter(p /*PrismaClient*/) {

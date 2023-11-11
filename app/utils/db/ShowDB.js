@@ -1,7 +1,7 @@
 /* To allow a BigInt to be JSON.stringify'd */
 require('./bigint-tojson');
 import { isExternalIdValid, isObjectIdValid } from './db-helper';
-import prisma from './db-prisma';
+import { prisma } from './db-prisma';
 import { ExternalToDB } from './ExternalToDB';
 
 export function ShowDB() {
@@ -91,51 +91,47 @@ export function ShowDB() {
       let savedUser;
       console.log('saveOrUpdate show and user', { show, user });
       try {
+        // Save or create the show
+        try {
+          savedShow = await prisma.show.findUniqueOrThrow({
+            where: {
+              name: show.name ?? show.title,
+            },
+            include: {
+              networks: true,
+            },
+          });
+        } catch (e) {
+          const networksDB = ExternalToDB().networks(show.networks);
+          const showDB = ExternalToDB().show(show);
+          savedShow = await prisma.show.create({
+            data: {
+              ...showDB,
+              networks: {
+                connectOrCreate: networksDB.map((n) => {
+                  return {
+                    create: n,
+                    where: { name: n.name },
+                  };
+                }),
+              },
+            },
+          });
+        }
+
+        savedUser = await prisma.user.findUniqueOrThrow({
+          where: {
+            email: user.email,
+          },
+        });
+
+        // isolate connections between user and show in a
+        // transaction
         await prisma.$transaction(async (tx) => {
-          // Save or create the show
-          try {
-            savedShow = await tx.show.findUniqueOrThrow({
-              where: {
-                name: show.name ?? show.title,
-              },
-              include: {
-                networks: true,
-              },
-            });
-          } catch (e) {
-            const networksDB = ExternalToDB().networks(show.networks);
-            const showDB = ExternalToDB().show(show);
-            console.log('show data', {
-              data: {
-                ...showDB,
-                networks: {
-                  connectOrCreate: networksDB.map((n) => {
-                    return {
-                      create: n,
-                      where: { name: n.name },
-                    };
-                  }),
-                },
-              },
-            });
-            savedShow = await tx.show.create({
-              data: {
-                ...showDB,
-                networks: {
-                  connectOrCreate: networksDB.map((n) => {
-                    return {
-                      create: n,
-                      where: { name: n.name },
-                    };
-                  }),
-                },
-              },
-            });
-          }
           // Updates the user with the showId
           savedUser = await tx.user.update({
             where: {
-              email: user.email ?? user.name,
+              id: savedUser.id,
             },
             data: {
               pinnedShows: {
@@ -143,13 +139,16 @@ export function ShowDB() {
               },
             },
           });
-          // Finally, update the show with userId
+          // finally, update the show with userId
           savedShow = await tx.show.update({
             where: { id: savedShow.id },
             data: {
               users: {
                 connect: { id: savedUser.id },
               },
+            },
+            include: {
+              networks: true,
             },
           });
         });
