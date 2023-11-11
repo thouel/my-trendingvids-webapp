@@ -21,7 +21,7 @@ describe('signedin-menu-and-shows', () => {
     cy.get('a[href*="/auth/signout"]').should('have.text', 'Sign out');
   });
 
-  it.only('adds a movie to my list then removes it', () => {
+  it('adds a movie to my list then removes it', () => {
     // Opens the Movies page
     cy.get('a[href*="/shows/movies"]').click();
 
