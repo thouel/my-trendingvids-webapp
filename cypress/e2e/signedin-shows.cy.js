@@ -21,7 +21,7 @@ describe('signedin-menu-and-shows', () => {
     cy.get('a[href*="/auth/signout"]').should('have.text', 'Sign out');
   });
 
-  it('adds a movie to my list then removes it', () => {
+  it.only('adds a movie to my list then removes it', () => {
     // Opens the Movies page
     cy.get('a[href*="/shows/movies"]').click();
 
@@ -71,7 +71,7 @@ describe('signedin-menu-and-shows', () => {
       });
   });
 
-  it.only('adds two shows to my list then removes these', () => {
+  it('adds two shows to my list then removes these', () => {
     cy.openTVShowsPage();
 
     // Opens the first show card of the first line

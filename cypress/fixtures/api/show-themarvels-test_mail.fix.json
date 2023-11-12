@@ -1,0 +1,84 @@
+{
+  "show": {
+    "adult": false,
+    "backdrop_path": "/feSiISwgEpVzR1v3zv2n2AU4ANJ.jpg",
+    "belongs_to_collection": {
+      "id": 623911,
+      "name": "Captain Marvel Collection",
+      "poster_path": "/mHiMmryCureDvoAOlGP6o3oXT8Y.jpg",
+      "backdrop_path": "/ubZUKycnQldt2umj0bPD2VwXDJM.jpg"
+    },
+    "budget": 274800000,
+    "genres": [
+      {
+        "id": 28,
+        "name": "Action"
+      },
+      {
+        "id": 12,
+        "name": "Adventure"
+      },
+      {
+        "id": 878,
+        "name": "Science Fiction"
+      }
+    ],
+    "homepage": "https://www.marvel.com/movies/the-marvels",
+    "id": 609681,
+    "imdb_id": "tt10676048",
+    "original_language": "en",
+    "original_title": "The Marvels",
+    "overview": "Carol Danvers, aka Captain Marvel, has reclaimed her identity from the tyrannical Kree and taken revenge on the Supreme Intelligence. But unintended consequences see Carol shouldering the burden of a destabilized universe. When her duties send her to an anomalous wormhole linked to a Kree revolutionary, her powers become entangled with that of Jersey City super-fan Kamala Khan, aka Ms. Marvel, and Carol’s estranged niece, now S.A.B.E.R. astronaut Captain Monica Rambeau. Together, this unlikely trio must team up and learn to work in concert to save the universe.",
+    "popularity": 1118.064,
+    "poster_path": "/tUtgLOESpCx7ue4BaeCTqp3vn1b.jpg",
+    "production_companies": [
+      {
+        "id": 420,
+        "logo_path": "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png",
+        "name": "Marvel Studios",
+        "origin_country": "US"
+      },
+      {
+        "id": 176762,
+        "logo_path": null,
+        "name": "Kevin Feige Productions",
+        "origin_country": "US"
+      }
+    ],
+    "production_countries": [
+      {
+        "iso_3166_1": "US",
+        "name": "United States of America"
+      }
+    ],
+    "release_date": "2023-11-08",
+    "revenue": 0,
+    "runtime": 105,
+    "spoken_languages": [
+      {
+        "english_name": "English",
+        "iso_639_1": "en",
+        "name": "English"
+      },
+      {
+        "english_name": "Urdu",
+        "iso_639_1": "ur",
+        "name": "اردو"
+      }
+    ],
+    "status": "Released",
+    "tagline": "Higher. Further. Faster. Together.",
+    "title": "The Marvels",
+    "video": false,
+    "vote_average": 6.485,
+    "vote_count": 198,
+    "external_ids": {
+      "imdb_id": "tt10676048",
+      "wikidata_id": "Q89474225",
+      "facebook_id": "CaptainMarvelOfficial",
+      "instagram_id": "captainmarvelofficial",
+      "twitter_id": "captainmarvel"
+    }
+  },
+  "user": {}
+}

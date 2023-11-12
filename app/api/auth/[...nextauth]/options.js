@@ -4,7 +4,7 @@ import EmailProvider from 'next-auth/providers/email';
 import { prisma } from '../../../utils/db/db-prisma';
 import { MyPrismaAdapter } from 'app/utils/db/MyPrismaAdapter';
 import { randomBytes, randomUUID } from 'crypto';
-import { getOne } from 'app/utils/db/users';
+import { UserDB } from 'app/utils/db/UserDB';
 
 const myPrismaAdapter = MyPrismaAdapter(prisma);
 
@@ -124,9 +124,12 @@ export const options /* NextAuthOptions */ = {
         if (!user.pinnedShows) {
           // console.log('Fetching pinnedShows');
           try {
-            u = await getOne(user.email);
+            u = await UserDB().get(user.email);
+            if (u.error) {
+              throw Error(u.error.message);
+            }
           } catch (e) {
-            console.error(e);
+            console.error('Error loading the profile', { e });
             u = { pinnedShows: [] };
           }
           // console.log('Fetched pinnedShows', { u });

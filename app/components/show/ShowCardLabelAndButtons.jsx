@@ -69,6 +69,9 @@ export default function ShowCardLabelAndButtons({
 
         // Update the list in session
         session.user.pinnedShowsIDs.push(postResult.show.id);
+        if (session.user.pinnedShows === undefined) {
+          session.user.pinnedShows = [];
+        }
         session.user.pinnedShows.push(postResult.show);
         update({
           pinnedShowsIDs: session.user.pinnedShowsIDs,

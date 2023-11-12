@@ -1,56 +1,32 @@
 import { NextResponse } from 'next/server';
-import { prisma } from 'app/utils/db/db-prisma';
 import { areMyShowsRequested } from 'app/utils/helper';
-
-require('../../../utils/db/bigint-tojson');
+import { ShowDB } from 'app/utils/db/ShowDB';
+import { ShowTMDB } from 'app/utils/tmdb/ShowTMDB';
+require('app/utils/db/bigint-tojson');
 
 export async function POST(req, { params }) {
-  var errorCode;
-  var errorMsg;
   var res = {};
+  var body;
+  var userId;
+
   try {
-    const body = await req.json();
-    const { userId } = body;
-    const { showType } = params;
-
-    const myShowsAreRequested = areMyShowsRequested(showType);
-
-    if (myShowsAreRequested) {
-      const doc = await prisma.show.findMany({
-        where: {
-          userIDs: {
-            has: userId,
-          },
-        },
-        include: {
-          networks: true,
-        },
-      });
-      res = { shows: doc };
-    } else {
-      const st = showType === 'movies' ? 'movie' : 'tv';
-      const url = `https://api.themoviedb.org/3/trending/${st}/week?language=en-EN`;
-      res = await fetch(url, {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          return { shows: data.results };
-        });
-    }
+    body = await req.json();
+    userId = body.userId;
   } catch (e) {
-    errorCode = e.code;
-    errorMsg = e.message;
-    console.error(e);
+    // if we are here, there is no userId to extract
+    userId = null;
+  }
+  const { showType } = params;
+  const myShowsAreRequested = areMyShowsRequested(showType);
+
+  if (myShowsAreRequested && !userId) {
+    res.error = { message: 'User not provided' };
+  } else if (myShowsAreRequested) {
+    res = await ShowDB().findManyByUser(userId);
+  } else {
+    res = await ShowTMDB().fetchMany(showType);
   }
 
-  if (errorCode || errorMsg) {
-    res.error = { code: errorCode, message: errorMsg };
-  }
   console.log(`END POST /api/trends/${params.showType}`, { res });
-  return NextResponse.json(res);
+  return NextResponse.json(res, { status: res.error?.message ? 400 : 200 });
 }

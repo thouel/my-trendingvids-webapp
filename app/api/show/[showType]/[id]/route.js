@@ -8,7 +8,7 @@ import { ShowTMDB } from 'app/utils/tmdb/ShowTMDB';
  */
 export async function GET(req, { params }) {
   const { showType, id: externalId } = params;
-  const res = await ShowTMDB().get(showType, externalId);
+  const res = await ShowTMDB().fetchOne(showType, externalId);
   console.log(`GET /api/show/${showType}/${externalId}`, { res });
   return NextResponse.json(res, { status: res.error?.message ? 400 : 200 });
 }

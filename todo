@@ -27,7 +27,9 @@ BUGs
 
 Refactorings
 
-- remove pinnedShows from session. Just use ids
+- secure api calls with a secret known only from client
+- move scripts/\* to cypress/scripts && move createIndex & dropDatabase to scripts/
+- remove pinnedShows from session. Just store id and externalId
 - addToMyList, removeFromMyList => Change as server actions ?
 - in db/shows.js => refacto the saveOrUpdateOne: we could push scalar changes directly (no need to update the js object)
 - in db/shows.js => we should use transaction

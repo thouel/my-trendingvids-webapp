@@ -21,7 +21,10 @@ const areMyShowsRequested = (showType) => {
 
 const isShowInMyList = (id, session) => {
   if (!session) return false;
-
+  if (!session.user.pinnedShows) {
+    session.user.pinnedShows = [];
+  }
+  console.log('session', { session });
   return session.user.pinnedShows.some((s) => s.externalId == id);
 };
 
