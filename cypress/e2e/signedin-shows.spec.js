@@ -68,7 +68,7 @@ describe('signedin-menu-and-shows', () => {
       });
   });
 
-  it.only('adds two shows to my list then removes these', () => {
+  it('adds two shows to my list then removes these', () => {
     cy.openTVShowsPage();
 
     // Opens the first show card of the first line
