@@ -27,6 +27,7 @@ BUGs
 
 Refactorings
 
+- refacto the two signedin-shows tests
 - secure api calls with a secret known only from client
 - move scripts/\* to cypress/scripts && move createIndex & dropDatabase to scripts/
 - remove pinnedShows from session. Just store id and externalId

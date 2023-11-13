@@ -11,16 +11,10 @@ export default async function ShowsPage({ params, searchParams }) {
   const { q } = searchParams;
   const queryClient = getQueryClient();
 
-  console.log(`>> prefetching shows-${showType}`);
   await queryClient.prefetchQuery({
     queryKey: [`shows-${showType}`, { showType, q, session }],
     queryFn: fetchShowsByType,
   });
-  // const { shows, genres, isPinned, error } = await fetchShowsByType(
-  //   session,
-  //   showType,
-  //   q,
-  // );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

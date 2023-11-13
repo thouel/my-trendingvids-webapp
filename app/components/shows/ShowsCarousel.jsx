@@ -52,7 +52,10 @@ export default function ShowsCarousel({ genreLabel, shows, showType }) {
                       width={300}
                       height={300}
                     />
-                    <div className='mt-1 text-xs text-gray-900 truncate dark:text-gray-100 sm:text-sm'>
+                    <div
+                      data-test='show-title'
+                      className='mt-1 text-xs text-gray-900 truncate dark:text-gray-100 sm:text-sm'
+                    >
                       {getLabel(s)}
                     </div>
                   </Link>

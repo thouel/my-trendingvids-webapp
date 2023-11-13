@@ -5,7 +5,7 @@
     "start": "next start",
     "lint": "next lint",
     "prisma": "prisma generate",
-    "postinstall": "prisma generate && node createIndex.js",
+    "postinstall": "prisma generate && node scripts/createIndex.js",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
   },
