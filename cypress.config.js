@@ -10,6 +10,14 @@ require('dotenv').config({ path: '.env.local' });
 
 module.exports = defineConfig({
   projectId: '78ae92',
+  retries: {
+    // Configure retry attempts for `cypress run`
+    // Default is 0
+    runMode: 3,
+    // Configure retry attemps for `cypress open`
+    // Default is 0
+    openMode: 0,
+  },
   e2e: {
     env: {
       LOCAL_URL: process.env.LOCAL_URL,
