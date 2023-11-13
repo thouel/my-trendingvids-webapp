@@ -106,6 +106,8 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: firefox
+          start: npm start
+          wait-on: ${{ env.LOCAL_URL }} # Waits for above
           # Records to Cypress Cloud
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
           record: true
@@ -120,6 +122,8 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           browser: edge
+          start: npm start
+          wait-on: ${{ env.LOCAL_URL }} # Waits for above
           # Records to Cypress Cloud
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
           record: true
