@@ -1,7 +1,10 @@
 const { defineConfig } = require('cypress');
-const teardown = require('./scripts/teardown');
-const init = require('./scripts/init');
-const { getLinkInMail, refreshToken } = require('./scripts/mailTesterUtils');
+const teardown = require('./cypress/scripts/teardown');
+const init = require('./cypress/scripts/init');
+const {
+  getLinkInMail,
+  refreshToken,
+} = require('./cypress/scripts/mailTesterUtils');
 
 require('dotenv').config({ path: '.env.local' });
 
@@ -18,7 +21,7 @@ module.exports = defineConfig({
     },
     specPattern: [
       'cypress/api/*.spec.{js,jsx,ts,tsx}',
-      'cypress/e2e/*.cy.{js,jsx,ts,tsx}',
+      'cypress/e2e/*.spec.{js,jsx,ts,tsx}',
     ],
     baseUrl: process.env.LOCAL_URL,
     setupNodeEvents(on) {
@@ -28,7 +31,6 @@ module.exports = defineConfig({
         'db:teardown': () => teardown(),
         'db:init': () => init(),
       });
-      // implement node event listeners here
     },
   },
 

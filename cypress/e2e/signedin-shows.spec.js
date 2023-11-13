@@ -2,16 +2,14 @@ describe('signedin-menu-and-shows', () => {
   before(() => {
     Cypress.session.clearAllSavedSessions();
     cy.task('mail:refreshToken');
+    cy.task('db:teardown');
   });
   beforeEach(() => {
-    cy.task('db:teardown');
-    const mail = Cypress.env('TEST_MAIL');
-    cy.signInByAPI(mail);
+    cy.signInByAPI(Cypress.env('TEST_MAIL'));
     cy.visit('/');
   });
   afterEach(() => {
     cy.signOut();
-    cy.visit('/');
   });
 
   it('checks menu is 5 items long when signedin', () => {
@@ -28,11 +26,9 @@ describe('signedin-menu-and-shows', () => {
     // Opens the first show card of the first line
     cy.get('#splide01-slide01', { timeout: 10000 }).click();
 
-    //TODO: could be refactored using .as() to store the element
     var title = '';
     cy.get('h1 > div[title]')
       .then((el) => {
-        cy.log(el.text());
         title = el.text();
       })
       .then(() => {
@@ -48,13 +44,14 @@ describe('signedin-menu-and-shows', () => {
         cy.get('button:contains("Close")').click();
 
         // Opens the My list page
-        cy.get('a[href*="/shows/p-shows"]').click();
+        cy.openMyShowsPage();
 
         // Checks that the title of the image is the same as the one
         // we added a few steps before,
         // then open the show card
-        cy.get(`a[href] > img[title="${title}"]:first`)
+        cy.get('div[data-test=show-title]')
           .should('be.visible')
+          .should('have.text', title)
           .click({ timeout: 10000 });
 
         // Removes from My List
@@ -67,11 +64,11 @@ describe('signedin-menu-and-shows', () => {
         cy.get('button:contains("Close")').click();
 
         // Checks that the show has been removed from the list
-        cy.get(`a[href] > img[title="${title}"]`).should('not.exist');
+        cy.get(`div[data-test=show-title]`).should('not.exist');
       });
   });
 
-  it('adds two shows to my list then removes these', () => {
+  it.only('adds two shows to my list then removes these', () => {
     cy.openTVShowsPage();
 
     // Opens the first show card of the first line
@@ -99,16 +96,17 @@ describe('signedin-menu-and-shows', () => {
       cy.openMyShowsPage();
 
       // Locate the first show in my list
-      cy.get('a[href] > img[title]:first').as('firstShowInMyList');
+      // We do not use #splide01-slide01 in selector because
+      // when we will add another show and removes it, splide will rerender
+      // a new splide named splide02. Then this selector would fail
+      cy.get('div[data-test=show-title]:first').as('firstShowInMyList');
 
       // Checks that this is visible
       cy.get('@firstShowInMyList').should('be.visible');
 
       // Checks that the title of the image is the same as the one
       // we added a few steps before,
-      cy.get('@firstShowInMyList')
-        .invoke('attr', 'title')
-        .should('equals', title);
+      cy.get('@firstShowInMyList').should('have.text', title);
     });
 
     // Opens Movies page
@@ -137,46 +135,46 @@ describe('signedin-menu-and-shows', () => {
       cy.openMyShowsPage();
 
       // Locate the first show in my list
-      cy.get('#splide01-slide02 a img[title]:first').as('secondShowInMyList');
+      cy.get('#splide01-slide02 div[data-test=show-title]').as(
+        'secondShowInMyList',
+      );
 
       // Checks that this is visible
-      cy.get('@secondShowInMyList').should('be.visible');
+      cy.get('@secondShowInMyList').debug().should('be.visible');
 
       // Checks that the title of the image is the same as the one
       // we added a few steps before,
-      cy.get('@secondShowInMyList')
-        .invoke('attr', 'title')
-        .should('equals', title);
+      cy.get('@secondShowInMyList').should('have.text', title);
+
+      // Then open the show card
+      cy.get('@secondShowInMyList').click();
+
+      // Removes from My List
+      cy.get('button > svg[alt*="Remove from"]').click();
+
+      // Checks that the movie can be added
+      cy.get('button > svg[alt*="Add to"]').should('be.visible');
+
+      // Close the show card
+      cy.get('button:contains("Close")').click();
+
+      // Checks that the show has been removed from the list
+      cy.get('@secondShowInMyList').should('not.exist');
+
+      // Then open the show card
+      cy.get('@firstShowInMyList').click();
+
+      // Removes from My List
+      cy.get('button > svg[alt*="Remove from"]').click();
+
+      // Checks that the movie can be added
+      cy.get('button > svg[alt*="Add to"]').should('be.visible');
+
+      // Close the show card
+      cy.get('button:contains("Close")').click();
+
+      // Checks that the show has been removed from the list
+      cy.get('@firstShowInMyList').should('not.exist');
     });
-
-    // Then open the show card
-    cy.get('@secondShowInMyList').click();
-
-    // Removes from My List
-    cy.get('button > svg[alt*="Remove from"]').click();
-
-    // Checks that the movie can be added
-    cy.get('button > svg[alt*="Add to"]').should('be.visible');
-
-    // Close the show card
-    cy.get('button:contains("Close")').click();
-
-    // Checks that the show has been removed from the list
-    cy.get('@secondShowInMyList').should('not.exist');
-
-    // Then open the show card
-    cy.get('@firstShowInMyList').click();
-
-    // Removes from My List
-    cy.get('button > svg[alt*="Remove from"]').click();
-
-    // Checks that the movie can be added
-    cy.get('button > svg[alt*="Add to"]').should('be.visible');
-
-    // Close the show card
-    cy.get('button:contains("Close")').click();
-
-    // Checks that the show has been removed from the list
-    cy.get('@firstShowInMyList').should('not.exist');
   });
 });

@@ -82,7 +82,7 @@ jobs:
           echo ${{secrets.TEST_CREDENTIALS}} | base64 -d > mail-tester/credentials.json
           echo ${{secrets.TEST_TOKEN}} | base64 -d > mail-tester/token.json
       - name: Drop DB
-        run: node dropDatabase.js
+        run: node scripts/dropDatabase.js
       - name: Cypress run
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
