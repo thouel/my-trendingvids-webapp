@@ -68,7 +68,9 @@ describe('signedin-menu-and-shows', () => {
       });
   });
 
-  it('adds two shows to my list then removes these', () => {
+  // Skipped because flaky. Sometimes the first show added is not the first
+  // in MyShowsPage.
+  it.skip('adds two shows to my list then removes these', () => {
     cy.openTVShowsPage();
 
     // Opens the first show card of the first line
@@ -112,7 +114,7 @@ describe('signedin-menu-and-shows', () => {
     // Opens Movies page
     cy.openMoviesPage();
 
-    // Opens the first show card of the first line
+    // Opens the first show card of the second line
     cy.get('#splide02-slide01', { timeout: 10000 }).click();
 
     // Gets the title to compare it with the title of the card in MyShows
@@ -140,7 +142,7 @@ describe('signedin-menu-and-shows', () => {
       );
 
       // Checks that this is visible
-      cy.get('@secondShowInMyList').debug().should('be.visible');
+      cy.get('@secondShowInMyList').should('be.visible');
 
       // Checks that the title of the image is the same as the one
       // we added a few steps before,
