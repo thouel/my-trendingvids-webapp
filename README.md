@@ -17,7 +17,6 @@
 A responsive webapp to visualize the current TV shows and movies trends :
 
 - Shows the trends sorted by genres
-- Able to filter by popularity and keyword
 - Save favorite shows in your own-crafted list
 
 ## Table of Contents
